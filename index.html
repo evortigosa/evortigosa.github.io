@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Evandro Scudeleti Ortigossa</title>
+
+	<link href="nv.d3.css" rel="stylesheet" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="nv.d3.js"></script>
+
+	<style>
+
+		body {
+			font-family: sans-serif;
+			font-color: black;
+		}
+
+		/* Tooltip */
+		div.tooltip {
+			width: 80px;
+			padding: 7px;
+			font: 10px sans-serif;
+			font-weight: bold;
+			text-align: center;
+			color: #fff;
+			position: absolute;
+			background: rgba(0,0,0,0.7);
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+  	</style>
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1675px;height:880px">
+			<div style="width:100%;height:165px">
+				<div id="photo" class="TopPage" style="float:left;width:20%;height:150px"></div>
+				<div id="my_id" class="TopPage" style="float:left;width:60%;height:150px"></div>
+				<div id="logo" class="TopPage" style="float:left;width:20%;height:150px"></div>
+			</div>
+			<div id="line1" class="Line" style="background:black;width:100%;height:2px">
+			<div style="overflow-y:scroll;overflow-x:hidden;width:100%;height:575px">
+				<div id="middle" class="Middle" style="width:100%;height:815px"></div>
+			</div>
+			<div id="line3" class="Line" style="background:black;width:99%;height:2px">
+			<div style="width:100%;height:140px">
+				<div id="publi" class="Bottom" style="float:left;width:20%;height:140px"></div>
+				<div id="b_info" class="Bottom" style="float:left;width:60%;height:140px"></div>
+				<div id="grupo" class="Bottom" style="float:left;width:20%;height:140px"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+
+		function init() {
+
+			load_my_face();
+			load_my_id();
+			load_logo();
+			load_research();
+			load_publications();
+			load_b_info();
+			load_vgpg();
+		};
+
+		init();
+
+		function load_my_face() {
+
+			var size= document.getElementById("photo").clientWidth;
+
+			var width= size;
+			var height= 150;
+
+			var canvas= d3.select("#photo")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			var g= canvas.append("g")
+				.attr("transform", "translate(0,0)");
+
+			var img= g.append("svg:image")
+				.attr("xlink:href", "eu.jpg")
+				.attr("width", 320)
+				.attr("height", 320)
+				.attr("x", 1)
+				.attr("y", -85);
+		};
+
+		function load_logo() {
+
+			var size= document.getElementById("logo").clientWidth;
+
+			var width= size;
+			var height= 150;
+
+			var canvas= d3.select("#logo")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			var g= canvas.append("g")
+				.attr("transform", "translate(0,0)");
+
+			var img= g.append("svg:image")
+				.attr("xlink:href", "logo.JPG")
+				.attr("width", 320)
+				.attr("height", 320)
+				.attr("x", 1)
+				.attr("y", -85)
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://www.icmc.usp.br/Portal/"); });
+		};
+
+		function load_my_id() {
+
+			var size= document.getElementById("my_id").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 150;
+
+			var canvas= d3.select("#my_id")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var tip= d3.select("#my_id")
+				.append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+			var nome= canvas.append("text")
+				.attr("x", 280)
+				.attr("y", 30)
+				.attr("font-size", "40px")
+				.attr("font-weight", "bold")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/5545082740387699"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX- 30) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Evandro S. Ortigossa");
+
+			var u_grad= canvas.append("text")
+				.attr("x", 300)
+				.attr("y", 65)
+				.attr("font-size", "18px")
+				.text("Ciências de Computação (B.Sc.) - ICMC-USP");
+
+			var grad= canvas.append("text")
+				.attr("x", 115)
+				.attr("y", 88)
+				.attr("font-size", "18px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://www.icmc.usp.br/Portal/conteudo/243/13/ciencias-de-computacao-e-matematica-computacional"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("ICMC-USP PÓS")
+						.style("left", (d3.event.pageX- 30) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Aluno de M.Sc. em Ciências de Computação e Matemática Computacional - ICMC-USP");
+
+			var area= canvas.append("text")
+				.attr("x", 183)
+				.attr("y", 122)
+				.attr("font-size", "18px")
+				.text("Atuação: Processamento de Imagens Digitais e Visualização de Dados");
+
+			var orientador= canvas.append("text")
+				.attr("x", 310)
+				.attr("y", 145)
+				.attr("font-size", "18px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/3794241680729178"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX- 30) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Orientação: Prof. Dr. Luis Gustavo Nonato");
+		};
+
+		function load_research() {
+
+			var size= document.getElementById("middle").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 800;
+
+			var x_pos1= 80;
+			var x_pos2= size/ 2;
+
+			var canvas= d3.select("#middle")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+
+			/* y Colunas da esquerda */
+			var titulo_y= 40;
+			var lacuna_y= 110;
+			var justificativa_y= 270;
+			var material_y= 395;
+			var avaliacao_y= 590;
+			var interface_y= 725;
+			var conclusao_y= 770;
+
+			/* y Colunas da direita */
+			var tema_y= 60;
+			var obj_y= 150;
+			var resumo_y= 275;
+			var cnpq_y= 630;
+
+
+			/* TITULO DA PESQUISA */
+			var titulo= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", titulo_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Título da Pesquisa");
+
+			var titulo1= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", titulo_y+ 20)
+				.attr("font-size", "16px")
+				.text("Visualização de Dados Temporais Hierarquicamente Agregados.");
+			
+			/* TEMA */
+			var tema= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", tema_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Tema");
+
+			var tema1= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", tema_y+ 20)
+				.attr("font-size", "16px")
+				.text("Estudo e desenvolvimento de metodologias compreensivas de visualização sobre grandes bases de");
+
+			var tema2= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", tema_y+ 20 + 18)
+				.attr("font-size", "16px")
+				.text("dados agregados hierarquicamente e variáveis no tempo.");
+
+			/* LACUNA/PROBLEMA */
+			var lacuna= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", lacuna_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Lacuna/problema");
+
+			var lacuna1= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", lacuna_y+ 20)
+				.attr("font-size", "16px")
+				.text("Em muitos cenários, dados temporais carregam uma estrutura agregada hierarquicamente. Por ");
+
+			var lacuna2= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", lacuna_y+ 20+ 1* 18)
+				.attr("font-size", "16px")
+				.text("exemplo: em muitos países, a quantidade diária de recursos que são gastos pelo governo federal ");
+
+			var lacuna3= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", lacuna_y+ 20+ 2* 18)
+				.attr("font-size", "16px")
+				.text("é a soma das despesas de seus ministérios nos dias correspondentes, que por sua vez, ");
+
+			var lacuna4= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", lacuna_y+ 20+ 3* 18)
+				.attr("font-size", "16px")
+				.text("compreende as despesas das suas respectivas secretarias subordinadas, e assim por diante. ");
+
+			var lacuna5= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", lacuna_y+ 20+ 4* 18)
+				.attr("font-size", "16px")
+				.text("Um problema neste contexto é que os níveis inferiores da hierarquia podem conter centenas de ");
+
+			var lacuna5= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", lacuna_y+ 20+ 5* 18)
+				.attr("font-size", "16px")
+				.text("milhares de instâncias temporais, fazendo de sua análise uma tarefa massiva.");
+
+			/* HIPOTESES E OBJETIVOS */
+			var objetivos= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", obj_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Hipóteses e Objetivos");
+
+			var objetivos1= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", obj_y+ 20)
+				.attr("font-size", "16px")
+				.text("Visualização de dados é a representação de informações no formato gráfico, simplificando sua");
+
+			var objetivos2= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", obj_y+ 20+ 1* 18)
+				.attr("font-size", "16px")
+				.text("interpretação e ajudando a encontrar padrões não tão óbvios. Sendo assim, este trabalho tem por");
+
+			var objetivos3= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", obj_y+ 20+ 2* 18)
+				.attr("font-size", "16px")
+				.text("objetivos elaborar, desenvolver e testar uma metodologia de visualização para assistir o usuário na");
+
+			var objetivos4= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", obj_y+ 20+ 3* 18)
+				.attr("font-size", "16px")
+				.text("análise de séries temporais hierarquicamente agregadas.");
+
+			/* JUSTIFICATIVA/MOTIVACAO */
+			var justificativa= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", justificativa_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Justificativa/motivação");
+
+			var justificativa1= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", justificativa_y+ 20)
+				.attr("font-size", "16px")
+				.text("Dados variáveis no tempo agregados hierarquicamente têm uma estrutura intrínseca, na qual ");
+
+			var justificativa2= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", justificativa_y+ 20+ 1* 18)
+				.attr("font-size", "16px")
+				.text("cada nó na hierarquia representa uma série temporal dada pela informação temporal agregada");
+
+			var justificativa3= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", justificativa_y+ 20+ 2* 18)
+				.attr("font-size", "16px")
+				.text("dos níveis inferiores da hierarquia. Além disso, na maioria dos casos, a hierarquia compreende");
+
+			var justificativa4= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", justificativa_y+ 20+ 3* 18)
+				.attr("font-size", "16px")
+				.text(" apenas alguns níveis, contendo milhares de séries temporais no patamar inferior.");
+
+			/* RESUMO ESTRUTURADO */
+			var resumo= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Resumo");
+
+			var resumo1= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20)
+				.attr("font-size", "16px")
+				.text("Em muitos cenários, dados temporais carregam uma estrutura agregada e hierárquica intrínseca. Por ");
+
+			var resumo2= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 1* 18)
+				.attr("font-size", "16px")
+				.text("exemplo, o consumo de energia de um país, em um dado intervalo de tempo, é a soma da energia ");
+
+			var resumo3= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 2* 18)
+				.attr("font-size", "16px")
+				.text("consumida pelos seus estados que, por sua vez, compreende a soma da energia gasta em cada ");
+
+			var resumo4= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 3* 18)
+				.attr("font-size", "16px")
+				.text("cidade e assim por diante. Quando analisando este tipo de dado temporal estruturado hierarquicamente,");
+
+			var resumo5= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 4* 18)
+				.attr("font-size", "16px")
+				.text("o analista usualmente começa procurando por padrões e discrepâncias nos níveis superiores da");
+
+			var resumo6= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 5* 18)
+				.attr("font-size", "16px")
+				.text("hierarquia, descendo até os níveis inferiores para encontrar a origem do comportamento observado. ");
+
+			var resumo7= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 6* 18)
+				.attr("font-size", "16px")
+				.text("Uma questão principal neste contexto é que os níveis inferiores podem conter milhares de instâncias ");
+
+			var resumo8= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 7* 18)
+				.attr("font-size", "16px")
+				.text("de séries temporais, fazendo da análise uma tarefa massante. Este trabalho apresenta uma metodologia ");
+
+			var resumo9= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 8* 18)
+				.attr("font-size", "16px")
+				.text("de visualização para guiar a análise das séries temporais agregadas. O método utiliza o Earth Mover's ");
+
+			var resumo10= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 9* 18)
+				.attr("font-size", "16px")
+				.text("Distance (EMD) para detectar discrepâncias e padrões nas séries temporais nos níveis inferiores da ");
+
+			var resumo11= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 10* 18)
+				.attr("font-size", "16px")
+				.text("hierarquia. As informações a cerca das discrepâncias e padrões são propagadas aos patamares ");
+
+			var resumo12= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 11* 18)
+				.attr("font-size", "16px")
+				.text("superiores em que as séries temporais são representadas, permitindo ao usuário visualizar e rastrear a");
+
+			var resumo13= canvas.append("text")
+				.attr("x", x_pos2)
+				.attr("y", resumo_y+ 20+ 12* 18)
+				.attr("font-size", "16px")
+				.text("origem do fenômeno observado.");
+
+			/* MATERIAIS E METODOS */
+			var material= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Materiais e Métodos");
+
+			var material1= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20)
+				.attr("font-size", "16px")
+				.text("O Earth Mover's Distance está no core da análise das séries temporais hierárquicas, gerando");
+
+			var material2= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20+ 1* 18)
+				.attr("font-size", "16px")
+				.text(" resultados que serão utilizados para clusterização, classificação, identificação de padrões e");
+
+			var material3= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20+ 2* 18)
+				.attr("font-size", "16px")
+				.text("discrepâncias. Para guiar o usuário na exploração dos dados, será desenvolvida um protótio");
+
+			var material4= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20+ 3* 18)
+				.attr("font-size", "16px")
+				.text("de interface baseado em web, utilizando principalmente JavaScript, CSS, HTML5 e a biblioteca ");
+
+			var material5= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20+ 4* 18)
+				.attr("font-size", "16px")
+				.text("de manipulação gráfica D3.js. Os dados utilizados neste trabalho são os dos gastos diretos do");
+
+			var material6= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20+ 5* 18)
+				.attr("font-size", "16px")
+				.text("governo federal do Brasil (www.portaldatransparencia.gov.br), contendo pagamentos realizados");
+
+			var material7= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20+ 6* 18)
+				.attr("font-size", "16px")
+				.text("por todas as agências do governo federal de janeiro de 2011 até outubro de 2015, com mais de");
+
+			var material8= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", material_y+ 20+ 7* 18)
+				.attr("font-size", "16px")
+				.text("60 milhões de transações registradas.");
+
+			/* METODOLOGIA DE AVALIACAO */
+			var avaliacao= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", avaliacao_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Metodologia de Avaliação");
+
+			var avaliacao1= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", avaliacao_y+ 20)
+				.attr("font-size", "16px")
+				.text("A eficácia da metodologia proposta, em revelar fenômenos de interesse e suas origens em largas");
+
+			var avaliacao2= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", avaliacao_y+ 20+ 1* 18)
+				.attr("font-size", "16px")
+				.text("bases de dados temporais hierárquicas, será mostrada através de um conjunto de experimentos e");
+
+			var avaliacao3= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", avaliacao_y+ 20+ 2* 18)
+				.attr("font-size", "16px")
+				.text("também medidas qualitativas propostas na literatura.");
+
+			/* LINK */
+			var interface= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", interface_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://daedalus.zapto.org:5080/~evortigosa/frontend/"); })
+				.text("Clique aqui para acessar o protótipo em desenvolvimento.");
+
+			var conclusao= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", conclusao_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("O período de conclusão é estimado para março de 2018.");
+
+			/* LOGO CNPQ */
+			var cnpq= canvas.append("text")
+				.attr("x", x_pos2+ 10)
+				.attr("y", cnpq_y)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.text("Esta pesquisa é financiada pelo:");
+
+			var g= canvas.append("g")
+				.attr("transform", "translate(0,0)");
+
+			var img= g.append("svg:image")
+				.attr("xlink:href", "CNPq.png")
+				.attr("width", 270)
+				.attr("height", 270)
+				.attr("x", x_pos2+ 10)
+				.attr("y", cnpq_y- 65)
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://cnpq.br/"); });
+		};
+
+		function load_publications() {
+
+			var size= document.getElementById("publi").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#publi")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var pos_x= 40;
+			var pos_y= 50;
+
+			var public= canvas.append("text")
+				.attr("x", pos_x)
+				.attr("y", pos_y)
+				.attr("font-size", "18px")
+				.text("Publicações:");
+
+			var scholar= canvas.append("text")
+				.attr("x", pos_x)
+				.attr("y", pos_y+ 30)
+				.attr("font-size", "18px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("https://scholar.google.com.br/citations?user=ICFHzKcAAAAJ&hl=pt-BR&oi=ao"); })
+				.text("Google Scholar");
+
+			var rg= canvas.append("text")
+				.attr("x", pos_x)
+				.attr("y", pos_y+ 55)
+				.attr("font-size", "18px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("https://www.researchgate.net/profile/Evandro_Ortigossa"); })
+				.text("ResearchGate");
+		};
+
+		function load_b_info() {
+
+			var size= document.getElementById("b_info").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#b_info")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var contato= canvas.append("text")
+				.attr("x", 365)
+				.attr("y", 32)
+				.attr("font-size", "16px")
+				.text("Informações para contato:");
+
+			var endereco_y= 60;
+
+			var endereco= canvas.append("text")
+				.attr("x", 165)
+				.attr("y", endereco_y)
+				.attr("font-size", "16px")
+				.text("Universidade de São Paulo, Instituto de Ciências Matemáticas e de Computação");
+
+			var endereco2= canvas.append("text")
+				.attr("x", 195)
+				.attr("y", endereco_y+ 20)
+				.attr("font-size", "16px")
+				.text("Av. Trabalhador São-carlense, 400, 13560-970, São Carlos-SP, Brasil");
+
+			var email= canvas.append("text")
+				.attr("x", 370)
+				.attr("y", 110)
+				.attr("font-size", "16px")
+				.text("email: evortigosa@usp.br");
+
+			var site= canvas.append("text")
+				.attr("x", 337)
+				.attr("y", 140)
+				.attr("font-size", "12px")
+				.text("Este site é melhor visualizado em 1920 x 1080.");
+		};
+
+		function load_vgpg() {
+
+			var size= document.getElementById("grupo").clientWidth;
+
+			var width= size;
+			var height= 130;
+
+			var canvas= d3.select("#grupo")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			var g= canvas.append("g")
+				.attr("transform", "translate(0,0)");
+
+			var img= g.append("svg:image")
+				.attr("xlink:href", "vgpg.jpg")
+				.attr("width", 200)
+				.attr("height", 200)
+				.attr("x", 75)
+				.attr("y", -25);
+		};
+
+	</script>
+
+</body>
+</html>
