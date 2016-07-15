@@ -90,6 +90,22 @@
 
 		};
 
+		function read_pixel(p1, p2) {
+
+
+
+		};
+
+		function write_pixel(p1, p2) {
+
+			var line_dot= svg_canvas.append("rect")
+				.attr("x", p1)
+				.attr("y", p2)
+				.attr("width", 4)
+				.attr("height", 4)
+				.attr("fill", "black");
+		};
+
 		function poligonos() {
 
 			document.getElementById("trabalho").innerHTML= "";
@@ -101,10 +117,47 @@
 				.append("g")
 					.attr("transform", "translate("+ margin.left +", "+ margin.top +")");
 
+			scaleX= d3.scale.linear()
+				.domain([0, width_b])
+				.range([0, width_b]),
 
+			scaleY= d3.scale.linear()
+				.domain([0, height_b])
+				.range([height_b, 0]),
 
+			poly= [{"x":200, "y":250},
+				{"x":200, "y":550},
+				{"x":550, "y":400},
+				{"x":1200, "y":600},
+				{"x":1400, "y":210},
+				{"x":500, "y":80}];
 
-					
+			var polygon= svg_canvas.selectAll("polygon")
+				.data([poly])
+				.enter().append("polygon")
+				.attr("points", function(d) { 
+					return d.map(function(d) { return [scaleX(d.x),scaleY(d.y)].join(","); }).join(" ");
+				})
+				.attr("stroke", "darkblue")
+				.attr("stroke-width", 4)
+				.attr("fill", "white");
+
+			var circle= svg_canvas.append("circle")
+				.attr("cx", 520)
+				.attr("cy", 150)
+				.attr("r", 90)
+				.attr("stroke", "darkgreen")
+				.attr("stroke-width", 4)
+				.attr("fill", "white");
+
+			var rectangle = svg_canvas.append("rect")
+				.attr("x", 1400)
+				.attr("y", 100)
+				.attr("width", 180)
+				.attr("height", 300)
+				.attr("stroke", "darkred")
+				.attr("stroke-width", 4)
+				.attr("fill", "white");
 		};
 
 		function load_title() {
