@@ -268,7 +268,7 @@
 		function cohen_sutherland() {
 
 			if (trivial_reject()== false) {
-				while(trivial_accept()== false) {
+				while((trivial_accept()== false) && (trivial_reject()== false)) {
 
 					/* Encontrando os pontos de interseccao */
 					if ((y0< ymin) || (y1< ymin)) {	/* Um dos pontos esta acima da janela de corte */
