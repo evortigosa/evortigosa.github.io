@@ -267,54 +267,52 @@
 
 		function cohen_sutherland() {
 
-			if (trivial_reject()== false) {
-				while((trivial_accept()== false) && (trivial_reject()== false)) {
+			while((trivial_accept()== false) && (trivial_reject()== false)) {
 
-					/* Encontrando os pontos de interseccao */
-					if ((y0< ymin) || (y1< ymin)) {	/* Um dos pontos esta acima da janela de corte */
-						if (y0< ymin) {
-							x0= x0 + ((x1 - x0) * (ymin - y0) / (y1 - y0));
-							y0= ymin;
-						}
-						else {
-							x1= x0 + ((x1 - x0) * (ymin - y0) / (y1 - y0));
-							y1= ymin;
-						}
+				/* Encontrando os pontos de interseccao */
+				if ((y0< ymin) || (y1< ymin)) {	/* Um dos pontos esta acima da janela de corte */
+					if (y0< ymin) {
+						x0= x0 + ((x1 - x0) * (ymin - y0) / (y1 - y0));
+						y0= ymin;
 					}
-					else if ((y0> ymax) || (y1> ymax)) {	/* Um dos pontos esta abaixo da janela de corte */
-						if (y0> ymax) {
-							x0= x0 + ((x1 - x0) * (ymax - y0) / (y1 - y0));
-							y0= ymax;
-						}
-						else {
-							x1= x0 + ((x1 - x0) * (ymax - y0) / (y1 - y0));
-							y1= ymax;
-						}
-					}
-					else if ((x0< xmin) || (x1< xmin)) {	/* Um dos pontos esta a esquerda da janela de corte */
-						if (x0< xmin) {
-							y0= y0 + ((y1 - y0) * (xmin - x0) / (x1 - x0));
-							x0= xmin;
-						}
-						else {
-							y1= y0 + ((y1 - y0) * (xmin - x0) / (x1 - x0));
-							x1= xmin;
-						}
-					}
-					else if ((x0> xmax) || (x1> xmax)) {	/* Um dos pntos esta a direita da janela de corte */
-						if (x0> xmax) {
-							y0= y0 + ((y1 - y0) * (xmax - x0) / (x1 - x0));
-							x0= xmax;
-						}
-						else {
-							y1= y0 + ((y1 - y0) * (xmax - x0) / (x1 - x0));
-							x1= xmax
-						}
+					else {
+						x1= x0 + ((x1 - x0) * (ymin - y0) / (y1 - y0));
+						y1= ymin;
 					}
 				}
-
-				draw_line();
+				else if ((y0> ymax) || (y1> ymax)) {	/* Um dos pontos esta abaixo da janela de corte */
+					if (y0> ymax) {
+						x0= x0 + ((x1 - x0) * (ymax - y0) / (y1 - y0));
+						y0= ymax;
+					}
+					else {
+						x1= x0 + ((x1 - x0) * (ymax - y0) / (y1 - y0));
+						y1= ymax;
+					}
+				}
+				else if ((x0< xmin) || (x1< xmin)) {	/* Um dos pontos esta a esquerda da janela de corte */
+					if (x0< xmin) {
+						y0= y0 + ((y1 - y0) * (xmin - x0) / (x1 - x0));
+						x0= xmin;
+					}
+					else {
+						y1= y0 + ((y1 - y0) * (xmin - x0) / (x1 - x0));
+						x1= xmin;
+					}
+				}
+				else if ((x0> xmax) || (x1> xmax)) {	/* Um dos pntos esta a direita da janela de corte */
+					if (x0> xmax) {
+						y0= y0 + ((y1 - y0) * (xmax - x0) / (x1 - x0));
+						x0= xmax;
+					}
+					else {
+						y1= y0 + ((y1 - y0) * (xmax - x0) / (x1 - x0));
+						x1= xmax
+					}
+				}
 			}
+
+			if (trivial_accept()== true) draw_line();
 		};
 
 		function box() {
