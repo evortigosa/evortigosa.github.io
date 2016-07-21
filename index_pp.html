@@ -90,7 +90,7 @@
 
 		function rotacionar() {
 
-			rotate= parseInt(document.getElementById("rt").value);
+			rotate= -(parseInt(document.getElementById("rt").value));
 
 			svg_canvas.select("text")
 				.transition()
