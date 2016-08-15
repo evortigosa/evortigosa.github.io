@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Evandro Scudeleti Ortigossa, 6793135</title>
+
+	<link href="nv.d3.css" rel="stylesheet" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="nv.d3.js"></script>
+
+	<style>
+
+		body {
+			font-family: sans-serif;
+			font-color: black;
+		}
+
+		/* Tooltip */
+		div.tooltip {
+			width: 80px;
+			padding: 7px;
+			font: 10px sans-serif;
+			font-weight: bold;
+			text-align: center;
+			color: #fff;
+			position: absolute;
+			background: rgba(0,0,0,0.7);
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+  	</style>
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1675px;height:880px">
+			<div style="width:100%;height:50px">
+				<div id="input" class="TopPage" style="float:left;width:50%;height:50px">
+					<div id="space" class="TopPage" style="float:left;width:100%;height:10px"></div>
+					  Rotacionar: <input type="text" id="rt" size="8">
+					  <button onclick="rotacionar()">Rotacionar</button>
+					  X: <input type="text" id="tr_x" size="8">
+					  Y: <input type="text" id="tr_y" size="8">
+					  <button onclick="transladar()">Transladar</button>
+					  <button onclick="center()">Centralizar</button>
+				</div>
+				<div id="title" class="TopPage" style="float:left;width:50%;height:50px"></div>
+			</div>
+			<div id="line1" class="Line" style="background:black;width:100%;height:2px">
+			<div style="overflow-y:hidden;overflow-x:hidden;width:100%;height:700px">
+				<div id="trabalho" class="Middle" style="width:100%;height:700px"></div>
+			</div>
+			<div id="line2" class="Line" style="background:black;width:99%;height:2px">
+			<div style="width:100%;height:100px">
+				<div id="info_eu" class="Bottom" style="float:left;width:50%;height:130px"></div>
+				<div id="info" class="Bottom" style="float:left;width:50%;height:130px"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+
+		var rotate= 0;
+		var tr_x= 850;
+		var tr_y= 300;
+
+		var margin= {top: 1, right: 1, bottom: 1, left: 1}
+
+		var size_b= document.getElementById("trabalho").clientWidth;
+
+		var width_b= size_b- margin.left- margin.right;		// Dimensoes internas do gafico
+		var height_b= 700- margin.top- margin.bottom;
+
+		var svg_canvas;
+		var text;
+
+		function init() {
+
+			draw();
+			load_title();
+			load_a_info();
+			load_b_info();
+		};
+
+		init();
+
+		function rotacionar() {
+
+			rotate= -(parseInt(document.getElementById("rt").value));
+
+			svg_canvas.select("text")
+				.transition()
+				.duration(1000)
+				.attr("transform", "translate(" + tr_x + "," + tr_y + ") rotate(" + rotate + ")");
+				/* Matriz de transformacoes em D3.js, para rotacionar, o objeto sera automaticamente transladado a origem, portanto, rotaciono e translado novamanete a posicao em que estava */
+		};
+
+		function transladar() {
+
+			tr_x= parseInt(document.getElementById("tr_x").value);
+			tr_y= parseInt(document.getElementById("tr_y").value);
+
+			if (tr_x< 270) tr_x= 270;
+			else if (tr_x> 1400) tr_x= 1400;	/* Para adequar aos  minimos da janela */
+
+			if (tr_y< 50) tr_y= 50;
+			else if (tr_y> 650) tr_y= 650;			
+
+			svg_canvas.select("text")	/* Operacao simples, apenas desloca o objeto */
+				.transition()
+				.duration(1000)
+				.attr("transform", "translate(" + tr_x + "," + tr_y + ") rotate(" + rotate + ")");
+				/* Matriz de transformacoes em D3.js, para transladar, o objeto sera automaticamente rotacionado para a posicao inicial, portanto, translado e rotaciono novamanete ao angulo em que estava */
+		};
+
+		function center() {
+
+			rotate= 0;
+			tr_x= 850;
+			tr_y= 300;
+
+			svg_canvas.select("text")
+				.transition()
+				.duration(1000)
+				.attr("transform", "translate(" + tr_x + "," + tr_y + ") rotate(0)");
+		};
+
+		function draw() {
+
+			document.getElementById("trabalho").innerHTML= "";
+
+			svg_canvas= d3.select("#trabalho")
+				.append("svg")
+				.attr("width", width_b+ margin.left+ margin.right)
+				.attr("height", height_b+ margin.top+ margin.bottom)
+				.append("g")
+					.attr("transform", "translate("+ margin.left +", "+ margin.top +")");
+
+			text= svg_canvas.append("text")
+				.style("fill", "black")
+				.style("font-size", "140px")
+				.attr("dy", ".35em")
+				.attr("text-anchor", "middle")
+				.attr("font-weight", "bold")
+				.attr("transform", "translate(" + tr_x + "," + tr_y + ") rotate(" + rotate + ")")
+				.text("Evandro");
+		};
+
+		function load_title() {
+			var size= document.getElementById("title").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 50;
+
+			var canvas= d3.select("#title")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var trab= canvas.append("text")
+				.attr("x", 60)
+				.attr("y", 25)
+				.attr("font-size", "24px")
+				.attr("font-weight", "bold")
+				.text("Trabalho de SCC5799 - Computação Gráfica");
+
+			var readme= canvas.append("text")
+				.attr("x", 600)
+				.attr("y", 23)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("/readme_cg.html"); })
+				.text("(README)");
+		};
+
+		function load_a_info() {
+
+			var size= document.getElementById("info_eu").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#info_eu")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var tip= d3.select("#info_eu")
+				.append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+			var endereco_y= 30;
+
+			var nome= canvas.append("text")
+				.attr("x", 330)
+				.attr("y", endereco_y- 5)
+				.attr("font-size", "16px")
+				.attr("font-weight", "bold")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/5545082740387699"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Evandro S. Ortigossa (6793135)");
+
+			var u_grad= canvas.append("text")
+				.attr("x", 280)
+				.attr("y", endereco_y+ 20)
+				.attr("font-size", "16px")
+				.text("Ciências de Computação (B.Sc.) - ICMC-USP");
+
+			var grad= canvas.append("text")
+				.attr("x", 115)
+				.attr("y", endereco_y+ 40)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://www.icmc.usp.br/Portal/conteudo/243/13/ciencias-de-computacao-e-matematica-computacional"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("ICMC-USP PÓS")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Aluno de M.Sc. em Ciências de Computação e Matemática Computacional - ICMC-USP");
+
+			var area= canvas.append("text")
+				.attr("x", 183)
+				.attr("y", endereco_y+ 60)
+				.attr("font-size", "16px")
+				.text("Atuação: Processamento de Imagens Digitais e Visualização de Dados");
+
+			var orientador= canvas.append("text")
+				.attr("x", 295)
+				.attr("y", endereco_y+ 80)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/3794241680729178"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 5) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Orientação: Prof. Dr. Luis Gustavo Nonato");
+		};
+
+		function load_b_info() {
+
+			var size= document.getElementById("info").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#info")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var endereco_y= 40;
+
+			var endereco= canvas.append("text")
+				.attr("x", 55)
+				.attr("y", endereco_y)
+				.attr("font-size", "16px")
+				.text("Universidade de São Paulo, Instituto de Ciências Matemáticas e de Computação");
+
+			var endereco2= canvas.append("text")
+				.attr("x", 95)
+				.attr("y", endereco_y+ 20)
+				.attr("font-size", "16px")
+				.text("Av. Trabalhador São-carlense, 400, 13560-970, São Carlos-SP, Brasil");
+
+			var site= canvas.append("text")
+				.attr("x", 210)
+				.attr("y", 110)
+				.attr("font-size", "12px")
+				.text("Este site é melhor visualizado em 1920 x 1080.");
+		};
+
+	</script>
+
+</body>
+</html>

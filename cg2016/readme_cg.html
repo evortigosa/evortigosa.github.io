@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Evandro Scudeleti Ortigossa, 6793135</title>
+
+	<link href="nv.d3.css" rel="stylesheet" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="nv.d3.js"></script>
+
+	<style>
+
+		body {
+			font-family: sans-serif;
+			font-color: black;
+		}
+
+		/* Tooltip */
+		div.tooltip {
+			width: 80px;
+			padding: 7px;
+			font: 10px sans-serif;
+			font-weight: bold;
+			text-align: center;
+			color: #fff;
+			position: absolute;
+			background: rgba(0,0,0,0.7);
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+  	</style>
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1675px;height:880px">
+			<div style="width:100%;height:50px">
+				<div id="title" class="TopPage" style="float:left;width:100%;height:50px"></div>
+			</div>
+			<div id="line1" class="Line" style="background:black;width:100%;height:2px">
+			<div style="overflow-y:hidden;overflow-x:hidden;width:100%;height:700px">
+				<div id="trabalho" class="Middle" style="width:100%;height:600px"></div>
+				<div id="links" class="Middle" style="width:100%;height:100px"></div>
+			</div>
+			<div id="line2" class="Line" style="background:black;width:99%;height:2px">
+			<div style="width:100%;height:100px">
+				<div id="info_eu" class="Bottom" style="float:left;width:50%;height:130px"></div>
+				<div id="info" class="Bottom" style="float:left;width:50%;height:130px"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+
+		function init() {
+
+			load_title();
+			load_links();
+			load_a_info();
+			load_b_info();
+		};
+
+		init();
+
+
+		document.getElementById("trabalho").innerHTML += "<br>Para este trabalho foram realizadas as seguintes tarefas: <br><br> - Traçado de segmentos de retas utilizando o algoritmo incremental do ponto-médio. Neste caso, os pontos inicial e final dos segmentos são definidos nos boxes na parte superior da tela, (X0, Y0) e (X1, Y1) respectivamente. Existe uma janela de recorte, retângulo em azul, onde os segmentos serão cortados utilizando o algoritmo de Cohen-Sutherland. Para traçar o segmento, defina os pontos inicial e final e clique no botão Desenhar. Para aplicar o algoritmo de Cohen-Sutherland, clique no botão Clipping. Valores positivos e negativos são tratados. Por simplicidade, todos os valores, iniciais e finais, devem ser preenchidos.<br>A janela de recorte tem dimensões de 900 x 500 pontos, sendo que suas coordenadas iniciais (canto superior esquerdo) estão em 350 x 100. Deve-se considerar que pontos mais abaixo e a direita têm coordenadas crescentes.<br><br> - Transformações 2D. Neste caso serão abordadas algumas técnicas 2D, como a rotação e a translação de um objeto. Para rotacionar o objeto em torno do seu eixo, basta inserir o valor numérico do ângulo de rotação desejado no box Rotacionar em clicar no botão Rotacionar. Serão considerados valores positivos e negativos. Para transladar o objeto, basta inserir os novos valores de coordenadas X e Y nos respectivos boxes e clicar no botão Transladar. Para centralizar o objeto de volta à posição inicial, clicar no botão Centralizar<br><br>Em resumo, várias técnicas vistas em aula foram desenvolvidas aqui, entre elas o traçado de segmentos de retas (quaisquer inclinações), clipping e algumas transformações 2D, como rotação e translação.<br><br><br>Ambos os desenvolvimentos foram programados em JavaScript, com utilização da biblioteca gráfica D3.js, logo, para acessar os códigos-fonte, basta teclar Ctrl+U.<br>D3.js oferece métodos para rendering das mais variadas formas geométricas em SVG, com alto nível de desenvolvimento, porém aqui foram seguidos os conceitos vistos em aula.<br>Não é necessário qualquer compilação ou instalação adicional, por ser JavaScript, teoricamente rodará em todos os browsers compatíveis.<br><br>Todo o trabalho, incluindo esta página, foi dimensionado para monitores com 1920 x 1080 pontos de resolução (FullHD), portanto para telas com menos resolução, basta teclar Ctrl- para ajustar o zoom out, ou em telas de maior resolução, Ctrl+ para o zoom in.<br><br><br>Dúvidas e demais considerações, por favor, entrar em contato comigo pelo email evortigosa@gmail.com<br><br>Boas férias e até a próxima disciplina!!!";
+
+
+		function load_title() {
+			var size= document.getElementById("title").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 50;
+
+			var canvas= d3.select("#title")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var trab= canvas.append("text")
+				.attr("x", 0)
+				.attr("y", 25)
+				.attr("font-size", "24px")
+				.attr("font-weight", "bold")
+				.text("Trabalho de SCC5799 - Computação Gráfica - README");
+		};
+
+		function load_links() {
+			var size= document.getElementById("links").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 100;
+
+			var canvas= d3.select("#links")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var link1= canvas.append("text")
+				.attr("x", 10)
+				.attr("y", 15)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.on("click", function() { window.open("/index_rc.html"); })
+				.attr("cursor", "pointer")
+				.text("Clique aqui para acessar a página de traçado de retas e clipping");
+
+			var link2= canvas.append("text")
+				.attr("x", 10)
+				.attr("y", 50)
+				.attr("font-size", "18px")
+				.attr("font-weight", "bold")
+				.on("click", function() { window.open("/index_pp.html"); })
+				.attr("cursor", "pointer")
+				.text("Clique aqui para acessar a página de transformações 2D");
+		};
+
+		function load_a_info() {
+
+			var size= document.getElementById("info_eu").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#info_eu")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var tip= d3.select("#info_eu")
+				.append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+			var endereco_y= 30;
+
+			var nome= canvas.append("text")
+				.attr("x", 330)
+				.attr("y", endereco_y- 5)
+				.attr("font-size", "16px")
+				.attr("font-weight", "bold")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/5545082740387699"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Evandro S. Ortigossa (6793135)");
+
+			var u_grad= canvas.append("text")
+				.attr("x", 280)
+				.attr("y", endereco_y+ 20)
+				.attr("font-size", "16px")
+				.text("Ciências de Computação (B.Sc.) - ICMC-USP");
+
+			var grad= canvas.append("text")
+				.attr("x", 115)
+				.attr("y", endereco_y+ 40)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://www.icmc.usp.br/Portal/conteudo/243/13/ciencias-de-computacao-e-matematica-computacional"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("ICMC-USP PÓS")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Aluno de M.Sc. em Ciências de Computação e Matemática Computacional - ICMC-USP");
+
+			var area= canvas.append("text")
+				.attr("x", 183)
+				.attr("y", endereco_y+ 60)
+				.attr("font-size", "16px")
+				.text("Atuação: Processamento de Imagens Digitais e Visualização de Dados");
+
+			var orientador= canvas.append("text")
+				.attr("x", 295)
+				.attr("y", endereco_y+ 80)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/3794241680729178"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 5) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Orientação: Prof. Dr. Luis Gustavo Nonato");
+		};
+
+		function load_b_info() {
+
+			var size= document.getElementById("info").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#info")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var endereco_y= 40;
+
+			var endereco= canvas.append("text")
+				.attr("x", 55)
+				.attr("y", endereco_y)
+				.attr("font-size", "16px")
+				.text("Universidade de São Paulo, Instituto de Ciências Matemáticas e de Computação");
+
+			var endereco2= canvas.append("text")
+				.attr("x", 95)
+				.attr("y", endereco_y+ 20)
+				.attr("font-size", "16px")
+				.text("Av. Trabalhador São-carlense, 400, 13560-970, São Carlos-SP, Brasil");
+
+			var site= canvas.append("text")
+				.attr("x", 210)
+				.attr("y", 110)
+				.attr("font-size", "12px")
+				.text("Este site é melhor visualizado em 1920 x 1080.");
+		};
+
+	</script>
+
+</body>
+</html>

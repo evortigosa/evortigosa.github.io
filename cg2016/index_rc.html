@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Evandro Scudeleti Ortigossa, 6793135</title>
+
+	<link href="nv.d3.css" rel="stylesheet" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="nv.d3.js"></script>
+
+	<style>
+
+		body {
+			font-family: sans-serif;
+			font-color: black;
+		}
+
+		/* Tooltip */
+		div.tooltip {
+			width: 80px;
+			padding: 7px;
+			font: 10px sans-serif;
+			font-weight: bold;
+			text-align: center;
+			color: #fff;
+			position: absolute;
+			background: rgba(0,0,0,0.7);
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+  	</style>
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1675px;height:880px">
+			<div style="width:100%;height:50px">
+				<div id="input" class="TopPage" style="float:left;width:50%;height:50px">
+					<div id="space" class="TopPage" style="float:left;width:100%;height:10px"></div>
+					  X0: <input type="text" id="x_0" size="10">
+					  Y0: <input type="text" id="y_0" size="10">
+					  X1: <input type="text" id="x_1" size="10">
+					  Y2: <input type="text" id="y_1" size="10">
+					  <button onclick="desenhar()">Desenhar</button>
+					  <button onclick="clipping()">Clipping</button>
+				</div>
+				<div id="title" class="TopPage" style="float:left;width:50%;height:50px"></div>
+			</div>
+			<div id="line1" class="Line" style="background:black;width:100%;height:2px">
+			<div style="overflow-y:hidden;overflow-x:hidden;width:100%;height:700px">
+				<div id="trabalho" class="Middle" style="width:100%;height:700px"></div>
+			</div>
+			<div id="line2" class="Line" style="background:black;width:99%;height:2px">
+			<div style="width:100%;height:100px">
+				<div id="info_eu" class="Bottom" style="float:left;width:50%;height:130px"></div>
+				<div id="info" class="Bottom" style="float:left;width:50%;height:130px"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+
+		var xmin= 0;
+		var xmax= 0;
+		var ymin= 0;
+		var ymax= 0;
+
+		var x0= 0;
+		var y0= 0;
+		var x1= 0;
+		var y1= 0;
+
+		var margin= {top: 1, right: 1, bottom: 1, left: 1}
+
+		var size_b= document.getElementById("trabalho").clientWidth;
+
+		var width_b= size_b- margin.left- margin.right;		// Dimensoes internas do gafico
+		var height_b= 700- margin.top- margin.bottom;
+
+		var svg_canvas;
+
+		function init() {
+
+			box();
+			load_title();
+			load_a_info();
+			load_b_info();
+		};
+
+		init();
+
+		function get_coords() {
+
+			x0= parseInt(document.getElementById("x_0").value);
+			y0= parseInt(document.getElementById("y_0").value);
+			x1= parseInt(document.getElementById("x_1").value);
+			y1= parseInt(document.getElementById("y_1").value);
+
+			if (x1< x0) {
+				var aux= x1;
+
+				x1= x0;
+				x0= aux;
+
+				aux= y1;
+
+				y1= y0;
+				y0= aux;
+			}
+		};
+
+		function desenhar() {
+
+			box();			
+
+			get_coords();
+
+			draw_line();
+		};
+
+		function draw_line() {
+
+			var dx= Math.abs(x1- x0);
+			var dy= Math.abs(y1- y0);
+
+			if ((dy/ dx)<= 1) pm_incremental_a();	/* Ate 45 graus */
+			else pm_incremental_b();	/* 45-90 graus */
+		};
+
+		function pm_incremental_a() { /* Desenha ate 45 graus SE ou NE */
+
+			var dx= Math.abs(x1- x0);
+			var dy= Math.abs(y1- y0);
+
+			var d= (2* dy)- dx;
+			var incE= (2* dy);
+			var incSNE= 2* (dy- dx);
+
+			var x= x0;
+			var y= y0;
+
+			write_pixel(x, y);
+
+			while(x< x1) {
+
+				if (y0< y1) {		/* SE */
+					if (d<= 0) {
+						d= d+ incE;
+						x++;
+					}
+					else {
+						d= d+ incSNE;
+						x++;
+						y++;
+					}
+				}
+				else {				/* NE */
+					if (d<= 0) {
+						d= d+ incE;
+						x++;
+					}
+					else {
+						d= d+ incSNE;
+						x++;
+						y--;
+					}
+				}
+
+				write_pixel(x, y);
+			}
+		};
+
+		function pm_incremental_b() { /* Desenha 45-90 graus S ou N */
+
+			var dx= Math.abs(x1- x0);
+			var dy= Math.abs(y1- y0);
+
+			var d= (2* dx)- dy;
+			var incS= (2* dx);
+			var incSE= 2* (dx- dy);
+
+			var x= x0;
+			var y= y0;
+
+			var aux0= y0;
+			var aux1= y1;
+
+			if (y0> y1) {
+				aux0= y1;
+				aux1= y0;				
+			}
+
+			write_pixel(x, y);
+
+			while(aux0< aux1) {
+				if (y0< y1) {			/* S */
+					if (d<= 0) {
+						d= d+ incS;
+						y++;
+					}
+					else {
+						d= d+ incSE;
+						x++;
+						y++;
+					}
+				}
+				else {					/* N */
+					if (d<= 0) {
+						d= d+ incS;
+						y--;
+					}
+					else {
+						d= d+ incSE;
+						x++;
+						y--;
+					}
+				}
+
+				aux0++;
+
+				write_pixel(x, y);
+			}
+		};
+
+		function write_pixel(p1, p2) {
+
+			var line_dot= svg_canvas.append("rect")
+				.attr("x", p1)
+				.attr("y", p2)
+				.attr("width", 4)
+				.attr("height", 4)
+				.attr("fill", "darkred");
+		};
+
+		function clipping() {
+
+			box();
+
+			get_coords();
+
+			cohen_sutherland();
+		};
+
+		function trivial_reject() {
+
+			if ((x0< xmin) && (x1< xmin)) return true; /*  Rejeita trivial - reta a esquerda */
+			else if ((x0> xmax) && (x1> xmax)) return true; /*  Rejeita trivial - reta a direita */
+			else if ((y0< ymin) && (y1< ymin)) return true; /*  Rejeita trivial - reta a cima */
+			else if ((y0> ymax) && (y1> ymax)) return true; /*  Rejeita trivial - reta a baixo */
+
+			return false;
+		};
+
+		function trivial_accept() {
+
+			if ((x0>= xmin) && (y0>= ymin) && (x0<= xmax) && (y0<= ymax) &&
+				(x1>= xmin) && (y1>= ymin) && (x1<= xmax) && (y1<= ymax)) {
+				return true;	/* Aceita trivial */
+			}
+
+			return false;
+		};
+
+		function cohen_sutherland() {
+
+			while((trivial_accept()== false) && (trivial_reject()== false)) {
+
+				/* Encontrando os pontos de interseccao */
+				if ((y0< ymin) || (y1< ymin)) {	/* Um dos pontos esta acima da janela de corte */
+					if (y0< ymin) {
+						x0= x0 + ((x1 - x0) * (ymin - y0) / (y1 - y0));
+						y0= ymin;
+					}
+					else {
+						x1= x0 + ((x1 - x0) * (ymin - y0) / (y1 - y0));
+						y1= ymin;
+					}
+				}
+				else if ((y0> ymax) || (y1> ymax)) {	/* Um dos pontos esta abaixo da janela de corte */
+					if (y0> ymax) {
+						x0= x0 + ((x1 - x0) * (ymax - y0) / (y1 - y0));
+						y0= ymax;
+					}
+					else {
+						x1= x0 + ((x1 - x0) * (ymax - y0) / (y1 - y0));
+						y1= ymax;
+					}
+				}
+				else if ((x0< xmin) || (x1< xmin)) {	/* Um dos pontos esta a esquerda da janela de corte */
+					if (x0< xmin) {
+						y0= y0 + ((y1 - y0) * (xmin - x0) / (x1 - x0));
+						x0= xmin;
+					}
+					else {
+						y1= y0 + ((y1 - y0) * (xmin - x0) / (x1 - x0));
+						x1= xmin;
+					}
+				}
+				else if ((x0> xmax) || (x1> xmax)) {	/* Um dos pntos esta a direita da janela de corte */
+					if (x0> xmax) {
+						y0= y0 + ((y1 - y0) * (xmax - x0) / (x1 - x0));
+						x0= xmax;
+					}
+					else {
+						y1= y0 + ((y1 - y0) * (xmax - x0) / (x1 - x0));
+						x1= xmax
+					}
+				}
+			}
+
+			if (trivial_accept()== true) draw_line();
+		};
+
+		function box() {
+
+			var rect_pos_x= 350;
+			var rect_pos_y= 100;
+
+			var rect_size_w= 900;
+			var rect_size_h= 500;
+
+			document.getElementById("trabalho").innerHTML= "";
+
+			svg_canvas= d3.select("#trabalho")
+				.append("svg")
+				.attr("width", width_b+ margin.left+ margin.right)
+				.attr("height", height_b+ margin.top+ margin.bottom)
+				.append("g")
+					.attr("transform", "translate("+ margin.left +", "+ margin.top +")");
+
+			var rect_out= svg_canvas.append("rect")
+				.attr("x", rect_pos_x- 4)
+				.attr("y", rect_pos_y- 4)
+				.attr("width", rect_size_w+ 8)
+				.attr("height", rect_size_h+ 8)
+				.attr("fill", "darkblue");
+
+			var rect_in= svg_canvas.append("rect")
+				.attr("x", rect_pos_x)
+				.attr("y", rect_pos_y)
+				.attr("width", rect_size_w)
+				.attr("height", rect_size_h)
+				.attr("fill", "white");
+
+			xmin= rect_pos_x;
+			xmax= rect_pos_x+ rect_size_w;
+			ymin= rect_pos_y;
+			ymax= rect_pos_y+ rect_size_h;
+		};
+
+		function load_title() {
+			var size= document.getElementById("title").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 50;
+
+			var canvas= d3.select("#title")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var trab= canvas.append("text")
+				.attr("x", 60)
+				.attr("y", 25)
+				.attr("font-size", "24px")
+				.attr("font-weight", "bold")
+				.text("Trabalho de SCC5799 - Computação Gráfica");
+
+			var readme= canvas.append("text")
+				.attr("x", 600)
+				.attr("y", 23)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("/readme_cg.html"); })
+				.text("(README)");
+		};
+
+		function load_a_info() {
+
+			var size= document.getElementById("info_eu").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#info_eu")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var tip= d3.select("#info_eu")
+				.append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+			var endereco_y= 30;
+
+			var nome= canvas.append("text")
+				.attr("x", 330)
+				.attr("y", endereco_y- 5)
+				.attr("font-size", "16px")
+				.attr("font-weight", "bold")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/5545082740387699"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Evandro S. Ortigossa (6793135)");
+
+			var u_grad= canvas.append("text")
+				.attr("x", 280)
+				.attr("y", endereco_y+ 20)
+				.attr("font-size", "16px")
+				.text("Ciências de Computação (B.Sc.) - ICMC-USP");
+
+			var grad= canvas.append("text")
+				.attr("x", 115)
+				.attr("y", endereco_y+ 40)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://www.icmc.usp.br/Portal/conteudo/243/13/ciencias-de-computacao-e-matematica-computacional"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("ICMC-USP PÓS")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 8) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Aluno de M.Sc. em Ciências de Computação e Matemática Computacional - ICMC-USP");
+
+			var area= canvas.append("text")
+				.attr("x", 183)
+				.attr("y", endereco_y+ 60)
+				.attr("font-size", "16px")
+				.text("Atuação: Processamento de Imagens Digitais e Visualização de Dados");
+
+			var orientador= canvas.append("text")
+				.attr("x", 295)
+				.attr("y", endereco_y+ 80)
+				.attr("font-size", "16px")
+				.attr("cursor", "pointer")
+				.on("click", function() { window.open("http://lattes.cnpq.br/3794241680729178"); })
+				.on("mouseover", function(d) {
+					tip.transition()
+						.duration(200)
+						.style("opacity", 1);
+
+					tip.html("Lattes")
+						.style("left", (d3.event.pageX+ 10) + "px")
+						.style("top", (d3.event.pageY+ 5) + "px");
+				})
+				.on("mouseout", function(d) {
+					tip.transition()
+						.duration(500)
+						.style("opacity", 0);
+				})
+				.text("Orientação: Prof. Dr. Luis Gustavo Nonato");
+		};
+
+		function load_b_info() {
+
+			var size= document.getElementById("info").clientWidth;
+
+			var width= size;		// Dimensoes internas do gafico
+			var height= 130;
+
+			var canvas= d3.select("#info")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+			var endereco_y= 40;
+
+			var endereco= canvas.append("text")
+				.attr("x", 55)
+				.attr("y", endereco_y)
+				.attr("font-size", "16px")
+				.text("Universidade de São Paulo, Instituto de Ciências Matemáticas e de Computação");
+
+			var endereco2= canvas.append("text")
+				.attr("x", 95)
+				.attr("y", endereco_y+ 20)
+				.attr("font-size", "16px")
+				.text("Av. Trabalhador São-carlense, 400, 13560-970, São Carlos-SP, Brasil");
+
+			var site= canvas.append("text")
+				.attr("x", 210)
+				.attr("y", 110)
+				.attr("font-size", "12px")
+				.text("Este site é melhor visualizado em 1920 x 1080.");
+		};
+
+	</script>
+
+</body>
+</html>
