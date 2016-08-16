@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Pollution Data Visualization</title>
+
+	<link href="nv.d3.css" rel="stylesheet" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="nv.d3.js"></script>
+
+	<style>
+
+		body {
+			font-family: sans-serif;
+			font-color: black;
+		}
+
+		.axis path, .axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+
+		.dot {
+			stroke: #000;
+		}
+
+  	</style>
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1600px;height:880px">
+			<div id="view1" class="Graph" style="width:100%;height:880px"></div>
+		</div>
+	</div>
+
+	<script>
+
+		function init() {
+
+			d3.tsv("data.tsv", function(error, data) {
+				if (error) throw error;
+
+				data.forEach(function(d) {
+					d.sepalLength= +d.sepalLength;
+					d.sepalWidth= +d.sepalWidth;
+				});
+
+				drawPlot(data);
+			});
+		};
+
+		init();
+
+
+		function color_group(index_color) {
+			var color_range= ["#1b9e77","#d95f02","#7570b3","#66a61e","#e7298a","#e6ab02","#a6761d","#666666","#377eb8","#ff7f00"];
+			
+			return color_range[index_color];
+		};
+
+		function drawPlot(data) {
+
+			var margin= {top: 20, right: 20, bottom: 30, left: 40};
+
+			var size= document.getElementById("view1").clientWidth;
+
+			var width= size- margin.left- margin.right;
+			var height= 800- margin.top- margin.bottom;
+
+			var x_scale= d3.scale.linear()
+				.range([0, width]);
+
+			var y_scale= d3.scale.linear()
+				.range([height, 0]);
+
+			var color= d3.scale.category10();
+
+			var xAxis= d3.svg.axis()
+				.scale(x_scale)
+				.orient("bottom");
+
+			var yAxis= d3.svg.axis()
+				.scale(y_scale)
+				.orient("left");
+
+			var canvas= d3.select("#view1")
+				.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+			x_scale.domain(d3.extent(data, function(d) { return d.sepalWidth; })).nice();
+			y_scale.domain(d3.extent(data, function(d) { return d.sepalLength; })).nice();
+
+
+			canvas.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis)
+				.append("text")
+					.attr("class", "label")
+					.attr("x", width)
+					.attr("y", -6)
+					.style("text-anchor", "end")
+					.text("Sepal Width (cm)");
+
+			canvas.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+				.append("text")
+					.attr("class", "label")
+					.attr("transform", "rotate(-90)")
+					.attr("y", 6)
+					.attr("dy", ".71em")
+					.style("text-anchor", "end")
+					.text("Sepal Length (cm)")
+
+			canvas.selectAll(".dot")
+				.data(data)
+				.enter().append("circle")
+					.attr("class", "dot")
+					.attr("r", 3.5)
+					.attr("cx", function(d) { return x_scale(d.sepalWidth); })
+					.attr("cy", function(d) { return y_scale(d.sepalLength); })
+					.style("fill", function(d) { return color(d.species); });
+
+			var legend= canvas.selectAll(".legend")
+				.data(color.domain())
+				.enter().append("g")
+				.attr("class", "legend")
+				.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+			legend.append("rect")
+				.attr("x", width- 18)
+				.attr("width", 18)
+				.attr("height", 18)
+				.style("fill", color);
+
+			legend.append("text")
+				.attr("x", width- 24)
+				.attr("y", 9)
+				.attr("dy", ".35em")
+				.style("text-anchor", "end")
+				.text(function(d) { return d; });
+
+		};
+
+	</script>
+
+</body>
+</html>
