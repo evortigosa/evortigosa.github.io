@@ -38,6 +38,10 @@
 			stroke: #000;
 		}
 
+		.dot:hover {
+			stroke-width: 3px;
+		}
+
 		.grid .tick {
 			stroke: lightgrey;
 			opacity: 0.5;
@@ -146,6 +150,10 @@
 				.range([height, 0])
 				.domain(d3.extent(data, function(d) { return d.concentracao; })).nice();
 
+			var r_scale= d3.scale.linear()
+				.range([1, 11])
+				.domain(d3.extent(data, function(d) { return d.concentracao; }));
+
 			var color= d3.scale.category10();
 
 			document.getElementById("view1").innerHTML= "";
@@ -194,7 +202,7 @@
 				.data(data)
 				.enter().append("circle")
 					.attr("class", "dot")
-					.attr("r", 4)
+					.attr("r", function(d) { return r_scale(d.concentracao); })
 					.attr("cx", function(d) { return x_scale(d.date); })
 					.attr("cy", function(d) { return y_scale(d.concentracao); })
 					.style("fill", function(d) { return color_group(1); })
