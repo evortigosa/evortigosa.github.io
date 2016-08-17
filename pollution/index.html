@@ -26,6 +26,31 @@
 			stroke: #000;
 		}
 
+		.grid .tick {
+			stroke: lightgrey;
+			opacity: 0.5;
+			shape-rendering: crispEdges;
+		}
+
+		.grid path {
+			stroke-width: 0.5px;
+		}
+
+		/* Tooltip */
+		div.tooltip {
+			width: 100px;
+			padding: 10px;
+			font: 10px sans-serif;
+			font-weight: bold;
+			text-align: center;
+			color: #fff;
+			position: absolute;
+			background: rgba(0,0,0,0.7);
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
   	</style>
 
 </head>
@@ -83,6 +108,70 @@
 
 			var color= d3.scale.category10();
 
+			var canvas= d3.select("#view1")
+				.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+			function make_x_axis() {		// function for the y grid lines
+				return d3.svg.axis()
+					.scale(x_scale)
+					.orient("bottom")
+			};
+
+			canvas.append("g")
+				.attr("class", "grid")
+				.attr("transform", "translate(0," + height + ")")
+				.call(make_x_axis()
+				.tickSize(-height, 0, 0)
+				.tickValues(x_scale.domain().filter(function(d, i) { return !(i % 28); }))
+				.tickFormat(""));
+
+			function make_y_axis() {		// function for the y grid lines
+				return d3.svg.axis()
+						.scale(y_scale)
+						.orient("left");
+			};
+
+			canvas.append("g")				// Draw the y Grid lines
+				.attr("class", "grid")
+				.call(make_y_axis()
+					.tickSize(-width, 0, 0)
+					.tickFormat(""));
+
+
+			var tip= d3.select("#view1")
+				.append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+
+			canvas.selectAll(".dot")
+				.data(data)
+				.enter().append("circle")
+					.attr("class", "dot")
+					.attr("r", 4)
+					.attr("cx", function(d) { return x_scale(d.date); })
+					.attr("cy", function(d) { return y_scale(d.concentracao); })
+					.style("fill", function(d) { return color_group(1); })
+					.on("mouseover", function(d) {
+						tip.transition()
+							.duration(200)
+							.style("opacity", 1);
+
+						tip.html("  Concentração:  " + d.concentracao + " (μg/m³)" + " - Data da amostragem: " + d3.time.format("%d-%b-%Y")(d.date))
+							.style("left", (d3.event.pageX- 58) + "px")
+							.style("top", (d3.event.pageY+ 10) + "px");
+					})
+					.on("mouseout", function(d) {
+						tip.transition()
+							.duration(500)
+							.style("opacity", 0);
+					});
+
 			var xAxis= d3.svg.axis()
 				.scale(x_scale)
 				.tickValues(x_scale.domain().filter(function(d, i) { return !(i % 28); }))
@@ -93,15 +182,7 @@
 				.scale(y_scale)
 				.orient("left");
 
-
-			var canvas= d3.select("#view1")
-				.append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
+			/* Construcao dos eixos */
 			canvas.append("g")
 				.attr("class", "x axis")
 				.attr("transform", "translate(0," + height + ")")
@@ -123,36 +204,7 @@
 					.attr("y", -60)
 					.attr("dy", ".71em")
 					.style("text-anchor", "middle")
-					.text("Concentração (μg/m3)")
-
-			canvas.selectAll(".dot")
-				.data(data)
-				.enter().append("circle")
-					.attr("class", "dot")
-					.attr("r", 4)
-					.attr("cx", function(d) { return x_scale(d.date); })
-					.attr("cy", function(d) { return y_scale(d.concentracao); })
-					.style("fill", function(d) { return color_group(1); });
-
-			var legend= canvas.selectAll(".legend")
-				.data(color.domain())
-				.enter().append("g")
-				.attr("class", "legend")
-				.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-			legend.append("rect")
-				.attr("x", width- 18)
-				.attr("width", 18)
-				.attr("height", 18)
-				.style("fill", color_group(1));
-
-			legend.append("text")
-				.attr("x", width- 24)
-				.attr("y", 9)
-				.attr("dy", ".35em")
-				.style("text-anchor", "end")
-				.text("Concentração");
-
+					.text("Concentração (μg/m³)")
 		};
 
 	</script>
