@@ -50,7 +50,7 @@
 
 		/* Tooltip */
 		div.tooltip {
-			width: 100px;
+			width: 110px;
 			padding: 10px;
 			font: 10px sans-serif;
 			font-weight: bold;
@@ -173,7 +173,7 @@
 							.duration(200)
 							.style("opacity", 1);
 
-						tip.html("  Concentração:  " + d.concentracao + " (μg/m³)" + " - Data da amostragem: " + d3.time.format("%d-%b-%Y")(d.date))
+						tip.html("Concentração:  " + d.concentracao + " (μg/m³)" + "<br>Data da amostragem: " + d3.time.format("%d-%b-%Y")(d.date))
 							.style("left", (d3.event.pageX- 58) + "px")
 							.style("top", (d3.event.pageY+ 10) + "px");
 					})
