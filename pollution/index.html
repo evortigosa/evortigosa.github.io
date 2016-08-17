@@ -103,7 +103,7 @@
 
 		function drawPlot(data) {
 
-			var margin= {top: 20, right: 20, bottom: 30, left: 60};
+			var margin= {top: 20, right: 35, bottom: 30, left: 60};
 
 			var size= document.getElementById("view1").clientWidth;
 
@@ -112,7 +112,7 @@
 
 			var x_scale= d3.time.scale()
 				.range([0, width])		// Escala horizontal - range
-				.domain(d3.extent(data, function(d) { return d.date; }));
+				.domain(d3.extent(data, function(d) { return d.date; })).nice();
 
 			var y_scale= d3.scale.linear()
 				.range([height, 0])
