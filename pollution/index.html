@@ -210,10 +210,11 @@
 						tip.transition()
 							.duration(200)
 							.style("opacity", 1);
-
+					})
+					.on("mousemove", function(d) {
 						tip.html("Concentração:  " + d.concentracao + " (μg/m³)" + "<br>Data da amostragem: " + d3.time.format("%d-%b-%Y")(d.date))
 							.style("left", (d3.event.pageX- 60) + "px")
-							.style("top", (d3.event.pageY+ 10) + "px");
+							.style("top", (d3.event.pageY+ 20) + "px");
 					})
 					.on("mouseout", function(d) {
 						tip.transition()
