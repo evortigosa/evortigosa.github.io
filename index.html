@@ -139,8 +139,9 @@
 				.style("opacity", 0);
 
 			var nome= canvas.append("text")
-				.attr("x", 280)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 30)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "40px")
 				.attr("font-weight", "bold")
 				.attr("cursor", "pointer")
@@ -162,14 +163,16 @@
 				.text("Evandro S. Ortigossa");
 
 			var u_grad= canvas.append("text")
-				.attr("x", 300)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 65)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "18px")
 				.text("Ciências de Computação (B.Sc.) - ICMC-USP");
 
 			var grad= canvas.append("text")
-				.attr("x", 115)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 88)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "18px")
 				.attr("cursor", "pointer")
 				.on("click", function() { window.open("http://www.icmc.usp.br/Portal/conteudo/243/13/ciencias-de-computacao-e-matematica-computacional"); })
@@ -190,14 +193,16 @@
 				.text("Aluno de M.Sc. em Ciências de Computação e Matemática Computacional - ICMC-USP");
 
 			var area= canvas.append("text")
-				.attr("x", 183)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 122)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "18px")
 				.text("Atuação: Processamento de Imagens Digitais e Visualização de Dados");
 
 			var orientador= canvas.append("text")
-				.attr("x", 310)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 145)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "18px")
 				.attr("cursor", "pointer")
 				.on("click", function() { window.open("http://lattes.cnpq.br/3794241680729178"); })
@@ -661,34 +666,39 @@
 					.attr("transform", "translate(0,0)");
 
 			var contato= canvas.append("text")
-				.attr("x", 365)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 32)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "16px")
 				.text("Informações para contato:");
 
 			var endereco_y= 60;
 
 			var endereco= canvas.append("text")
-				.attr("x", 165)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", endereco_y)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "16px")
 				.text("Universidade de São Paulo, Instituto de Ciências Matemáticas e de Computação");
 
 			var endereco2= canvas.append("text")
-				.attr("x", 195)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", endereco_y+ 20)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "16px")
 				.text("Av. Trabalhador São-carlense, 400, 13560-970, São Carlos-SP, Brasil");
 
 			var email= canvas.append("text")
-				.attr("x", 370)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 110)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "16px")
 				.text("email: evortigosa@usp.br");
 
 			var site= canvas.append("text")
-				.attr("x", 337)
+				.attr("x", (size/ 2)- 10)
 				.attr("y", 140)
+				.attr("text-anchor", "middle")
 				.attr("font-size", "12px")
 				.text("Este site é melhor visualizado em 1920 x 1080.");
 		};
