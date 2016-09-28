@@ -225,7 +225,7 @@
 			var width= size;		// Dimensoes internas do gafico
 			var height= 800;
 
-			var x_pos1= 80;
+			var x_pos1= 70;
 			var x_pos2= size/ 2;
 
 			var canvas= d3.select("#middle")
@@ -237,19 +237,19 @@
 
 
 			/* y Colunas da esquerda */
-			var titulo_y= 40;
+			var titulo_y= 35;
 			var lacuna_y= 110;
-			var justificativa_y= 270;
-			var material_y= 395;
-			var avaliacao_y= 590;
-			var interface_y= 725;
-			var conclusao_y= 770;
+			var justificativa_y= 220;
+			var material_y= 385;
+			var avaliacao_y= 585;
+			var interface_y= 715;
+			var conclusao_y= 760;
 
 			/* y Colunas da direita */
 			var tema_y= 60;
 			var obj_y= 150;
-			var resumo_y= 275;
-			var cnpq_y= 630;
+			var resumo_y= 335;
+			var cnpq_y= 635;
 
 
 			/* TITULO DA PESQUISA */
@@ -278,13 +278,13 @@
 				.attr("x", x_pos2)
 				.attr("y", tema_y+ 20)
 				.attr("font-size", "16px")
-				.text("Estudo e desenvolvimento de metodologias compreensivas de visualização sobre grandes bases de");
+				.text("Estudo e desenvolvimento de metodologias compreensivas de visualização sobre grandes bases de dados");
 
 			var tema2= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", tema_y+ 20 + 18)
 				.attr("font-size", "16px")
-				.text("dados multidimensionais agregados hierarquicamente e variáveis no tempo.");
+				.text("multidimensionais agregados hierarquicamente e variáveis no tempo.");
 
 			/* LACUNA/PROBLEMA */
 			var lacuna= canvas.append("text")
@@ -298,37 +298,19 @@
 				.attr("x", x_pos1)
 				.attr("y", lacuna_y+ 20)
 				.attr("font-size", "16px")
-				.text("Em muitos cenários, dados temporais carregam uma estrutura agregada hierarquicamente. Por ");
+				.text("Em muitos cenários, dados temporais carregam uma estrutura agregada hierarquicamente. Um ");
 
 			var lacuna2= canvas.append("text")
 				.attr("x", x_pos1)
 				.attr("y", lacuna_y+ 20+ 1* 18)
 				.attr("font-size", "16px")
-				.text("exemplo: em muitos países, a quantidade diária de recursos que são gastos pelo governo federal ");
+				.text("problema neste contexto é que os níveis inferiores da hierarquia podem conter centenas de");
 
 			var lacuna3= canvas.append("text")
 				.attr("x", x_pos1)
 				.attr("y", lacuna_y+ 20+ 2* 18)
 				.attr("font-size", "16px")
-				.text("é a soma das despesas de seus ministérios nos dias correspondentes, que por sua vez, ");
-
-			var lacuna4= canvas.append("text")
-				.attr("x", x_pos1)
-				.attr("y", lacuna_y+ 20+ 3* 18)
-				.attr("font-size", "16px")
-				.text("compreende as despesas das suas respectivas secretarias subordinadas, e assim por diante. ");
-
-			var lacuna5= canvas.append("text")
-				.attr("x", x_pos1)
-				.attr("y", lacuna_y+ 20+ 4* 18)
-				.attr("font-size", "16px")
-				.text("Um problema neste contexto é que os níveis inferiores da hierarquia podem conter centenas de ");
-
-			var lacuna5= canvas.append("text")
-				.attr("x", x_pos1)
-				.attr("y", lacuna_y+ 20+ 5* 18)
-				.attr("font-size", "16px")
-				.text("milhares de instâncias temporais, fazendo de sua análise uma tarefa massiva.");
+				.text("milhares, ou mesmo milhões de instâncias temporais, sendo sua análise uma tarefa exaustiva.");
 
 			/* HIPOTESES E OBJETIVOS */
 			var objetivos= canvas.append("text")
@@ -342,43 +324,43 @@
 				.attr("x", x_pos2)
 				.attr("y", obj_y+ 20)
 				.attr("font-size", "16px")
-				.text("Visualização de dados é a representação de informações no formato gráfico, simplificando sua");
+				.text("Visualização de dados é a representação de informações no formato gráfico, simplificando sua interpretação");
 
 			var objetivos2= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", obj_y+ 20+ 1* 18)
 				.attr("font-size", "16px")
-				.text("interpretação e ajudando a encontrar padrões. Sendo assim, este trabalho tem por");
+				.text("e ajudando a encontrar padrões. Sendo assim, este trabalho tem por objetivo desenvolver e validar uma");
 
 			var objetivos3= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", obj_y+ 20+ 2* 18)
 				.attr("font-size", "16px")
-				.text("objetivo desenvolver e validar uma metodologia de visualização para analisar de séries temporais multidimensionais");
+				.text("metodologia de visualização para analisar de séries temporais multidimensionais hierarquicamente agregadas, ");
 
 			var objetivos4= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", obj_y+ 20+ 3* 18)
 				.attr("font-size", "16px")
-				.text("hierarquicamente agregadas, revelando tendências e discrepâncias dos dados. Para isto,");
+				.text("revelando tendências e discrepâncias dos dados. Para isto, serão aplicadas métricas nos dados, detectando ");
 
 			var objetivos5= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", obj_y+ 20+ 4* 18)
 				.attr("font-size", "16px")
-				.text("serão aplicadas métricas nos dados, detectando padrões ao longo do tempo, em cada intervalo definido.");
+				.text("dados, detectando padrões ao longo do tempo, em cada intervalo definido. A partir destes resultados, os ");
 
 			var objetivos6= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", obj_y+ 20+ 5* 18)
 				.attr("font-size", "16px")
-				.text("A partir destes resultados, os dados serão exibidos graficamente, evidenciando os padrões de interesse");
+				.text("dados serão exibidos graficamente, evidenciando os padrões de interesse encontrados, de forma a facilitar ");
 
 			var objetivos7= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", obj_y+ 20+ 6* 18)
 				.attr("font-size", "16px")
-				.text("encontrados, de forma a facilitar sua exploração, mantendo seu contexto hierárquico.");
+				.text("sua exploração, mantendo seu contexto hierárquico.");
 
 			/* JUSTIFICATIVA/MOTIVACAO */
 			var justificativa= canvas.append("text")
@@ -392,25 +374,37 @@
 				.attr("x", x_pos1)
 				.attr("y", justificativa_y+ 20)
 				.attr("font-size", "16px")
-				.text("Dados variáveis no tempo agregados hierarquicamente têm uma estrutura intrínseca, na qual ");
+				.text("Dados variáveis no tempo agregados hierarquicamente apresentam uma estrutura, na qual cada");
 
 			var justificativa2= canvas.append("text")
 				.attr("x", x_pos1)
 				.attr("y", justificativa_y+ 20+ 1* 18)
 				.attr("font-size", "16px")
-				.text("cada nó na hierarquia representa uma série temporal dada pela informação temporal agregada");
+				.text("ramo da hierarquia representa uma série temporal contendo a informação temporal agregada dos");
 
 			var justificativa3= canvas.append("text")
 				.attr("x", x_pos1)
 				.attr("y", justificativa_y+ 20+ 2* 18)
 				.attr("font-size", "16px")
-				.text("dos níveis inferiores da hierarquia. Além disso, na maioria dos casos, a hierarquia compreende");
+				.text("seus níveis inferiores. Por exemplo: o consumo de energia em um país é dado, num certo momento, ");
 
 			var justificativa4= canvas.append("text")
 				.attr("x", x_pos1)
 				.attr("y", justificativa_y+ 20+ 3* 18)
 				.attr("font-size", "16px")
-				.text(" apenas alguns níveis, contendo milhares de séries temporais no patamar inferior.");
+				.text("pela soma da energia consumida em seus estados que, por sua vez, compreende a soma da energia");
+
+			var justificativa5= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", justificativa_y+ 20+ 4* 18)
+				.attr("font-size", "16px")
+				.text("gasta em cada cidade e assim por diante. Até o momento, poucas ferramentas foram desenvoldas");
+
+			var justificativa6= canvas.append("text")
+				.attr("x", x_pos1)
+				.attr("y", justificativa_y+ 20+ 5* 18)
+				.attr("font-size", "16px")
+				.text("especificamente para trabalhar com este tipo de dados e, este trabalho visa preencher esta lacuna.");
 
 			/* RESUMO ESTRUTURADO */
 			var resumo= canvas.append("text")
@@ -424,79 +418,73 @@
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20)
 				.attr("font-size", "16px")
-				.text("Em muitos cenários, dados temporais carregam uma estrutura agregada e hierárquica intrínseca. Por ");
+				.text("Em muitos cenários, dados temporais carregam uma estrutura agregada e hierárquica intrínseca. Por exemplo, ");
 
 			var resumo2= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 1* 18)
 				.attr("font-size", "16px")
-				.text("exemplo, o consumo de energia de um país, em um dado intervalo de tempo, é a soma da energia ");
+				.text("em muitos países, a quantidade diária de recursos que são gastos pelo governo federal é a soma das despesas");
 
 			var resumo3= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 2* 18)
 				.attr("font-size", "16px")
-				.text("consumida pelos seus estados que, por sua vez, compreende a soma da energia gasta em cada ");
+				.text("de seus ministérios nos dias correspondentes, que por sua vez, compreende as despesas das suas respectivas ");
 
 			var resumo4= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 3* 18)
 				.attr("font-size", "16px")
-				.text("cidade e assim por diante. Quando analisando este tipo de dado temporal estruturado hierarquicamente,");
+				.text("secretarias subordinadas, e assim por diante. Quando analisando este tipo de dado temporal estruturado");
 
 			var resumo5= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 4* 18)
 				.attr("font-size", "16px")
-				.text("o analista usualmente começa procurando por padrões e discrepâncias nos níveis superiores da");
+				.text(" hierarquicamente, o analista usualmente começa procurando por padrões e discrepâncias nos níveis superiores ");
 
 			var resumo6= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 5* 18)
 				.attr("font-size", "16px")
-				.text("hierarquia, descendo até os níveis inferiores para encontrar a origem do comportamento observado. ");
+				.text("da hierarquia, descendo até os níveis inferiores para encontrar a origem do comportamento observado. Uma ");
 
 			var resumo7= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 6* 18)
 				.attr("font-size", "16px")
-				.text("Uma questão principal neste contexto é que os níveis inferiores podem conter milhares de instâncias ");
+				.text("questão principal neste contexto é que os níveis inferiores podem conter milhares de instâncias de séries ");
 
 			var resumo8= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 7* 18)
 				.attr("font-size", "16px")
-				.text("de séries temporais, fazendo da análise uma tarefa massante. Este trabalho apresenta uma metodologia ");
+				.text("temporais, fazendo da análise uma tarefa massante. Este trabalho apresenta uma metodologia de visualização ");
 
 			var resumo9= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 8* 18)
 				.attr("font-size", "16px")
-				.text("de visualização para guiar a análise das séries temporais agregadas. O método utiliza o Earth Mover's ");
+				.text("para guiar a análise das séries temporais agregadas. O método utiliza o Earth Mover's Distance (EMD) para");
 
 			var resumo10= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 9* 18)
 				.attr("font-size", "16px")
-				.text("Distance (EMD) para detectar discrepâncias e padrões nas séries temporais nos níveis inferiores da ");
+				.text("detectar discrepâncias e padrões nas séries temporais nos níveis inferiores da hierarquia. As informações a");
 
 			var resumo11= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 10* 18)
 				.attr("font-size", "16px")
-				.text("hierarquia. As informações a cerca das discrepâncias e padrões são propagadas aos patamares ");
+				.text("cerca das discrepâncias e padrões são propagadas aos patamares superiores em que as séries temporais ");
 
 			var resumo12= canvas.append("text")
 				.attr("x", x_pos2)
 				.attr("y", resumo_y+ 20+ 11* 18)
 				.attr("font-size", "16px")
-				.text("superiores em que as séries temporais são representadas, permitindo ao usuário visualizar e rastrear a");
-
-			var resumo13= canvas.append("text")
-				.attr("x", x_pos2)
-				.attr("y", resumo_y+ 20+ 12* 18)
-				.attr("font-size", "16px")
-				.text("origem do fenômeno observado.");
+				.text("são representadas, permitindo ao usuário visualizar e rastrear a origem do fenômeno observado.");
 
 			/* MATERIAIS E METODOS */
 			var material= canvas.append("text")
@@ -522,19 +510,19 @@
 				.attr("x", x_pos1)
 				.attr("y", material_y+ 20+ 2* 18)
 				.attr("font-size", "16px")
-				.text("discrepâncias. Para guiar o usuário na exploração dos dados, será desenvolvida um protótio");
+				.text("discrepâncias. Para guiar o usuário na exploração dos dados, será desenvolvida um protótio de");
 
 			var material4= canvas.append("text")
 				.attr("x", x_pos1)
 				.attr("y", material_y+ 20+ 3* 18)
 				.attr("font-size", "16px")
-				.text("de interface baseado em web, utilizando principalmente JavaScript, CSS, HTML5 e a biblioteca ");
+				.text(" interface baseado em web, utilizando principalmente JavaScript, CSS, HTML5 e a biblioteca de");
 
 			var material5= canvas.append("text")
 				.attr("x", x_pos1)
 				.attr("y", material_y+ 20+ 4* 18)
 				.attr("font-size", "16px")
-				.text("de manipulação gráfica D3.js. Os dados utilizados neste trabalho são os dos gastos diretos do");
+				.text("desenvolvimento gráfico D3.js. Os dados utilizados neste trabalho serão os dos gastos diretos do");
 
 			var material6= canvas.append("text")
 				.attr("x", x_pos1)
