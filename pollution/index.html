@@ -118,7 +118,7 @@
 			});
 
 			r_scale= d3.scale.linear()	/* Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente */
-				.range([1, 12])
+				.range([1, 14])
 				.domain(d3.extent(data, function(d) { return d.concentracao; }));
 		});
 
@@ -160,7 +160,7 @@
 				time_hor= 2;
 			}
 
-			init(d_source, 2);
+			init(d_source, "view2");
 		};
 
 		function init(init_source, view) {
@@ -180,8 +180,10 @@
 		function addLegend() {
 			var size= document.getElementById("legenda").clientWidth;
 
-			var h_shift= size- 350;
+			var h_shift= size- 520;
 			var vertical_pad= 20;
+			var pos_box= 80;
+			var pos_text= 20;
 
 			var canvas= d3.select("#legenda")
 					.append("svg")
@@ -191,7 +193,7 @@
 						.attr("transform", "translate(0,0)");
 
 			var top_label= canvas.append("text")
-				.attr("x", h_shift)
+				.attr("x", h_shift- 20)
 				.attr("y", vertical_pad+ 3)
 				.attr("font-family", "sans-serif")
 				.attr("font-size", "14px")
@@ -200,14 +202,46 @@
 				.text("Período:");
 
 			canvas.append("rect")
-				.attr("x", 80+ h_shift)
+				.attr("x", 1*pos_box+ 0*pos_text+ h_shift)
+				.attr("y", vertical_pad- 10)
+				.attr("width", 16)
+				.attr("height", 16)
+				.attr("fill", color_group(3));
+
+			canvas.append("text")
+				.attr("x",  1*pos_box+ 1*pos_text+ h_shift)
+				.attr("y", vertical_pad+ 3)
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "14px")
+				.attr("font-weight", "bold")
+				.attr("fill", "black")
+				.text("Chuvoso");
+
+			canvas.append("rect")
+				.attr("x", 2*pos_box+ 1*pos_text+ h_shift)
 				.attr("y", vertical_pad- 10)
 				.attr("width", 16)
 				.attr("height", 16)
 				.attr("fill", color_group(1));
 
 			canvas.append("text")
-				.attr("x",  100+ h_shift)
+				.attr("x",  2*pos_box+ 2*pos_text+ h_shift)
+				.attr("y", vertical_pad+ 3)
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "14px")
+				.attr("font-weight", "bold")
+				.attr("fill", "black")
+				.text("Outono");
+
+			canvas.append("rect")
+				.attr("x", 3*pos_box+ 2*pos_text+ h_shift)
+				.attr("y", vertical_pad- 10)
+				.attr("width", 16)
+				.attr("height", 16)
+				.attr("fill", color_group(0));
+
+			canvas.append("text")
+				.attr("x",  3*pos_box+ 3*pos_text+ h_shift)
 				.attr("y", vertical_pad+ 3)
 				.attr("font-family", "sans-serif")
 				.attr("font-size", "14px")
@@ -216,42 +250,39 @@
 				.text("Seco");
 
 			canvas.append("rect")
-				.attr("x", 150+ h_shift)
+				.attr("x", 4*pos_box+ 3*pos_text+ h_shift)
 				.attr("y", vertical_pad- 10)
 				.attr("width", 16)
 				.attr("height", 16)
-				.attr("fill", color_group(8));
+				.attr("fill", color_group(2));
 
 			canvas.append("text")
-				.attr("x",  170+ h_shift)
+				.attr("x",  4*pos_box+ 4*pos_text+ h_shift)
 				.attr("y", vertical_pad+ 3)
 				.attr("font-family", "sans-serif")
 				.attr("font-size", "14px")
 				.attr("font-weight", "bold")
 				.attr("fill", "black")
-				.text("Chuvoso");
+				.text("Primavera");
 		};
 
 
-		init(d_source, 1);
+		init(d_source, "view1");
 		updateData("97_06");
 		addLegend();
 
 
 		function color_group(index_color) {
-			var color_range= ["#1b9e77","#d95f02","#7570b3","#66a61e","#e7298a","#e6ab02","#a6761d","#666666","#377eb8","#ff7f00"];
+			var color_range= ["#e66101","#fdb863","#b2abd2","#5e3c99"];
 			
 			return color_range[index_color];
 		};
 
-		function drawPlot(data, view) {
+		function drawPlot(data, view) {	// view assume os valores (string), view1 ou view2
 
 			var margin= {top: 20, right: 35, bottom: 30, left: 60};
 
-			var size= 0;
-
-			if (view== 1) size= document.getElementById("view1").clientWidth;
-			else if (view== 2) size= document.getElementById("view2").clientWidth;
+			var size= document.getElementById(view).clientWidth;
 
 			var width= size- margin.left- margin.right;
 			var height= 420- margin.top- margin.bottom;
@@ -265,27 +296,16 @@
 				.domain(d3.extent(data, function(d) { return d.concentracao; })).nice();
 
 
-			if (view== 1) document.getElementById("view1").innerHTML= "";
-			else if (view== 2) document.getElementById("view2").innerHTML= "";
+			document.getElementById(view).innerHTML= "";
 
-			var canvas;
+			var view_aux= "#" + view;
 
-			if (view== 1) {
-				canvas= d3.select("#view1")
-					.append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-					.append("g")
-						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-			}
-			else if (view== 2) {
-				canvas= d3.select("#view2")
-					.append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-					.append("g")
-						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-			}
+			var canvas= d3.select(view_aux)
+				.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 			function make_x_axis() {		// function for the x grid lines
@@ -314,7 +334,7 @@
 					.tickFormat(""));
 
 
-			var tip= d3.select("#view1")
+			var tip= d3.select(view_aux)
 				.append("div")
 				.attr("class", "tooltip")
 				.style("opacity", 0);
@@ -331,10 +351,12 @@
 						var date_aux= new Date(d.date);
 						var n_month= date_aux.getMonth();	// returns 0 - 11
 
-						if ((n_month>= 3) && (n_month<= 8)) return color_group(1);
-						return color_group(8);
+						if ((n_month>= 2) && (n_month<= 4)) return color_group(1);	// outono
+						else if ((n_month>= 5) && (n_month<= 8)) return color_group(0);	// seco
+						else if (n_month== 9) return color_group(2);	// primavera
+						return color_group(3);	// chuvoso
 					})
-					.style("opacity", 0.85)
+					.style("opacity", 0.9)
 					.on("mouseover", function(d) {
 						tip.transition()
 							.duration(200)
@@ -354,7 +376,7 @@
 
 			var xAxis;
 
-			if ((view== 1) || (time_hor== 1)) {
+			if ((view=== "view1") || (time_hor== 1)) {
 				xAxis= d3.svg.axis()
 					.scale(x_scale)
 					.ticks(d3.time.months)
