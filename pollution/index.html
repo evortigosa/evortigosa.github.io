@@ -73,8 +73,8 @@
 <body>
 
 	<div style="width:100%;height:100%">
-		<div style="margin:auto;width:1750px;height:460px">
-			<div id="view1" class="Graph" style="width:100%;height:460px"></div>
+		<div style="margin:auto;width:1750px;height:450px">
+			<div id="view1" class="Graph" style="width:100%;height:450px"></div>
 		</div>
 		<div id="data_in" class="Combo" style="width:100%;height:30px">
 			<select type="select" onchange="updateData(value);">
@@ -90,8 +90,11 @@
 				<option value="97_15">Sep 1997 to May 2015</option>
 			</select>
 		</div>
-		<div style="margin:auto;width:1750px;height:460px">
-			<div id="view2" class="Graph" style="width:100%;height:460px"></div>
+		<div style="margin:auto;width:1750px;height:450px">
+			<div id="view2" class="Graph" style="width:100%;height:450px"></div>
+		</div>
+		<div style="margin:auto;width:1750px;height:30px">
+			<div id="legenda" class="Graph" style="width:100%;height:30px"></div>
 		</div>
 	</div>
 
@@ -174,8 +177,65 @@
 			});
 		};
 
+		function addLegend() {
+			var size= document.getElementById("legenda").clientWidth;
+
+			var h_shift= size- 350;
+			var vertical_pad= 20;
+
+			var canvas= d3.select("#legenda")
+					.append("svg")
+					.attr("width", size)
+					.attr("height", 30)
+					.append("g")
+						.attr("transform", "translate(0,0)");
+
+			var top_label= canvas.append("text")
+				.attr("x", h_shift)
+				.attr("y", vertical_pad+ 3)
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "14px")
+				.attr("font-weight", "bold")
+				.attr("fill", "black")
+				.text("Período:");
+
+			canvas.append("rect")
+				.attr("x", 80+ h_shift)
+				.attr("y", vertical_pad- 10)
+				.attr("width", 16)
+				.attr("height", 16)
+				.attr("fill", color_group(1));
+
+			canvas.append("text")
+				.attr("x",  100+ h_shift)
+				.attr("y", vertical_pad+ 3)
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "14px")
+				.attr("font-weight", "bold")
+				.attr("fill", "black")
+				.text("Seco");
+
+			canvas.append("rect")
+				.attr("x", 150+ h_shift)
+				.attr("y", vertical_pad- 10)
+				.attr("width", 16)
+				.attr("height", 16)
+				.attr("fill", color_group(8));
+
+			canvas.append("text")
+				.attr("x",  170+ h_shift)
+				.attr("y", vertical_pad+ 3)
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "14px")
+				.attr("font-weight", "bold")
+				.attr("fill", "black")
+				.text("Chuvoso");
+		};
+
+
 		init(d_source, 1);
 		updateData("97_06");
+		addLegend();
 
 
 		function color_group(index_color) {
@@ -194,7 +254,7 @@
 			else if (view== 2) size= document.getElementById("view2").clientWidth;
 
 			var width= size- margin.left- margin.right;
-			var height= 430- margin.top- margin.bottom;
+			var height= 420- margin.top- margin.bottom;
 
 			var x_scale= d3.time.scale()
 				.range([0, width])		// Escala horizontal - range
@@ -269,8 +329,14 @@
 					.attr("r", function(d) { return r_scale(d.concentracao); })
 					.attr("cx", function(d) { return x_scale(d.date); })
 					.attr("cy", function(d) { return y_scale(d.concentracao); })
-					.style("fill", function(d) { return color_group(1); })
-					.style("opacity", 0.8)
+					.style("fill", function(d) { 
+						var date_aux= new Date(d.date);
+						var n_month= date_aux.getMonth();	// returns 0 - 11
+
+						if ((n_month>= 3) && (n_month<= 8)) return color_group(1);
+						return color_group(8);
+					})
+					.style("opacity", 0.85)
 					.on("mouseover", function(d) {
 						tip.transition()
 							.duration(200)
