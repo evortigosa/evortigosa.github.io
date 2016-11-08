@@ -98,7 +98,8 @@
 	<script>
 
 		var parseDate= d3.time.format("%m/%d/%Y").parse;
-		var d_source= "/pollution/data/data.tsv";
+		var path= "/pollution/data/";
+		var d_source= path + "data.tsv";
 		var time_hor= 1;
 
 		// Update data from combobox onChange
@@ -106,35 +107,35 @@
 			time_hor= 1;
 
 			if (value=== "97_06") {
-				d_source= "/pollution/data/data97_06.tsv";
+				d_source= path + "data97_06.tsv";
 				time_hor= 2;
 			}
 			else if (value=== "98_99") {
-				d_source= "/pollution/data/98_99.tsv";
+				d_source= path + "98_99.tsv";
 			}
 			else if (value=== "99_00") {
-				d_source= "/pollution/data/99_00.tsv";
+				d_source= path + "99_00.tsv";
 			}
 			else if (value=== "00_01") {
-				d_source= "/pollution/data/00_01.tsv";
+				d_source= path + "00_01.tsv";
 			}
 			else if (value=== "01_02") {
-				d_source= "/pollution/data/01_02.tsv";
+				d_source= path + "01_02.tsv";
 			}
 			else if (value=== "02_03") {
-				d_source= "/pollution/data/02_03.tsv";
+				d_source= path + "02_03.tsv";
 			}
 			else if (value=== "03_04") {
-				d_source= "/pollution/data/03_04.tsv";
+				d_source= path + "03_04.tsv";
 			}
 			else if (value=== "04_05") {
-				d_source= "/pollution/data/04_05.tsv";
+				d_source= path + "04_05.tsv";
 			}
 			else if (value=== "05_06") {
-				d_source= "/pollution/data/05_06.tsv";
+				d_source= path + "05_06.tsv";
 			}
 			else if (value=== "97_15") {
-				d_source= "/pollution/data/data97_15.tsv";
+				d_source= path + "data97_15.tsv";
 				time_hor= 2;
 			}
 
