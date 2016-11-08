@@ -102,6 +102,24 @@
 		var d_source= path + "data.tsv";
 		var time_hor= 1;
 
+
+		var r_scale;
+		var aux_r_scale= path + "data97_15.tsv";
+
+		d3.tsv(aux_r_scale, function(error, data) {	
+			if (error) throw error;
+
+			data.forEach(function(d) {
+				d.date= parseDate(d.date);
+				d.concentracao= +d.concentracao;
+			});
+
+			r_scale= d3.scale.linear()	/* Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente */
+				.range([1, 12])
+				.domain(d3.extent(data, function(d) { return d.concentracao; }));
+		});
+
+
 		// Update data from combobox onChange
 		function updateData(value) {
 			time_hor= 1;
@@ -186,9 +204,6 @@
 				.range([height, 0])
 				.domain(d3.extent(data, function(d) { return d.concentracao; })).nice();
 
-			var r_scale= d3.scale.linear()
-				.range([1, 12])
-				.domain(d3.extent(data, function(d) { return d.concentracao; }));
 
 			var color= d3.scale.category10();
 
