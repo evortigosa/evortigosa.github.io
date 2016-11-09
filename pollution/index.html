@@ -185,6 +185,9 @@
 			var pos_box= 80;
 			var pos_text= 20;
 
+			var texto= ["Chuvoso","Outono","Seco","Primavera"];
+			var cor_leg= [3,1,0,2];
+
 			var canvas= d3.select("#legenda")
 					.append("svg")
 					.attr("width", size)
@@ -201,69 +204,25 @@
 				.attr("fill", "black")
 				.text("Período:");
 
-			canvas.append("rect")
-				.attr("x", 1*pos_box+ 0*pos_text+ h_shift)
-				.attr("y", vertical_pad- 10)
-				.attr("width", 16)
-				.attr("height", 16)
-				.attr("fill", color_group(3));
 
-			canvas.append("text")
-				.attr("x",  1*pos_box+ 1*pos_text+ h_shift)
-				.attr("y", vertical_pad+ 3)
-				.attr("font-family", "sans-serif")
-				.attr("font-size", "14px")
-				.attr("font-weight", "bold")
-				.attr("fill", "black")
-				.text("Chuvoso");
+			for ((i= 0); (i< 4); (i++)) {
 
-			canvas.append("rect")
-				.attr("x", 2*pos_box+ 1*pos_text+ h_shift)
-				.attr("y", vertical_pad- 10)
-				.attr("width", 16)
-				.attr("height", 16)
-				.attr("fill", color_group(1));
+				canvas.append("rect")
+					.attr("x", ((i+ 1)*pos_box+ i*pos_text+ h_shift))
+					.attr("y", vertical_pad- 10)
+					.attr("width", 16)
+					.attr("height", 16)
+					.attr("fill", color_group(cor_leg[i]));
 
-			canvas.append("text")
-				.attr("x",  2*pos_box+ 2*pos_text+ h_shift)
-				.attr("y", vertical_pad+ 3)
-				.attr("font-family", "sans-serif")
-				.attr("font-size", "14px")
-				.attr("font-weight", "bold")
-				.attr("fill", "black")
-				.text("Outono");
-
-			canvas.append("rect")
-				.attr("x", 3*pos_box+ 2*pos_text+ h_shift)
-				.attr("y", vertical_pad- 10)
-				.attr("width", 16)
-				.attr("height", 16)
-				.attr("fill", color_group(0));
-
-			canvas.append("text")
-				.attr("x",  3*pos_box+ 3*pos_text+ h_shift)
-				.attr("y", vertical_pad+ 3)
-				.attr("font-family", "sans-serif")
-				.attr("font-size", "14px")
-				.attr("font-weight", "bold")
-				.attr("fill", "black")
-				.text("Seco");
-
-			canvas.append("rect")
-				.attr("x", 4*pos_box+ 3*pos_text+ h_shift)
-				.attr("y", vertical_pad- 10)
-				.attr("width", 16)
-				.attr("height", 16)
-				.attr("fill", color_group(2));
-
-			canvas.append("text")
-				.attr("x",  4*pos_box+ 4*pos_text+ h_shift)
-				.attr("y", vertical_pad+ 3)
-				.attr("font-family", "sans-serif")
-				.attr("font-size", "14px")
-				.attr("font-weight", "bold")
-				.attr("fill", "black")
-				.text("Primavera");
+				canvas.append("text")
+					.attr("x", ((i+ 1)*pos_box+ (i+ 1)*pos_text+ h_shift))
+					.attr("y", vertical_pad+ 3)
+					.attr("font-family", "sans-serif")
+					.attr("font-size", "14px")
+					.attr("font-weight", "bold")
+					.attr("fill", "black")
+					.text(texto[i]);
+			}
 		};
 
 
