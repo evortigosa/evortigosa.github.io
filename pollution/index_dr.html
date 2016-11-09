@@ -180,13 +180,13 @@
 		function addLegend() {
 			var size= document.getElementById("legenda").clientWidth;
 
-			var h_shift= size- 520;
+			var h_shift= size- 320;
 			var vertical_pad= 20;
 			var pos_box= 80;
 			var pos_text= 20;
 
-			var texto= ["Chuvoso","Outono","Seco","Primavera"];
-			var cor_leg= [3,1,0,2];
+			var texto= ["Chuvoso","Seco"];
+			var cor_leg= [3,0];
 
 			var canvas= d3.select("#legenda")
 					.append("svg")
@@ -205,7 +205,7 @@
 				.text("Período:");
 
 
-			for ((i= 0); (i< 4); (i++)) {
+			for ((i= 0); (i< 2); (i++)) {
 
 				canvas.append("rect")
 					.attr("x", ((i+ 1)*pos_box+ i*pos_text+ h_shift))
@@ -310,9 +310,7 @@
 						var date_aux= new Date(d.date);
 						var n_month= date_aux.getMonth();	// returns 0 - 11
 
-						if ((n_month>= 2) && (n_month<= 4)) return color_group(1);	// outono
-						else if ((n_month>= 5) && (n_month<= 8)) return color_group(0);	// seco
-						else if (n_month== 9) return color_group(2);	// primavera
+						if ((n_month>= 3) && (n_month<= 8)) return color_group(0);	// seco
 						return color_group(3);	// chuvoso
 					})
 					.style("opacity", 0.9)
