@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<!--
+	Evandro Scudeleti Ortigossa
+
+	M.Sc. Student in Computer Science
+	Institute of Mathematical and Computer Sciences - ICMC
+	University of São Paulo - USP
+	São Carlos, São Paulo, Brazil.
+	
+	2016. All rights reserved.
+-->
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Pollution Data Visualization - Elements</title>
+
+	<link href="nv.d3.css" rel="stylesheet" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="nv.d3.js"></script>
+
+	<style>
+
+		body {
+			font-family: sans-serif;
+			font-color: black;
+		}
+
+		.axis path, .axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+
+		.grid .tick {
+			stroke: lightgrey;
+			opacity: 0.5;
+			shape-rendering: crispEdges;
+		}
+
+		.grid path {
+			stroke-width: 0.5px;
+		}
+
+  	</style>
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1750px;height:450px">
+			<div id="view1" class="Graph" style="width:100%;height:450px"></div>
+		</div>
+		<div id="data_in" class="Combo" style="width:100%;height:30px">
+			<select type="select" onchange="updateData(value);">
+				<option value=0 selected="true">Alumínio</option>
+				<option value=1>Silício</option>
+				<option value=2>Fósforo</option>
+				<option value=3>Enxofre</option>
+				<option value=4>Cloro</option>
+				<option value=5>Potássio</option>
+				<option value=6>Cálcio</option>
+				<option value=7>Titânio</option>
+				<option value=8>Cromo</option>
+				<option value=9>Manganês</option>
+				<option value=10>Ferro</option>
+				<option value=11>Cobalto</option>
+				<option value=12>Níquel</option>
+				<option value=13>Cobre</option>
+				<option value=14>Zinco</option>
+			</select>
+		</div>
+		<div style="margin:auto;width:1750px;height:450px">
+			<div id="view2" class="Graph" style="width:100%;height:450px"></div>
+		</div>
+		<div style="margin:auto;width:1750px;height:30px">
+			<div id="legenda" class="Graph" style="width:100%;height:30px"></div>
+		</div>
+	</div>
+
+	<script>
+
+		var parseDate= d3.time.format("%m/%d/%Y").parse;
+		var path= "/data/";
+		var d_source1= path + "elements99_00.tsv";
+		var d_source2= path + "elements99_00.tsv";
+
+		var elem_list= ["Al","Si","P","S","Cl","K","Ca","Ti","Cr","Mn","Fe","Co","Ni","Cu","Zn"];
+		var elem_id= 0;
+
+
+		// Update data from combobox onChange
+		function updateData(value) {
+			elem_id= value;
+
+			init(d_source1, "view1");
+			init(d_source2, "view2");
+			addLegend();
+		};
+
+		function init(init_source, view) {
+
+			d3.tsv(init_source, function(error, data) {
+				if (error) throw error;
+
+				var elements= data.map(function(d) {
+					return { date: parseDate(d.date), value: d[elem_list[elem_id]] };
+				});
+
+				drawLine(elements, view);
+			});
+		};
+
+		function addLegend() {
+			var size= document.getElementById("legenda").clientWidth;
+
+			var h_shift= size- 400;
+			var vertical_pad= 20;
+			var pos_box= 220;
+			var pos_text= 22;
+
+			document.getElementById("legenda").innerHTML= "";
+
+
+			var canvas= d3.select("#legenda")
+					.append("svg")
+					.attr("width", size)
+					.attr("height", 30)
+					.append("g")
+						.attr("transform", "translate(0,0)");
+
+			var top_label= canvas.append("text")
+				.attr("x", h_shift)
+				.attr("y", vertical_pad+ 3)
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "14px")
+				.attr("font-weight", "bold")
+				.attr("fill", "black")
+				.text("Elemento Químico em Análise:");
+
+
+				canvas.append("rect")
+					.attr("x", pos_box+ h_shift)
+					.attr("y", vertical_pad- 10)
+					.attr("width", 16)
+					.attr("height", 16)
+					.attr("fill", color_group(elem_id));
+
+				canvas.append("text")
+					.attr("x", pos_box+ pos_text+ h_shift)
+					.attr("y", vertical_pad+ 3)
+					.attr("font-family", "sans-serif")
+					.attr("font-size", "14px")
+					.attr("font-weight", "bold")
+					.attr("fill", "black")
+					.text(elem_list[elem_id]);
+		};
+
+
+		init(d_source1, "view1");
+		init(d_source2, "view2");
+		addLegend();
+
+
+		function color_group(index_color) {
+			var color_range= ["#808080","#708090","#008682","#DAA520","#006400","#8B008B","#FF4500","#808080","#808080","#228B22","#FF4500","#808080","#808080","#2E8B57","#008080"];
+			
+			return color_range[index_color];
+		};
+
+		function drawLine(data, view) {	// view assume os valores (string), view1 ou view2
+
+			var margin= {top: 20, right: 35, bottom: 30, left: 60};
+
+			var size= document.getElementById(view).clientWidth;
+
+			var width= size- margin.left- margin.right;
+			var height= 420- margin.top- margin.bottom;
+
+			var time= 1000;
+			var formatValue= d3.format(",.2f");
+			var formatMass= function(d) { return formatValue(d) + " μg/m³"; };
+
+			var x_scale= d3.time.scale()
+				.range([0, width])		// Escala horizontal - range
+				.domain(d3.extent(data, function(d) { return d.date; }));
+
+			var y_scale= d3.scale.linear()
+				.range([height, 0])
+				.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+
+			document.getElementById(view).innerHTML= "";
+
+			var view_aux= "#" + view;
+
+			var canvas= d3.select(view_aux)
+				.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+			function make_x_axis() {		// function for the x grid lines
+				return d3.svg.axis()
+					.scale(x_scale)
+					.orient("bottom")
+			};
+
+			canvas.append("g")				// Draw the x Grid lines
+				.attr("class", "grid")
+				.attr("transform", "translate(0," + height + ")")
+				.call(make_x_axis()
+				.tickSize(-height, 0, 0)
+				.tickFormat(""));
+
+			function make_y_axis() {		// function for the y grid lines
+				return d3.svg.axis()
+						.scale(y_scale)
+						.orient("left");
+			};
+
+			canvas.append("g")				// Draw the y Grid lines
+				.attr("class", "grid")
+				.call(make_y_axis()
+					.tickSize(-width, 0, 0)
+					.tickFormat(""));
+
+
+			var line= d3.svg.line()
+				.interpolate("linear")
+				.x(function(d) { return x_scale(d.date); })
+				.y(function(d) { return y_scale(d.value); });
+
+			var path= canvas.append("path")
+				.datum(data)
+					.attr("class", "line")		// Desenha o caminho, como funcao da linha
+					.attr("d", line)
+					.attr("fill", "none")
+					.attr("stroke", color_group(elem_id))
+					.attr("stroke-width", "5px")
+					.attr("stroke-dasharray", function() { return "0," + this.getTotalLength(); })
+					.transition()
+						.duration(time)
+						.ease("linear")
+						.attrTween("stroke-dasharray", animateLine);
+
+			function animateLine() {
+				var length= this.getTotalLength();
+				i= d3.interpolateString("0," + length, length + "," +length);
+
+				return function(t) { return i(t); };
+			};
+
+
+			var vertical_line= canvas.append("g")		// Append line in the Line Chart
+				.attr("class", "marker_line")
+				.style("display", "none");
+
+			vertical_line.append("line")
+				.attr("y1", -15)
+				.attr("y2", height)
+				.attr("fill", "none")
+				.style("stroke-width", "1px")
+				.style("stroke", "steelblue")
+				.style("stroke-dasharray", "4,4");
+
+			vertical_line.append("text")
+				.attr("x", 8)
+				.attr("y", -15)
+				.attr("dy", ".4em")
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "13px");
+
+			var marker= canvas.append("g")		// Append marker in the Line Chart
+				.attr("class", "marker")
+				.style("display", "none");
+
+			marker.append("circle")
+				.attr("r", 6)
+				.style("fill", color_group(elem_id))
+				.style("pointer-events", "none")
+				.style("stroke", "black")
+				.style("stroke-width", "2px");
+
+			marker.append("text")
+				.attr("x", 10)
+				.attr("y", 0)
+				.attr("dy", ".4em")
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "13px");
+
+
+			canvas.append("rect")		// Plano de eventos
+				.attr("width", width)
+				.attr("height", height)
+				.style("fill", "none")
+				.on("mouseover", function() {
+					vertical_line.style("display", null);
+					marker.style("display", null); 
+				})
+				.on("mouseout", function() { 
+					vertical_line.style("display", "none");
+					marker.style("display", "none"); 
+				})
+				.on("mousemove", mouseMove)
+				.transition()
+					.delay(time)
+					.style("pointer-events", "all");
+
+
+			var bisectDate= d3.bisector(function(d) { return d.date; }).left;	// Create custom bisector
+
+			function mouseMove() {		// Add event listeners/handlers
+
+				var x0= x_scale.invert(d3.mouse(this)[0]),
+					index= bisectDate(data, x0, 1),
+					start= data[index- 1],
+					end= data[index],
+					d= x0 - start.date > end.date - x0 ? end : start;
+				
+				vertical_line.attr("transform", "translate(" + x_scale(d.date) + ",0)");
+				vertical_line.select("text")
+					.text(d3.time.format("%d-%b-%Y")(d.date));
+
+				marker.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.value) + ")");
+				marker.select("text")
+					.text(formatMass(d.value));
+			};
+
+
+			var xAxis= d3.svg.axis()
+				.scale(x_scale)
+				.ticks(d3.time.months)
+				.orient("bottom")
+				.tickFormat(d3.time.format("%b-%Y"));
+
+			var yAxis= d3.svg.axis()
+				.scale(y_scale)
+				.orient("left");
+
+			/* Construcao dos eixos */
+			canvas.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis)
+				.append("text")
+					.attr("class", "label")
+					.attr("x", width/ 2)
+					.attr("y", 57)
+					.style("text-anchor", "middle")
+					.text("Período da Amostragem");
+
+			canvas.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+				.append("text")
+					.attr("class", "label")
+					.attr("transform", "rotate(-90)")
+					.attr("x", -(height/ 2))
+					.attr("y", -59)
+					.attr("dy", ".71em")
+					.style("text-anchor", "middle")
+					.text("Concentração (μg/m³)")
+		};
+
+	</script>
+
+</body>
+</html>
