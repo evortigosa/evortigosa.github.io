@@ -50,7 +50,7 @@
 <body>
 
 	<div style="width:100%;height:100%">
-		<div style="margin:auto;width:1795px;height:450px">
+		<div style="margin:auto;width:1800px;height:450px">
 			<div id="view1" class="Graph" style="width:100%;height:450px"></div>
 		</div>
 		<div id="data_in" class="Combo" style="width:100%;height:30px">
@@ -72,10 +72,10 @@
 				<option value=14>Zinco</option>
 			</select>
 		</div>
-		<div style="margin:auto;width:1795px;height:450px">
+		<div style="margin:auto;width:1800px;height:450px">
 			<div id="view2" class="Graph" style="width:100%;height:450px"></div>
 		</div>
-		<div style="margin:auto;width:1795px;height:30px">
+		<div style="margin:auto;width:1800px;height:30px">
 			<div id="legenda" class="Graph" style="width:100%;height:30px"></div>
 		</div>
 	</div>
@@ -83,7 +83,7 @@
 	<script>
 
 		var parseDate= d3.time.format("%m/%d/%Y").parse;
-		var path= "/pollution/data/";
+		var path= "/data/";
 		var d_source1= path + "elements99_00.tsv";
 		var d_source2= path + "elements99_00.tsv";
 
@@ -172,7 +172,7 @@
 
 		function drawLine(data, view) {	// view assume os valores (string), view1 ou view2
 
-			var margin= {top: 20, right: 80, bottom: 30, left: 60};
+			var margin= {top: 20, right: 80, bottom: 30, left: 65};
 
 			var size= document.getElementById(view).clientWidth;
 
@@ -288,7 +288,6 @@
 
 			marker.append("text")
 				.attr("x", 10)
-				.attr("y", 0)
 				.attr("dy", ".4em")
 				.attr("font-family", "sans-serif")
 				.attr("font-size", "13px");

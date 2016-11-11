@@ -303,9 +303,9 @@
 				.data(data)
 				.enter().append("circle")
 					.attr("class", "dot")
-					.attr("r", function(d) { return r_scale(d.concentracao); })
+					.attr("r", function(d) { return r_scale(0); })
 					.attr("cx", function(d) { return x_scale(d.date); })
-					.attr("cy", function(d) { return y_scale(d.concentracao); })
+					.attr("cy", function(d) { return height; })
 					.style("fill", function(d) { 
 						var date_aux= new Date(d.date);
 						var n_month= date_aux.getMonth();	// returns 0 - 11
@@ -330,7 +330,11 @@
 						tip.transition()
 							.duration(500)
 							.style("opacity", 0);
-					});
+					})
+					.transition()
+						.duration(1000)
+						.attr("cy", function(d) { return y_scale(d.concentracao); })
+						.attr("r", function(d) { return r_scale(d.concentracao); });
 
 
 			var xAxis;
