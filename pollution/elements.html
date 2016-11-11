@@ -327,8 +327,17 @@
 					.text(d3.time.format("%d-%b-%Y")(d.date));
 
 				marker.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.value) + ")");
-				marker.select("text")
-					.text(formatMass(d.value));
+				
+				if (d.value== 0) {
+					marker.select("text")
+						.attr("y", -13)
+						.text(formatMass(d.value));
+				}
+				else {
+					marker.select("text")
+						.attr("y", 0)
+						.text(formatMass(d.value));
+				}
 			};
 
 
