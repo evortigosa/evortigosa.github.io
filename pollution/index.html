@@ -77,7 +77,7 @@
 			<div id="view1" class="Graph" style="width:100%;height:450px"></div>
 		</div>
 		<div style="margin:auto;width:1800px;height:55px">
-			<div id="view_dif" class="Graph" style="width:100%;height:55px"></div>
+			<div id="view_var" class="Graph" style="width:100%;height:55px"></div>
 		</div>
 		<div style="margin:auto;width:1800px;height:450px">
 			<div id="view2" class="Graph" style="width:100%;height:450px"></div>
@@ -104,8 +104,10 @@
 	<script>
 
 		var parseDate= d3.time.format("%m/%d/%Y").parse;
+		
 		var path= "/pollution/data/";
-		var d_source= path + "data.tsv";
+		var v1_source= path + "data.tsv";
+		
 		var time_hor= 1;
 
 
@@ -128,42 +130,50 @@
 
 		// Update data from combobox onChange
 		function updateData(value) {
+			var v2_source= "";
+			
 			time_hor= 1;
 
 			if (value=== "97_06") {
-				d_source= path + "data97_06.tsv";
+				v2_source= "data97_06.tsv";
 				time_hor= 2;
 			}
 			else if (value=== "98_99") {
-				d_source= path + "98_99.tsv";
+				v2_source= "98_99.tsv";
 			}
 			else if (value=== "99_00") {
-				d_source= path + "99_00.tsv";
+				v2_source= "99_00.tsv";
 			}
 			else if (value=== "00_01") {
-				d_source= path + "00_01.tsv";
+				v2_source= "00_01.tsv";
 			}
 			else if (value=== "01_02") {
-				d_source= path + "01_02.tsv";
+				v2_source= "01_02.tsv";
 			}
 			else if (value=== "02_03") {
-				d_source= path + "02_03.tsv";
+				v2_source= "02_03.tsv";
 			}
 			else if (value=== "03_04") {
-				d_source= path + "03_04.tsv";
+				v2_source= "03_04.tsv";
 			}
 			else if (value=== "04_05") {
-				d_source= path + "04_05.tsv";
+				v2_source= "04_05.tsv";
 			}
 			else if (value=== "05_06") {
-				d_source= path + "05_06.tsv";
+				v2_source= "05_06.tsv";
 			}
 			else if (value=== "97_15") {
-				d_source= path + "data97_15.tsv";
+				v2_source= "data97_15.tsv";
 				time_hor= 2;
 			}
 
-			init(d_source, "view2");
+			var path_vari= path + "differences/" + v2_source;
+			v2_source= path + v2_source;
+
+			init(v2_source, "view2");
+			
+			if (time_hor== 1) initDifference(path_vari, "view_var");
+			else document.getElementById("view_var").innerHTML= "";
 		};
 
 		function init(init_source, view) {
