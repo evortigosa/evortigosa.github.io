@@ -73,16 +73,16 @@
 <body>
 
 	<div style="width:100%;height:100%">
-		<div style="margin:auto;width:1750px;height:450px">
+		<div style="margin:auto;width:1800px;height:450px">
 			<div id="view1" class="Graph" style="width:100%;height:450px"></div>
 		</div>
-		<div style="margin:auto;width:1750px;height:55px">
+		<div style="margin:auto;width:1800px;height:55px">
 			<div id="view_dif" class="Graph" style="width:100%;height:55px"></div>
 		</div>
-		<div style="margin:auto;width:1750px;height:450px">
+		<div style="margin:auto;width:1800px;height:450px">
 			<div id="view2" class="Graph" style="width:100%;height:450px"></div>
 		</div>
-		<div style="width:1750px;height:20px">
+		<div style="width:1800px;height:20px">
 			<div id="combo" class="Graph" style="float:left;width:20%;height:20px">
 				<select type="select" onchange="updateData(value);">
 					<option value="97_06" selected="true">Sep 1997 to Feb 2006</option>
@@ -179,6 +179,19 @@
 				drawPlot(data, view);
 			});
 		};
+		
+		function initVariation(init_source, view) {
+
+			d3.tsv(init_source, function(error, data) {
+				if (error) throw error;
+
+				var elements= data.map(function(d) {
+					return { date: parseDate(d.date), value: Math.abs((+d.concentracaoA)- (+d.concentracaoB)) };
+				});
+
+				drawLine(elements, view);
+			});
+		};
 
 		function addLegend() {
 			var size= document.getElementById("legenda").clientWidth;
@@ -242,7 +255,7 @@
 
 		function drawPlot(data, view) {	// view assume os valores (string), view1 ou view2
 
-			var margin= {top: 20, right: 35, bottom: 30, left: 60};
+			var margin= {top: 20, right: 70, bottom: 30, left: 60};
 
 			var size= document.getElementById(view).clientWidth;
 
@@ -384,6 +397,172 @@
 					.attr("dy", ".71em")
 					.style("text-anchor", "middle")
 					.text("Concentração (μg/m³)")
+		};
+		
+		function drawLine(data, view) {	// view assume os valores (string), view1 ou view2
+
+			var margin= {top: 4, right: 70, bottom: 1, left: 60};
+
+			var size= document.getElementById(view).clientWidth;
+
+			var width= size- margin.left- margin.right;
+			var height= 50- margin.top- margin.bottom;
+
+			var time= 1000;
+			var formatValue= d3.format(",.2f");
+			var formatMass= function(d) { return formatValue(d) + " μg/m³"; };
+
+			var x_scale= d3.time.scale()
+				.range([0, width])		// Escala horizontal - range
+				.domain(d3.extent(data, function(d) { return d.date; })).nice();
+
+			var y_scale= d3.scale.linear()
+				.range([height, 0])
+				.domain([0, d3.max(data, function(d) { return d.value; })]).nice();
+
+
+			document.getElementById(view).innerHTML= "";
+
+			var view_aux= "#" + view;
+
+			var canvas= d3.select(view_aux)
+				.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+			var line= d3.svg.line()
+				.interpolate("linear")
+				.x(function(d) { return x_scale(d.date); })
+				.y(function(d) { return y_scale(d.value); });
+
+			var path= canvas.append("path")
+				.datum(data)
+					.attr("class", "line")		// Desenha o caminho, como funcao da linha
+					.attr("d", line)
+					.attr("fill", "none")
+					.attr("stroke", color_group(4))
+					.attr("stroke-width", "3px")
+					.attr("stroke-dasharray", function() { return "0," + this.getTotalLength(); })
+					.transition()
+						.duration(time)
+						.ease("linear")
+						.attrTween("stroke-dasharray", animateLine);
+
+			function animateLine() {
+				var length= this.getTotalLength();
+				i= d3.interpolateString("0," + length, length + "," +length);
+
+				return function(t) { return i(t); };
+			};
+
+
+			var vertical_line= canvas.append("g")		// Append line in the Line Chart
+				.attr("class", "marker_line")
+				.style("display", "none");
+
+			vertical_line.append("line")
+				.attr("y1", -15)
+				.attr("y2", height)
+				.attr("fill", "none")
+				.style("stroke-width", "1px")
+				.style("stroke", "steelblue")
+				.style("stroke-dasharray", "4,4");
+
+			var marker= canvas.append("g")		// Append marker in the Line Chart
+				.attr("class", "marker")
+				.style("display", "none");
+
+			marker.append("circle")
+				.attr("r", 4)
+				.style("fill", color_group(4))
+				.style("pointer-events", "none")
+				.style("stroke", "black")
+				.style("stroke-width", "2px");
+
+			marker.append("text")
+				.attr("x", 10)
+				.attr("dy", ".4em")
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "12px");
+
+
+			canvas.append("rect")		// Plano de eventos
+				.attr("width", width)
+				.attr("height", height)
+				.style("fill", "none")
+				.on("mouseover", function() {
+					vertical_line.style("display", null);
+					marker.style("display", null); 
+				})
+				.on("mouseout", function() { 
+					vertical_line.style("display", "none");
+					marker.style("display", "none"); 
+				})
+				.on("mousemove", mouseMove)
+				.transition()
+					.delay(time)
+					.style("pointer-events", "all");
+
+
+			var bisectDate= d3.bisector(function(d) { return d.date; }).left;	// Create custom bisector
+
+			function mouseMove() {		// Add event listeners/handlers
+
+				var x0= x_scale.invert(d3.mouse(this)[0]),
+					index= bisectDate(data, x0, 1),
+					start= data[index- 1],
+					end= data[index],
+					d= x0 - start.date > end.date - x0 ? end : start;
+				
+				vertical_line.attr("transform", "translate(" + x_scale(d.date) + ",0)");
+
+				marker.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.value) + ")");
+				
+				if (d.value== 0) {
+					marker.select("text")
+						.attr("y", -13)
+						.text(formatMass(d.value));
+				}
+				else {
+					marker.select("text")
+						.attr("y", 0)
+						.text(formatMass(d.value));
+				}
+			};
+
+
+			var xAxis= d3.svg.axis()
+				.scale(x_scale)
+				.ticks(d3.time.months)
+				.orient("bottom")
+				.tickFormat("");
+
+			var yAxis= d3.svg.axis()
+				.scale(y_scale)
+				.ticks(0)
+				.orient("left");
+
+			/* Construcao dos eixos */
+			canvas.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis);
+
+			canvas.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+				.append("text")
+					.attr("class", "label")
+					.attr("transform", "rotate(-90)")
+					.attr("x", -(height/ 2))
+					.attr("y", -58)
+					.attr("dy", ".71em")
+					.style("text-anchor", "middle")
+					.attr("font-size", "14px")
+					.text("Variação");
 		};
 
 	</script>
