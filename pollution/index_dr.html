@@ -332,7 +332,7 @@
 					.transition()
 						.duration(1000)
 						.attr("cy", function(d) { return y_scale(d.concentracao); })
-						.attr("r", function(d) { return r_scale(d.concentracao); });
+						.attr("r", function(d) { if (d.concentracao> 0.001) return r_scale(d.concentracao); });
 
 
 			var xAxis;
