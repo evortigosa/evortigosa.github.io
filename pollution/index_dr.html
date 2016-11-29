@@ -123,7 +123,7 @@
 			});
 
 			r_scale= d3.scale.linear()	/* Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente */
-				.range([2, 14])
+				.range([3, 15])
 				.domain(d3.extent(data, function(d) { return d.concentracao; }));
 		});
 
