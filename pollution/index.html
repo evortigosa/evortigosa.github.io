@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<!--
+	Evandro Scudeleti Ortigossa
+
+	M.Sc. Student in Computer Science
+	Institute of Mathematical and Computer Sciences - ICMC
+	University of São Paulo - USP
+	São Carlos, São Paulo, Brazil.
+	
+	2017. All rights reserved.
+-->
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Pollution Data Visualization</title>
+
+	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+
+	<style type="text/css">
+
+		body {
+			font: 12px sans-serif;
+			font-color: black;
+		}
+
+		.axis-x, .axis-y {
+			font: 13px sans-serif;
+			font-color: black;
+		}
+
+		.axis-x path, .axis-x line, 
+		.axis-y path, .axis-y line {
+			fill: none;
+			stroke: #000;
+			stroke-width: 2px;
+			shape-rendering: crispEdges;
+		}
+
+		.grid-x path, .grid-x line,
+		.grid-y path, .grid-y line {
+			fill: none;
+			stroke: lightgrey;
+			opacity: 0.8;
+			shape-rendering: crispEdges;
+		}
+
+		.label {
+			font: 14px sans-serif;
+			font-color: black;
+			font-weight: bold;
+		}
+
+		.dot {
+			stroke: #000;
+			opacity: 0.9;
+		}
+
+		.dot:hover {
+			stroke-width: 3px;
+		}
+
+		div.tooltip {
+			width: 120px;
+			padding: 10px;
+			font: 11px sans-serif;
+			font-weight: bold;
+			text-align: center;
+			color: #fff;
+			position: absolute;
+			background: rgba(0,0,0,0.7);
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+  	</style>
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1800px;height:460px">
+			<div id="view1" class="Graph" style="width:100%;height:100%"></div>
+		</div>
+		<div style="margin:auto;width:1800px;height:460px">
+			<div id="view2" class="Graph" style="width:100%;height:100%"></div>
+		</div>
+		<div style="width:1800px;height:20px">
+			<div id="combo" class="Graph" style="float:left;width:20%;height:100%">
+				<select type="select" onchange="updateData(value);">
+					<option value="15_17" selected="true">2015 to 2017</option>
+					<option value="97_06">Sep 1997 to Feb 2006</option>
+				</select>
+			</div>
+			<div id="legenda" class="Graph" style="float:left;width:80%;height:100%"></div>
+		</div>
+	</div>
+
+	<script>
+
+		var parseDate= d3.timeParse("%m/%d/%Y");	
+		
+		var path= "/data/";
+		var v1_source= path + "2014_2015.tsv";
+		
+		var time_hor= 1;
+
+		var r_scale;
+		var all_data= path + "1997_2017.tsv";
+
+
+		d3.tsv(all_data, function(error, data) {	
+			if (error) throw error;
+
+			data.forEach(function(d) {
+				d.date= parseDate(d.Data);
+				d.concentracao= +d.Concentracao;
+			});
+
+			r_scale= d3.scaleLinear()	// Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente
+				.range([3, 16])
+				.domain(d3.extent(data, function(d) { return d.concentracao; }));
+		});
+
+
+		init(v1_source, "view1");
+		updateData("15_17");
+		addLegend("legenda");
+
+		
+		function updateData(value) {    // Update data from combobox onChange
+			var v2_source= "";
+			
+			time_hor= 1;
+
+			if (value=== "97_06") {
+				v2_source= "1997_2006.tsv";
+				time_hor= 2;
+			}
+			else if (value=== "15_17") {
+				v2_source= "2015_2017.tsv";
+			}
+
+			var path_vari= path + "differences/" + v2_source;
+			v2_source= path + v2_source;
+
+			init(v2_source, "view2");
+		};
+
+		function init(init_source, view) {
+
+			d3.tsv(init_source, function(error, data) {
+				if (error) throw error;
+
+				data.forEach(function(d) {
+					d.date= parseDate(d.Data);
+					d.concentracao= +d.Concentracao;
+				});
+
+				drawPlot(data, view);
+			});
+		};
+
+		function addLegend(view) {
+			var size= document.getElementById(view).clientWidth;
+
+			var h_shift= size- 520;
+			var vertical_pad= 10;
+			var pos_box= 80;
+			var pos_text= 20;
+
+			var texto= ["Verão","Outono","Inverno","Primavera"];
+			var cor_leg= [3,1,0,2];
+
+			var view_aux= "#" + view;
+
+			var canvas= d3.select(view_aux)
+					.append("svg")
+					.attr("width", size)
+					.attr("height", 30)
+					.append("g")
+						.attr("transform", "translate(0,0)");
+
+			var top_label= canvas.append("text")
+				.attr("class", "label")
+				.attr("x", h_shift- 20)
+				.attr("y", vertical_pad+ 3)
+				.text("Período:");
+
+
+			for ((i= 0); (i< 4); (i++)) {
+
+				canvas.append("rect")
+					.attr("x", ((i+ 1)*pos_box+ i*pos_text+ h_shift))
+					.attr("y", vertical_pad- 10)
+					.attr("width", 16)
+					.attr("height", 16)
+					.attr("fill", color_group(cor_leg[i]));
+
+				canvas.append("text")
+					.attr("class", "label")
+					.attr("x", ((i+ 1)*pos_box+ (i+ 1)*pos_text+ h_shift))
+					.attr("y", vertical_pad+ 3)
+					.text(texto[i]);
+			}
+		};
+
+		function color_group(index_color) {
+			var color_range= ["#e66101","#fdb863","#b2abd2","#5e3c99","#1b9e77"];
+			
+			return color_range[index_color];
+		};
+
+		function drawPlot(data, view) {	   // view assume os valores (string), view1 ou view2
+
+			var margin= {top: 20, right: 30, bottom: 45, left: 60};
+
+			var size= document.getElementById(view).clientWidth;
+
+			var width= size- margin.left- margin.right;
+			var height= 450- margin.top- margin.bottom;
+
+
+			var x0= d3.extent(data, function(d) { return d.date; });
+
+			var x_scale= d3.scaleTime()		// Escala horizontal
+				.range([0, width])
+				.domain(x0).nice();
+
+			var y0= d3.extent(data, function(d) { return d.concentracao; });
+
+			var y_scale= d3.scaleLinear()		// Escala vertical
+				.range([height, 0])
+				.domain(y0).nice();
+
+
+			document.getElementById(view).innerHTML= "";
+
+			var view_aux= "#" + view;
+
+			var canvas= d3.select(view_aux)
+				.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+			var xGrid= d3.axisBottom(x_scale)	// Draw the x Grid lines
+				.tickFormat("");
+
+			canvas.append("g")
+				.attr("class", "grid-x")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xGrid.tickSize(-height, 0, 0));
+
+			var yGrid= d3.axisLeft(y_scale)		// Draw the y Grid lines
+				.tickFormat("")
+
+			canvas.append("g")
+				.attr("class", "grid-y")
+				.call(yGrid.tickSize(-width, 0, 0));
+
+
+			var tip= d3.select(view_aux)	// Tooltip
+				.append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+
+			var brush= d3.brush()    // Focus + Context
+				.on("end", brushended);
+			
+			var idleTimeout, idleDelay= 350;
+
+			canvas.append("g")
+				.attr("class", "brush")
+				.call(brush);
+
+
+			canvas.append("defs").append("clipPath")   // Tela de recorte interna do grafico. Evita que pontos saiam da area do grafico
+				.attr("id", "clip")
+				.append("rect")
+					.attr("width", width)
+					.attr("height", height);
+
+
+			var circles= canvas.selectAll(".dot")
+				.data(data)
+				.enter().append("circle")
+					.attr("class", "dot")
+					.attr("clip-path", "url(#clip)")
+					.attr("r", 0)
+					.attr("cx", function(d) { return x_scale(d.date); })
+					.attr("cy", function(d) { return height; })
+					.style("fill", function(d) { 
+						var date_aux= new Date(d.date);
+						var n_month= date_aux.getMonth();	// returns 0 - 11
+
+						if ((n_month>= 2) && (n_month<= 4)) return color_group(1);	// outono
+						else if ((n_month>= 5) && (n_month<= 8)) return color_group(0);	// inverno
+						else if (n_month== 9) return color_group(2);	// primavera
+						return color_group(3);	// verao
+					})
+					.on("mouseover", function(d) {
+						var mousePos= d3.mouse(d3.select("body").node());
+
+						tip.html("Concentração:  " + d.concentracao + " (μg/m³)" + "<br>Data da amostragem: " + d3.timeFormat("%d-%b-%Y")(d.date))
+							.style("left", (mousePos[0]- 60) + "px")
+							.style("top", (mousePos[1]+ 28) + "px")
+							.style("opacity", 1)
+							.transition()
+								.duration(200);
+					})
+					.on("mousemove", function(d) {
+						var mousePos= d3.mouse(d3.select("body").node());
+
+						tip.html("Concentração:  " + d.concentracao + " (μg/m³)" + "<br>Data da amostragem: " + d3.timeFormat("%d-%b-%Y")(d.date))
+							.style("left", (mousePos[0]- 60) + "px")
+							.style("top", (mousePos[1]+ 28) + "px");
+					})
+					.on("mouseout", function(d) {
+						tip.transition()
+							.duration(500)
+							.style("opacity", 0);
+					})
+					.transition()
+						.duration(1000)
+						.attr("cy", function(d) { return y_scale(d.concentracao); })
+						.attr("r", function(d) { return r_scale(d.concentracao); });
+
+
+			/* Construcao dos eixos */
+			var xAxis;
+
+			if (time_hor== 1) {
+				xAxis= d3.axisBottom(x_scale)
+					.tickFormat(d3.timeFormat("%b-%Y"));
+			}
+			else if (time_hor== 2) {
+				xAxis= d3.axisBottom(x_scale)
+					.tickFormat(d3.timeFormat("%b-%Y"));
+			}
+
+			var yAxis= d3.axisLeft(y_scale)
+				.tickFormat(d3.format(".1f"));
+			
+			canvas.append("g")
+				.attr("class", "axis-x")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis);
+				
+			canvas.append("text")
+				.attr("class", "label")
+				.attr("x", width/ 2)
+				.attr("y", height+ margin.bottom- 4)
+				.style("text-anchor", "middle")
+				.text("Período da Amostragem");
+
+			canvas.append("g")
+				.attr("class", "axis-y")
+				.call(yAxis);
+			
+			canvas.append("text")
+				.attr("class", "label")
+				.attr("transform", "rotate(-90)")
+				.attr("x", -(height/ 2))
+				.attr("y", 1 -margin.left)
+				.attr("dy", ".71em")
+				.style("text-anchor", "middle")
+				.text("Concentração (μg/m³)");
+
+
+			/* Brush and Zoom functions */
+			function brushended() {
+				var s= d3.event.selection;
+				
+				if (!s) {
+					if (!idleTimeout) return idleTimeout= setTimeout(idled, idleDelay);
+					
+					x_scale.domain(x0).nice();
+					y_scale.domain(y0).nice();
+				} 
+				else {
+					x_scale.domain([s[0][0], s[1][0]].map(x_scale.invert, x_scale));
+					y_scale.domain([s[1][1], s[0][1]].map(y_scale.invert, y_scale));
+					
+					canvas.select(".brush")
+						.call(brush.move, null);
+				}
+
+				zoom();
+			};
+
+			function idled() {
+				idleTimeout= null;
+			};
+
+			function zoom() {
+				var t= canvas.transition()
+					.duration(750);
+				
+				canvas.select(".axis-x").transition(t)
+					.call(xAxis);
+				
+				canvas.select(".axis-y").transition(t)
+					.call(yAxis);
+
+				canvas.select(".grid-x").transition(t)
+					.call(xGrid);
+
+				canvas.select(".grid-y").transition(t)
+					.call(yGrid);
+				
+				canvas.selectAll("circle")
+					.transition(t)
+						.attr("cx", function(d) { return x_scale(d.date); })
+						.attr("cy", function(d) { return y_scale(d.concentracao); });
+			};
+		};
+
+	</script>
+
+</body>
+</html>
