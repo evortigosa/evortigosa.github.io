@@ -62,8 +62,8 @@
 		}
 
 		div.tooltip {
-			width: 120px;
-			padding: 10px;
+			width: 160px;
+			padding: 5px;
 			font: 11px sans-serif;
 			font-weight: bold;
 			text-align: center;
@@ -102,13 +102,15 @@
 
 		var parseDate= d3.timeParse("%m/%d/%Y");	
 		
-		var path= "/pollution/data/";
+		var path= "/data/";
 		var v1_source= path + "2014_2015.tsv";
 		
-		var time_hor= 1;
+		var time_hor= 1;	// define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
 
 		var r_scale;
 		var all_data= path + "1997_2017.tsv";
+
+		var y0;
 
 
 		d3.tsv(all_data, function(error, data) {	
@@ -119,9 +121,11 @@
 				d.concentracao= +d.Concentracao;
 			});
 
+			y0= d3.extent(data, function(d) { return d.concentracao; });
+
 			r_scale= d3.scaleLinear()	// Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente
 				.range([3, 16])
-				.domain(d3.extent(data, function(d) { return d.concentracao; }));
+				.domain(y0);
 		});
 
 
@@ -154,10 +158,23 @@
 			d3.tsv(init_source, function(error, data) {
 				if (error) throw error;
 
-				data.forEach(function(d) {
-					d.date= parseDate(d.Data);
-					d.concentracao= +d.Concentracao;
-				});
+				if (time_hor== 1) {
+					data.forEach(function(d) {
+						d.date= parseDate(d.Data);
+						d.concentracao= +d.Concentracao;
+						d.chuva= +d.Precipitacao;
+						d.v_vento= +d.Velocidade_vento;
+						d.d_vento= +d.Direcao_vento;
+						d.temperatura= +d.Temperatura;
+						d.umidade= +d.Umidade;
+					});
+				}
+				else {
+					data.forEach(function(d) {
+						d.date= parseDate(d.Data);
+						d.concentracao= +d.Concentracao;
+					});
+				}
 
 				drawPlot(data, view);
 			});
@@ -229,7 +246,7 @@
 				.range([0, width])
 				.domain(x0).nice();
 
-			var y0= d3.extent(data, function(d) { return d.concentracao; });
+			var y0= [0, d3.max(data, function(d) { return d.concentracao; })];
 
 			var y_scale= d3.scaleLinear()		// Escala vertical
 				.range([height, 0])
@@ -307,23 +324,64 @@
 					.on("mouseover", function(d) {
 						var mousePos= d3.mouse(d3.select("body").node());
 
-						tip.html("Concentração:  " + d.concentracao + " (μg/m³)" + "<br>Data da amostragem: " + d3.timeFormat("%d-%b-%Y")(d.date))
-							.style("left", (mousePos[0]- 60) + "px")
-							.style("top", (mousePos[1]+ 28) + "px")
-							.style("opacity", 1)
-							.transition()
-								.duration(200);
+						var p_horiz= 70;
+						var p_vertc= 28;
+
+						var dia= "Data: " + d3.timeFormat("%d-%b-%Y")(d.date);
+						var con= "Concentração:  " + d.concentracao + " μg/m³";
+
+						if (time_hor== 1) {
+							var chu= "Precipitação: " + d.chuva + " mm";
+							var v_v= "Velocidade do vento: " + d.v_vento + " m/s";
+							var d_v= "Direção do vento: " + d.d_vento + "°";
+							var tem= "Temperatura: " + d.temperatura + " °C";
+							var umi= "Umidade relativa: " + d.umidade + "%";
+
+							tip.html(dia + "<br>" + con + "<br>" + chu + "<br>" + v_v + "<br>" + d_v + "<br>" + tem + "<br>" + umi)
+								.style("left", (mousePos[0]- p_horiz) + "px")
+								.style("top", (mousePos[1]+ p_vertc) + "px")
+								.style("opacity", 1)
+								.transition()
+									.duration(100);
+						}
+						else {
+							tip.html(dia + "<br>" + con)
+								.style("left", (mousePos[0]- p_horiz) + "px")
+								.style("top", (mousePos[1]+ p_vertc) + "px")
+								.style("opacity", 1)
+								.transition()
+									.duration(100);
+						}
 					})
 					.on("mousemove", function(d) {
 						var mousePos= d3.mouse(d3.select("body").node());
 
-						tip.html("Concentração:  " + d.concentracao + " (μg/m³)" + "<br>Data da amostragem: " + d3.timeFormat("%d-%b-%Y")(d.date))
-							.style("left", (mousePos[0]- 60) + "px")
-							.style("top", (mousePos[1]+ 28) + "px");
+						var p_horiz= 70;
+						var p_vertc= 28;
+
+						var dia= "Data: " + d3.timeFormat("%d-%b-%Y")(d.date);
+						var con= "Concentração:  " + d.concentracao + " μg/m³";
+
+						if (time_hor== 1) {
+							var chu= "Precipitação: " + d.chuva + " mm";
+							var v_v= "Velocidade do vento: " + d.v_vento + " m/s";
+							var d_v= "Direção do vento: " + d.d_vento + "°";
+							var tem= "Temperatura: " + d.temperatura + " °C";
+							var umi= "Umidade relativa: " + d.umidade + "%";
+
+							tip.html(dia + "<br>" + con + "<br>" + chu + "<br>" + v_v + "<br>" + d_v + "<br>" + tem + "<br>" + umi)
+								.style("left", (mousePos[0]- p_horiz) + "px")
+								.style("top", (mousePos[1]+ p_vertc) + "px");
+						}
+						else {
+							tip.html(dia + "<br>" + con)
+								.style("left", (mousePos[0]- p_horiz) + "px")
+								.style("top", (mousePos[1]+ p_vertc) + "px");
+						}
 					})
 					.on("mouseout", function(d) {
 						tip.transition()
-							.duration(500)
+							.duration(100)
 							.style("opacity", 0);
 					})
 					.transition()
