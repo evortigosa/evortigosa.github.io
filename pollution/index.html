@@ -105,7 +105,7 @@
 		var path= "/pollution/data/";
 		var v1_source= path + "2015_2017.tsv";
 		
-		var time_hor= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
+		var horizonte= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
 
 		var r_scale;
 		var all_data= path + "1997_2017.tsv";
@@ -129,7 +129,7 @@
 		});
 
 
-		init(v1_source, "view1");
+		init(v1_source, "view1", horizonte);
 		updateData("14_15");
 		addLegend("legenda");
 
@@ -137,23 +137,22 @@
 		function updateData(value) {    // Update data from combobox onChange
 			var v2_source= "";
 			
-			time_hor= 1;
+			horizonte= 1;
 
 			if (value=== "97_06") {
 				v2_source= "1997_2006.tsv";
-				time_hor= 2;
+				horizonte= 2;
 			}
 			else if (value=== "14_15") {
 				v2_source= "2014_2015.tsv";
 			}
 
-			var path_vari= path + "differences/" + v2_source;
 			v2_source= path + v2_source;
 
-			init(v2_source, "view2");
+			init(v2_source, "view2", horizonte);
 		};
 
-		function init(init_source, view) {
+		function init(init_source, view, time_hor) {
 
 			d3.tsv(init_source, function(error, data) {
 				if (error) throw error;
@@ -176,7 +175,7 @@
 					});
 				}
 
-				drawPlot(data, view);
+				drawPlot(data, view, time_hor);
 			});
 		};
 
@@ -230,7 +229,7 @@
 			return color_range[index_color];
 		};
 
-		function drawPlot(data, view) {	   // view assume os valores (string), view1 ou view2
+		function drawPlot(data, view, time_hor) {	   // view assume os valores (string), view1 ou view2
 
 			var margin= {top: 20, right: 30, bottom: 45, left: 60};
 
