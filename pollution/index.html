@@ -90,7 +90,7 @@
 		<div style="width:1800px;height:20px">
 			<div id="combo" class="Graph" style="float:left;width:20%;height:100%">
 				<select type="select" onchange="updateData(value);">
-					<option value="15_17" selected="true">2015 to 2017</option>
+					<option value="14_15" selected="true">2014 to 2015</option>
 					<option value="97_06">Sep 1997 to Feb 2006</option>
 				</select>
 			</div>
@@ -102,10 +102,10 @@
 
 		var parseDate= d3.timeParse("%m/%d/%Y");	
 		
-		var path= "/pollution/data/";
-		var v1_source= path + "2014_2015.tsv";
+		var path= "/data/";
+		var v1_source= path + "2015_2017.tsv";
 		
-		var time_hor= 1;	// define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
+		var time_hor= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
 
 		var r_scale;
 		var all_data= path + "1997_2017.tsv";
@@ -130,7 +130,7 @@
 
 
 		init(v1_source, "view1");
-		updateData("15_17");
+		updateData("14_15");
 		addLegend("legenda");
 
 		
@@ -143,8 +143,8 @@
 				v2_source= "1997_2006.tsv";
 				time_hor= 2;
 			}
-			else if (value=== "15_17") {
-				v2_source= "2015_2017.tsv";
+			else if (value=== "14_15") {
+				v2_source= "2014_2015.tsv";
 			}
 
 			var path_vari= path + "differences/" + v2_source;
