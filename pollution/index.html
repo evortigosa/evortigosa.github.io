@@ -113,27 +113,28 @@
 		var y0;
 
 
-		d3.tsv(all_data, function(error, data) {	
-			if (error) throw error;
-
-			data.forEach(function(d) {
-				d.date= parseDate(d.Data);
-				d.concentracao= +d.Concentracao;
-			});
-
-			y0= d3.extent(data, function(d) { return d.concentracao; });
-
-			r_scale= d3.scaleLinear()	// Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente
-				.range([3, 16])
-				.domain(y0);
-		});
-
-
+		find_scale();
 		init(v1_source, "view1", horizonte);
 		updateData("14_15");
 		addLegend("legenda");
 
-		
+
+		function find_scale() {
+			d3.tsv(all_data, function(error, data) {	
+				if (error) throw error;
+
+				data.forEach(function(d) {
+					d.concentracao= +d.Concentracao;
+				});
+
+				y0= d3.extent(data, function(d) { return d.concentracao; });
+
+				r_scale= d3.scaleLinear()	// Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente
+					.range([3, 16])
+					.domain(y0);
+			});
+		};
+
 		function updateData(value) {    // Update data from combobox onChange
 			var v2_source= "";
 			
