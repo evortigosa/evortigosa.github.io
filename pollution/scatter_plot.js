@@ -133,7 +133,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 				var p_vertc= 28;
 
 				var dia= "Data: " + d3.timeFormat("%d-%b-%Y")(d.date);
-				var con= "Concentração:  " + d.concentracao + " μg/m³";
+				var con= "Concentração:  " + format_mass(d.concentracao);
 
 				if (x_axis_horizon== 1) {
 					var chu= "Precipitação: " + d.chuva + " mm";
@@ -165,7 +165,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 				var p_vertc= 28;
 
 				var dia= "Data: " + d3.timeFormat("%d-%b-%Y")(d.date);
-				var con= "Concentração:  " + d.concentracao + " μg/m³";
+				var con= "Concentração:  " + format_mass(d.concentracao);
 
 				if (x_axis_horizon== 1) {
 					var chu= "Precipitação: " + d.chuva + " mm";

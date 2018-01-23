@@ -50,7 +50,9 @@
 
 	<script type="text/javascript">
 
-		var parseDate= d3.timeParse("%m/%d/%Y");	
+		var parseDate= d3.timeParse("%m/%d/%Y");
+		var format_value= d3.format(",.2f");
+		var format_mass= function(d) { return format_value(d) + " μg/m³"; };
 		
 		var path= "/pollution/data/";
 		var v1_source= path + "2015_2017.tsv";
@@ -86,7 +88,7 @@
 		function init(init_source, view, time_hor) {
 
 			read_sp_data(init_source, view, time_hor);
-			read_dif_data("/pollution/data/dif_2014_2015.tsv", "view_dif");
+			read_dif_data(path + "dif_2014_2015.tsv", "view_dif");
 		};
 
 		function updateData(value) {    // Update data from combobox onChange

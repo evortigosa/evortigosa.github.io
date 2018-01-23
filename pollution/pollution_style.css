@@ -11,7 +11,6 @@
 
 body {
 	font: 12px sans-serif;
-	font-color: black;
 }
 
 .axis-x, .axis-y {
@@ -75,16 +74,19 @@ div.tooltip {
 	opacity: 0.75;
 }
 
-.area.above:hover {
-	opacity: 1;
-}
-
-.area.below:hover {
-	opacity: 1;
-}
-
 .line {
 	fill: none;
 	stroke: #000;
 	stroke-width: 1.5px;
+}
+
+.dif_label {
+	font: 11px sans-serif;
+	font-color: black;
+	font-weight: bold;
+}
+
+.marker {
+	stroke: black;
+	stroke-width: 2px;
 }
