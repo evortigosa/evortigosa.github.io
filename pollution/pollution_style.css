@@ -63,3 +63,28 @@ div.tooltip {
 	border-radius: 8px;
 	pointer-events: none;
 }
+
+/* Difference Chart */
+.area.above {
+	fill: #e41a1c;
+	opacity: 0.75;
+}
+
+.area.below {
+	fill: #377eb8;
+	opacity: 0.75;
+}
+
+.area.above:hover {
+	opacity: 1;
+}
+
+.area.below:hover {
+	opacity: 1;
+}
+
+.line {
+	fill: none;
+	stroke: #000;
+	stroke-width: 1.5px;
+}
