@@ -9,7 +9,7 @@
 	2018. All rights reserved.
 */
 
-function read_dif_data(data_source, view) {
+function read_df_data(data_source, view) {
 	
 	d3.tsv(data_source, function(error, data) {
 		if (error) throw error;
@@ -41,12 +41,12 @@ function draw_difference(data, view) {
 	var y_scale= d3.scaleLinear()	// Escala vertical
 		.range([height, 0]);
 
-	x_scale.domain(d3.extent(data, function(d) { return d.date; }));
+	x_scale.domain(d3.extent(data, function(d) { return d.date; })).nice();
 	y_scale.domain([
 	//	0,
 		d3.min(data, function(d) { return Math.min(d.up, d.down); }),
 		d3.max(data, function(d) { return Math.max(d.up, d.down); })
-	//	1400
+	//	130
 	]).nice();
 
 
@@ -134,7 +134,7 @@ function draw_difference(data, view) {
 		.style("pointer-events", "none");
 
 	marker_up.append("text")
-		.attr("class", "dif_label")
+		.attr("class", "df_label")
 		.attr("x", 10)
 		.attr("dy", ".4em");
 
@@ -149,7 +149,7 @@ function draw_difference(data, view) {
 		.style("pointer-events", "none");
 
 	marker_down.append("text")
-		.attr("class", "dif_label")
+		.attr("class", "df_label")
 		.attr("x", 10)
 		.attr("dy", ".4em");
 
@@ -175,7 +175,6 @@ function draw_difference(data, view) {
 
 
 	var bisectDate= d3.bisector(function(d) { return d.date; }).left;	// Create custom bisector
-	
 
 	function mouseMove() {		// Add event listeners/handlers
 

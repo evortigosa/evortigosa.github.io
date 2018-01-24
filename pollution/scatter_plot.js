@@ -122,9 +122,9 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 				var n_month= date_aux.getMonth();	// returns 0 - 11
 
 				if ((n_month>= 2) && (n_month<= 4)) return color_group(1);	// outono
-				else if ((n_month>= 5) && (n_month<= 8)) return color_group(0);	// inverno
-				else if (n_month== 9) return color_group(2);	// primavera
-				return color_group(3);	// verao
+				else if ((n_month>= 5) && (n_month<= 8)) return color_group(2);	// inverno
+				else if (n_month== 9) return color_group(3);	// primavera
+				return color_group(0);	// verao
 			})
 			.on("mouseover", function(d) {
 				var mousePos= d3.mouse(d3.select("body").node());

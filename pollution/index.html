@@ -18,7 +18,7 @@
 
 	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="pollution_style.css">
-	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="data:;base64,=">
 
 </head>
 <body>
@@ -28,19 +28,20 @@
 			<div id="view1" class="Graph" style="width:100%;height:100%"></div>
 		</div>
 		<div style="margin:auto;width:1900px;height:125px">
-			<div id="view_dif" class="Graph" style="width:100%;height:100%"></div>
+			<div id="view_df" class="Graph" style="width:100%;height:100%"></div>
 		</div>
 		<div style="margin:auto;width:1900px;height:455px">
 			<div id="view2" class="Graph" style="width:100%;height:100%"></div>
 		</div>
 		<div style="width:1900px;height:20px">
-			<div id="combo" class="Graph" style="float:left;width:20%;height:100%">
+			<div id="combo" class="Graph" style="float:left;width:14%;height:100%">
 				<select type="select" onchange="updateData(value);">
 					<option value="14_15" selected="true">2014 to 2015</option>
 					<option value="97_06">Sep 1997 to Feb 2006</option>
 				</select>
 			</div>
-			<div id="legenda" class="Graph" style="float:left;width:80%;height:100%"></div>
+			<div id="legenda_sp" class="Graph" style="float:left;width:55%;height:100%"></div>
+			<div id="legenda_df" class="Graph" style="float:left;width:30%;height:100%"></div>
 		</div>
 	</div>
 
@@ -54,7 +55,7 @@
 		var format_value= d3.format(",.2f");
 		var format_mass= function(d) { return format_value(d) + " μg/m³"; };
 		
-		var path= "/pollution/data/";
+		var path= "/data/";
 		var v1_source= path + "2015_2017.tsv";
 		
 		var horizonte= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
@@ -80,15 +81,16 @@
 		});
 
 		function color_group(index_color) {
-			var color_range= ["#e66101","#fdb863","#b2abd2","#5e3c99","#1b9e77"];
-			
+			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#377eb8","#e41a1c"];
+			//					verao     outono   inverno  primavera   var_up   var_down
+
 			return color_range[index_color];
 		};
 
 		function init(init_source, view, time_hor) {
 
 			read_sp_data(init_source, view, time_hor);
-			read_dif_data(path + "dif_2014_2015.tsv", "view_dif");
+			read_df_data(path + "dif_2014_2015.tsv", "view_df");
 		};
 
 		function updateData(value) {    // Update data from combobox onChange
@@ -106,15 +108,16 @@
 
 			v2_source= path + v2_source;
 
+			add_legend("legenda_df", value);
 			init(v2_source, "view2", horizonte);
 		};
 
 		setTimeout(load_page, 500);
 
 		function load_page() {
+			add_legend("legenda_sp");
 			init(v1_source, "view1", horizonte);
 			updateData("14_15");
-			add_legend("legenda");
 		};
 
 	</script>
