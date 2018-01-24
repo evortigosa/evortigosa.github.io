@@ -10,6 +10,7 @@
 */
 
 function add_legend(view, data_down) {
+	
 	var width= document.getElementById(view).clientWidth;
 	var height= document.getElementById(view).clientHeight;
 

@@ -43,6 +43,14 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
 
+	var format_dia= function(d) { return "Data: " + d3.timeFormat("%d-%b-%Y")(d); };
+	var format_con= function(d) { return "Concentração:  " + format_mass(d); };
+	var format_chu= function(d) { return "Precipitação: " + d + " mm"; };
+	var format_v_v= function(d) { return "Velocidade do vento: " + d + " m/s"; };
+	var format_d_v= function(d) { return "Direção do vento: " + d + "°"; };
+	var format_tem= function(d) { return "Temperatura: " + d + " °C"; };
+	var format_umi= function(d) { return "Umidade relativa: " + d + "%"; };
+
 
 	var x0= d3.extent(data, function(d) { return d.date; });
 
@@ -132,17 +140,9 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 				var p_horiz= 70;
 				var p_vertc= 28;
 
-				var dia= "Data: " + d3.timeFormat("%d-%b-%Y")(d.date);
-				var con= "Concentração:  " + format_mass(d.concentracao);
-
 				if (x_axis_horizon== 1) {
-					var chu= "Precipitação: " + d.chuva + " mm";
-					var v_v= "Velocidade do vento: " + d.v_vento + " m/s";
-					var d_v= "Direção do vento: " + d.d_vento + "°";
-					var tem= "Temperatura: " + d.temperatura + " °C";
-					var umi= "Umidade relativa: " + d.umidade + "%";
-
-					tip.html(dia + "<br>" + con + "<br>" + chu + "<br>" + v_v + "<br>" + d_v + "<br>" + tem + "<br>" + umi)
+					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
+							format_v_v(d.v_vento) + "<br>" + format_d_v(d.d_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px")
 						.style("opacity", 1)
@@ -164,17 +164,9 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 				var p_horiz= 70;
 				var p_vertc= 28;
 
-				var dia= "Data: " + d3.timeFormat("%d-%b-%Y")(d.date);
-				var con= "Concentração:  " + format_mass(d.concentracao);
-
 				if (x_axis_horizon== 1) {
-					var chu= "Precipitação: " + d.chuva + " mm";
-					var v_v= "Velocidade do vento: " + d.v_vento + " m/s";
-					var d_v= "Direção do vento: " + d.d_vento + "°";
-					var tem= "Temperatura: " + d.temperatura + " °C";
-					var umi= "Umidade relativa: " + d.umidade + "%";
-
-					tip.html(dia + "<br>" + con + "<br>" + chu + "<br>" + v_v + "<br>" + d_v + "<br>" + tem + "<br>" + umi)
+					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
+							format_v_v(d.v_vento) + "<br>" + format_d_v(d.d_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px");
 				}
@@ -238,6 +230,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 
 	/* Brush and Zoom functions */
 	function brushended() {
+
 		var s= d3.event.selection;
 		
 		if (!s) {
@@ -257,11 +250,10 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 		zoom();
 	};
 
-	function idled() {
-		idleTimeout= null;
-	};
+	function idled() { idleTimeout= null; };
 
 	function zoom() {
+
 		var t= canvas.transition()
 			.duration(750);
 		

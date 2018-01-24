@@ -22,7 +22,6 @@
 
 </head>
 <body>
-
 	<div style="width:100%;height:100%">
 		<div style="margin:auto;width:1900px;height:455px">
 			<div id="view1" class="Graph" style="width:100%;height:100%"></div>
@@ -51,19 +50,17 @@
 
 	<script type="text/javascript">
 
-		var parseDate= d3.timeParse("%m/%d/%Y");
-		var format_value= d3.format(",.2f");
-		var format_mass= function(d) { return format_value(d) + " μg/m³"; };
-		
 		var path= "/pollution/data/";
 		var v1_source= path + "2015_2017.tsv";
-		
-		var horizonte= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
-
-		var r_scale;
 		var all_data= path + "1997_2017.tsv";
 
+		var parseDate= d3.timeParse("%m/%d/%Y");
+		var format_mass= function(d) { return d3.format(",.2f")(d) + " μg/m³"; };
+
+		var r_scale;
 		var y0;
+
+		var horizonte= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
 
 
 		d3.tsv(all_data, function(error, data) {	
@@ -81,8 +78,8 @@
 		});
 
 		function color_group(index_color) {
-			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#377eb8","#e41a1c"];
 			//					verao     outono   inverno  primavera   var_up   var_down
+			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#377eb8","#e41a1c"];
 
 			return color_range[index_color];
 		};
@@ -94,6 +91,7 @@
 		};
 
 		function updateData(value) {    // Update data from combobox onChange
+
 			var v2_source= "";
 			
 			horizonte= 1;
@@ -115,6 +113,7 @@
 		setTimeout(load_page, 500);
 
 		function load_page() {
+
 			add_legend("legenda_sp");
 			init(v1_source, "view1", horizonte);
 			updateData("14_15");
