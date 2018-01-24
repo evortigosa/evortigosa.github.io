@@ -1,2 +1,2 @@
 # evortigosa.github.io
-M.Sc. Project
+M.Sc. Projects
