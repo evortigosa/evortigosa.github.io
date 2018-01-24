@@ -158,7 +158,7 @@ function draw_difference(data, view) {
 		.attr("dy", ".4em");
 
 
-	canvas.append("rect")		// Plano de eventos
+	canvas.append("rect")		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
 		.attr("width", width)
 		.attr("height", height)
 		.style("fill", "none")
@@ -216,6 +216,17 @@ function draw_difference(data, view) {
 				.text(format_mass(d.down));
 		}
 	};
+
+
+	canvas.append("rect")		// Plano de transicao, efeito de construcao da area
+		.attr("width", width)
+		.attr("height", height)
+		.attr("x", 0)
+		.style("fill", "white")
+		.transition()
+			.duration(1000)
+			.attr("x", width)
+			.remove();
 
 
 	var xAxis= d3.axisBottom(x_scale)			// Construcao dos eixos
