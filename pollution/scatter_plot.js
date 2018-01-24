@@ -150,7 +150,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 							.duration(100);
 				}
 				else {
-					tip.html(dia + "<br>" + con)
+					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px")
 						.style("opacity", 1)
@@ -171,7 +171,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 						.style("top", (mousePos[1]+ p_vertc) + "px");
 				}
 				else {
-					tip.html(dia + "<br>" + con)
+					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px");
 				}
