@@ -14,18 +14,17 @@
 import sys
 import numpy as np
 import pandas as pd
+import calendar as cd
 
-from datetime import datetime
 from datetime import timedelta
-
 from scipy.interpolate import interp1d
 
 
 def to_int(x):
-	return x.day+ 30*(x.month- 1)	# MUDAR AQUI PRA MAIS ANOS
+	return x.dayofyear	# MUDAR AQUI PRA MAIS ANOS
 
 
-file_up= pd.read_table(sys.argv[1], usecols=[0,1])
+file_up= pd.read_table(sys.argv[1], usecols=[0,1])	# leitura do primeiro arquivo de dados
 
 aux_d_up= file_up.iloc[0:,0:1].values
 dates_up= to_int(pd.to_datetime(aux_d_up[:,0]))
@@ -33,8 +32,16 @@ dates_up= to_int(pd.to_datetime(aux_d_up[:,0]))
 conce_up= file_up.iloc[0:,1:2].values	# valores para a concentracao do MP, conjunto do grafico superior
 conce_up= conce_up[:,0]
 
+x_up= np.array(dates_up)
+y_up= np.array(conce_up)
 
-file_down= pd.read_table(sys.argv[2], usecols=[0,1])
+ninst= len(x_up)
+
+for i in range(0, ninst):
+	if cd.isleap(pd.to_datetime(aux_d_up[i][0]).year): x_up[i]= x_up[i]- 1
+
+
+file_down= pd.read_table(sys.argv[2], usecols=[0,1])	# leitura do segundo arquivo de dados
 
 aux_d_down= file_down.iloc[0:,0:1].values
 dates_down= to_int(pd.to_datetime(aux_d_down[:,0]))
@@ -42,13 +49,21 @@ dates_down= to_int(pd.to_datetime(aux_d_down[:,0]))
 conce_down= file_down.iloc[0:,1:2].values	# valores para a concentracao do MP, conjunto do grafico inferior
 conce_down= conce_down[:,0]
 
+x_down= np.array(dates_down)
+y_down= np.array(conce_down)
 
-f_up= interp1d(dates_up, conce_up, kind="cubic")	# (x,y,"cubic spline interpolation")
-f_down= interp1d(dates_down, conce_down, kind="cubic")
+ninst= len(x_down)
+
+for i in range(0, ninst):
+	if cd.isleap(pd.to_datetime(aux_d_down[i][0]).year): x_down[i]= x_down[i]- 1
+
+
+f_up= interp1d(x_up, y_up, kind="cubic")	# (x,y,"cubic spline interpolation")
+f_down= interp1d(x_down, y_down, kind="cubic")
 
 
 """	# plot para comparacao entre interpolacao linear e cubica
-f_linear= interp1d(dates_up, conce_up)
+f_linear= interp1d(x_up, x_up)
 
 xnew = np.linspace(121, 151, num=10000, endpoint=True)
 
@@ -59,14 +74,14 @@ plt.show()
 """
 
 
-inst= np.unique(np.append(dates_up, dates_down))
-ninst= len(inst)
+insts= np.unique(np.append(x_up, x_down))
+ninst= len(insts)
 
 
-if (len(dates_up)> len(dates_down)):
-	dia_1= datetime.strptime(str(aux_d_up[0][0]), "%m/%d/%Y")	# le a data, converte pra string e transforma em objeto data
+if (len(x_up)> len(x_down)):
+	dia_1= pd.to_datetime(aux_d_up[0][0])	# le a data e transforma em objeto data
 else:
-	dia_1= datetime.strptime(str(aux_d_down[0][0]), "%m/%d/%Y")
+	dia_1= pd.to_datetime(aux_d_down[0][0])
 
 
 line= "Data\tConcentra_up\tConcentra_down\n"
@@ -77,8 +92,8 @@ with open("dif_anoUP_anoDW.tsv", "w") as f_out:
 	for i in range(0, ninst):
 		dia= dia_1.strftime("%-m/%-d/%Y")
 
-		valor_A= ("%.2f" % f_up(inst[i]))
-		valor_B= ("%.2f" % f_down(inst[i]))
+		valor_A= ("%.2f" % f_up(insts[i]))
+		valor_B= ("%.2f" % f_down(insts[i]))
 
 		line= dia + "\t" + str(valor_A) + "\t" + str(valor_B) + "\n"
 
