@@ -64,13 +64,11 @@ div.tooltip {
 }
 
 /* Difference Chart */
-.area.above {
-	fill: #e41a1c;
+.area_above {
 	opacity: 0.75;
 }
 
-.area.below {
-	fill: #377eb8;
+.area_below {
 	opacity: 0.75;
 }
 
