@@ -55,7 +55,8 @@
 		var all_data= path + "1997_2017.tsv";
 
 		var parseDate= d3.timeParse("%m/%d/%Y");
-		var format_mass= function(d) { return d3.format(",.2f")(d) + " μg/m³"; };
+		var mass_un= "μg/m³"
+		var format_mass= function(d) { return d3.format(".2f")(d) + " " + mass_un; };
 
 		var r_scale;
 		var y0;

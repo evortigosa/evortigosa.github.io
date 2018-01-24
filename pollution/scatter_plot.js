@@ -51,6 +51,9 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	var format_tem= function(d) { return "Temperatura: " + d + " °C"; };
 	var format_umi= function(d) { return "Umidade relativa: " + d + "%"; };
 
+	var x_axis_label= "Período da Amostragem";
+	var y_axis_label= "Concentração";
+
 
 	var x0= d3.extent(data, function(d) { return d.date; });
 
@@ -212,7 +215,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 		.attr("x", width/ 2)
 		.attr("y", height+ margin.bottom- 4)
 		.style("text-anchor", "middle")
-		.text("Período da Amostragem");
+		.text(x_axis_label);
 
 	canvas.append("g")
 		.attr("class", "axis-y")
@@ -225,7 +228,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 		.attr("y", 1 -margin.left)
 		.attr("dy", ".71em")
 		.style("text-anchor", "middle")
-		.text("Concentração (μg/m³)");
+		.text(y_axis_label + " (" + mass_un + ")");
 
 
 	/* Brush and Zoom functions */

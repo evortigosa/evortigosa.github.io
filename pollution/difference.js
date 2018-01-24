@@ -32,6 +32,8 @@ function draw_difference(data, view) {
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
 
+	var y_axis_label= "Variação";
+
 	var delay_time= 500;
 
 
@@ -195,7 +197,7 @@ function draw_difference(data, view) {
 		}
 		else {
 			marker_up.select("text")
-				.attr("y", -10)
+				.attr("y", -8)
 				.text(format_mass(d.up));
 		}
 
@@ -208,7 +210,7 @@ function draw_difference(data, view) {
 		}
 		else {
 			marker_down.select("text")
-				.attr("y", -2)
+				.attr("y", 2)
 				.text(format_mass(d.down));
 		}
 	};
@@ -237,6 +239,5 @@ function draw_difference(data, view) {
 		.attr("y", 1 -margin.left)
 		.attr("dy", ".71em")
 		.style("text-anchor", "middle")
-		.text("Variação (μg/m³)");
-
+		.text(y_axis_label + " (" + mass_un + ")");
 };

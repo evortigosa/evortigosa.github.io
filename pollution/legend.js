@@ -10,7 +10,7 @@
 */
 
 function add_legend(view, data_down) {
-	
+
 	var width= document.getElementById(view).clientWidth;
 	var height= document.getElementById(view).clientHeight;
 
@@ -59,7 +59,6 @@ function add_legend(view, data_down) {
 	}
 
 	for ((i= view_flag); (i< (4+ 0.5*view_flag)); (i++)) {
-
 		canvas.append("rect")
 			.attr("x", ((i+ 1)*pos_box+ i*pos_text+ h_shift))
 			.attr("y", vertical_pad- 10)
