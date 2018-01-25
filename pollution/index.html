@@ -88,7 +88,6 @@
 		function init(init_source, view, time_hor) {
 
 			read_sp_data(init_source, view, time_hor);
-			read_df_data(path + "dif_2014_2015.tsv", "view_df");
 		};
 
 		function updateData(value) {    // Update data from combobox onChange
@@ -105,9 +104,11 @@
 				v2_source= "2014_2015.tsv";
 			}
 
+			add_legend("legenda_df", value);
+			read_df_data(path + "dif_" + v2_source, "view_df");
+
 			v2_source= path + v2_source;
 
-			add_legend("legenda_df", value);
 			init(v2_source, "view2", horizonte);
 		};
 
