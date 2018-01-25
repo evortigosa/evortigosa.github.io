@@ -61,7 +61,7 @@
 		var r_scale;
 		var y0;
 
-		var horizonte= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
+		var x_axis_horizon= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
 
 
 		d3.tsv(all_data, function(error, data) {	
@@ -85,20 +85,20 @@
 			return color_range[index_color];
 		};
 
-		function init(init_source, view, time_hor) {
+		function init(data_source, view) {
 
-			read_sp_data(init_source, view, time_hor);
+			read_sp_data(data_source, view);
 		};
 
 		function updateData(value) {    // Update data from combobox onChange
 
 			var v2_source= "";
 			
-			horizonte= 1;
+			x_axis_horizon= 1;
 
 			if (value=== "97_06") {
 				v2_source= "1997_2006.tsv";
-				horizonte= 2;
+				x_axis_horizon= 2;
 			}
 			else if (value=== "14_15") {
 				v2_source= "2014_2015.tsv";
@@ -109,7 +109,7 @@
 
 			v2_source= path + v2_source;
 
-			init(v2_source, "view2", horizonte);
+			init(v2_source, "view2");
 		};
 
 		setTimeout(load_page, 500);
@@ -117,7 +117,7 @@
 		function load_page() {
 
 			add_legend("legenda_sp");
-			init(v1_source, "view1", horizonte);
+			init(v1_source, "view1");
 			updateData("14_15");
 		};
 

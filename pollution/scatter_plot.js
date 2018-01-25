@@ -9,7 +9,7 @@
 	2018. All rights reserved.
 */
 
-function read_sp_data(data_source, view, x_axis_horizon) {
+function read_sp_data(data_source, view) {
 
 	d3.tsv(data_source, function(error, data) {
 		if (error) throw error;
@@ -32,11 +32,11 @@ function read_sp_data(data_source, view, x_axis_horizon) {
 			});
 		}
 
-		draw_plot(data, view, x_axis_horizon);
+		draw_plot(data, view);
 	});
 };
 
-function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (string), view1 ou view2
+function draw_plot(data, view) {	   // view assume os valores (string), view1 ou view2
 
 	var margin= {top: 10, right: 35, bottom: 50, left: 60};
 
