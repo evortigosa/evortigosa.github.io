@@ -50,7 +50,7 @@
 
 	<script type="text/javascript">
 
-		var path= "/pollution/data/";
+		var path= "/data/";
 		var v1_source= path + "2015_2017.tsv";
 		var all_data= path + "1997_2017.tsv";
 
@@ -105,11 +105,8 @@
 			}
 
 			add_legend("legenda_df", value);
+			init(path + v2_source, "view2");
 			read_df_data(path + "dif_" + v2_source, "view_df");
-
-			v2_source= path + v2_source;
-
-			init(v2_source, "view2");
 		};
 
 		setTimeout(load_page, 500);
