@@ -192,9 +192,9 @@ function draw_difference(data, view) {
 
 		marker_up.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.up) + ")");
 		
-		if (d.up== 0) {
+		if (d.up< 5) {
 			marker_up.select("text")
-				.attr("y", -15)
+				.attr("y", -5)
 				.text(format_mass(d.up));
 		}
 		else {
@@ -205,9 +205,9 @@ function draw_difference(data, view) {
 
 		marker_down.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.down) + ")");
 		
-		if (d.down== 0) {
+		if (d.down< 5) {
 			marker_down.select("text")
-				.attr("y", -15)
+				.attr("y", -5)
 				.text(format_mass(d.down));
 		}
 		else {
