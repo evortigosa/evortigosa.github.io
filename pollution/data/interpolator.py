@@ -20,6 +20,7 @@ from datetime import timedelta
 from scipy.interpolate import interp1d
 
 # observacao: os intervalos compreendidos pelos arquivos processados devem ter mesma amplitude, seja em meses ou anos
+# deve-se escolher por qual base de dados se quer registrar
 def is_29_fev(x):
 	if x.day== 29 and x.month== 2:
 		return True
@@ -50,6 +51,9 @@ def processa_dados(x, y):	# processamento dos vetores originados nos dados
 
 	return x_new, y_new
 
+def find_max_value(x):
+	return x[np.argwhere(x == x[x> 0].max())[0][0]]	# captura o maior valor do vetor, para servir como "teto"
+
 
 # leitura do primeiro arquivo de dados
 file_up= pd.read_table(sys.argv[1], usecols=[0,1])
@@ -62,6 +66,8 @@ conce_up= conce_up[:,0]
 
 x_up, y_up= processa_dados(dates_up, conce_up)
 
+max_up= find_max_value(y_up)
+
 # leitura do segundo arquivo de dados
 file_down= pd.read_table(sys.argv[2], usecols=[0,1])
 
@@ -72,6 +78,8 @@ conce_down= file_down.iloc[0:,1:2].values	# valores para a concentracao do MP, c
 conce_down= conce_down[:,0]
 
 x_down, y_down= processa_dados(dates_down, conce_down)
+
+max_down= find_max_value(y_down)
 
 
 f_up= interp1d(x_up, y_up, kind="cubic")	# (x,y,"cubic spline interpolation")
@@ -93,7 +101,7 @@ insts= np.unique(np.append(x_up, x_down))
 ninst= len(insts)
 
 #dia_1= dates_up[0]		# le a data e transforma em objeto data
-dia_1= dates_down[0]	# deve-se escolher por qual base de dados se quer registrar
+dia_1= dates_down[0]	# deve-se escolher por qual base de dados se quer registrar - AQUI
 
 
 line= "Data\tConcentra_up\tConcentra_down\n"
@@ -104,13 +112,16 @@ with open("dif_anoUP_anoDW.tsv", "w") as f_out:
 	for i in range(0, (ninst- 1)):
 		dia= dia_1.strftime("%-m/%-d/%Y")
 
-		valor_A= f_up(insts[i])
-		valor_B= f_down(insts[i])
+		valor_up= f_up(insts[i])
+		valor_dw= f_down(insts[i])
 
-		if valor_A< 0: valor_A= 0
-		if valor_B< 0: valor_B= 0
+		if valor_up< 0: valor_up= 0
+		elif valor_up> max_up: valor_up= max_up
 
-		line= dia + "\t" + str("%.2f" % valor_A) + "\t" + str("%.2f" % valor_B) + "\n"
+		if valor_dw< 0: valor_dw= 0
+		elif valor_dw> max_down: valor_dw= max_down
+
+		line= dia + "\t" + str("%.2f" % valor_up) + "\t" + str("%.2f" % valor_dw) + "\n"
 
 		dia_1= dia_1 + timedelta(days=(insts[i+ 1]- insts[i]))
 
