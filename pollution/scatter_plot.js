@@ -38,10 +38,8 @@ function read_sp_data(data_source, view) {
 
 function draw_plot(data, view) {	   // view assume os valores (string), view1 ou view2
 
-	var margin= {top: 10, right: 35, bottom: 50, left: 60};
-
-	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
-	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
+	var y_axis_label= "Concentração";
+	var x_axis_label= "Período da Amostragem";
 
 	var format_dia= function(d) { return "Data: " + d3.timeFormat("%d-%b-%Y")(d); };
 	var format_con= function(d) { return "Concentração:  " + format_mass(d); };
@@ -51,8 +49,11 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 	var format_tem= function(d) { return "Temperatura: " + d + " °C"; };
 	var format_umi= function(d) { return "Umidade relativa: " + d + "%"; };
 
-	var x_axis_label= "Período da Amostragem";
-	var y_axis_label= "Concentração";
+
+	var margin= {top: 10, right: 35, bottom: 50, left: 60};
+
+	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
+	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
 
 
 	var x0= d3.extent(data, function(d) { return d.date; });

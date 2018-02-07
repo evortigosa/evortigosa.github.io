@@ -54,12 +54,13 @@ function update_df_data(data_source, view, begin, end) {
 
 function draw_difference(data, view) {
 
+	var y_axis_label= "Variação";
+
+
 	var margin= {top: 10, right: 35, bottom: 25, left: 60};
 
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
-
-	var y_axis_label= "Variação";
 
 	var delay_time= 500;
 
