@@ -43,7 +43,7 @@ function update_df_data(data_source, view, begin, end) {
 			var aux= new Date(d.date);
 
 			if ((aux.getTime()>= inicio.getTime()) && (aux.getTime()<= final.getTime())) {
-				subset.push(data[index])
+				subset.push(data[index]);
 			}
 		});
 

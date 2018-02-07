@@ -96,7 +96,7 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 		.call(xGrid.tickSize(-height, 0, 0));
 
 	var yGrid= d3.axisLeft(y_scale)		// Draw the y Grid lines
-		.tickFormat("")
+		.tickFormat("");
 
 	canvas.append("g")
 		.attr("class", "grid-y")
