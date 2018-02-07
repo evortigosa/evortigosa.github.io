@@ -109,7 +109,8 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 		.style("opacity", 0);
 
 
-	var brush= d3.brush()    // Focus + Context
+	var brush= d3.brushX()    // Focus + Context
+		.extent([[0, 0], [width, height]])
 		.on("end", brushended);
 	
 	var idleTimeout, idleDelay= 350;
@@ -204,12 +205,12 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 
 	var yAxis= d3.axisLeft(y_scale)
 		.tickFormat(d3.format(".1f"));
-	
+
 	canvas.append("g")
 		.attr("class", "axis-x")
 		.attr("transform", "translate(0," + height + ")")
 		.call(xAxis);
-		
+
 	canvas.append("text")
 		.attr("class", "label")
 		.attr("x", width/ 2)
@@ -220,7 +221,7 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 	canvas.append("g")
 		.attr("class", "axis-y")
 		.call(yAxis);
-	
+
 	canvas.append("text")
 		.attr("class", "label")
 		.attr("transform", "rotate(-90)")
@@ -232,20 +233,37 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 
 
 	/* Brush and Zoom functions */
+	/* Linhas comentadas servem para zoom bi-dimensional, brush= d3.brush() */
 	function brushended() {
 
 		var s= d3.event.selection;
-		
+
 		if (!s) {
 			if (!idleTimeout) return idleTimeout= setTimeout(idled, idleDelay);
-			
+
 			x_scale.domain(x0).nice();
-			y_scale.domain(y0).nice();
-		} 
+			//y_scale.domain(y0).nice();
+
+			if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
+				((view=== "view2") && (v2_source=== "1997_2006.tsv")))
+				read_df_data(path + "dif_" + v2_source, "view_df");
+		}
 		else {
-			x_scale.domain([s[0][0], s[1][0]].map(x_scale.invert, x_scale));
-			y_scale.domain([s[1][1], s[0][1]].map(y_scale.invert, y_scale));
-			
+			//x_scale.domain([s[0][0], s[1][0]].map(x_scale.invert, x_scale));
+			//y_scale.domain([s[1][1], s[0][1]].map(y_scale.invert, y_scale));
+
+			var d0= s.map(x_scale.invert, x_scale),
+				d1= d0.map(d3.timeDay.round);
+
+			var inicio= d3.timeFormat("%m/%d/%Y")(d1[0]),
+				final= d3.timeFormat("%m/%d/%Y")(d1[1]);
+
+			if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
+				((view=== "view2") && (v2_source=== "1997_2006.tsv")))
+				update_df_data(path + "dif_" + v2_source, "view_df", inicio, final);
+
+			x_scale.domain([s[0], s[1]].map(x_scale.invert, x_scale));
+
 			canvas.select(".brush")
 				.call(brush.move, null);
 		}
@@ -259,7 +277,7 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 
 		var t= canvas.transition()
 			.duration(750);
-		
+
 		canvas.select(".axis-x").transition(t)
 			.call(xAxis);
 		

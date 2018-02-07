@@ -52,6 +52,7 @@
 
 		var path= "/pollution/data/";
 		var v1_source= path + "2015_2017.tsv";
+		var v2_source= "";
 		var all_data= path + "1997_2017.tsv";
 
 		var parseDate= d3.timeParse("%m/%d/%Y");
@@ -59,8 +60,6 @@
 		var format_mass= function(d) { return d3.format(".2f")(d) + " " + mass_un; };
 
 		var r_scale;
-		var y0;
-
 		var x_axis_horizon= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
 
 
@@ -71,11 +70,9 @@
 				d.concentracao= +d.Concentracao;
 			});
 
-			y0= d3.extent(data, function(d) { return d.concentracao; });
-
 			r_scale= d3.scaleLinear()	// Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente
 				.range([3, 16])
-				.domain(y0);
+				.domain(d3.extent(data, function(d) { return d.concentracao; }));
 		});
 
 		function color_group(index_color) {
@@ -85,15 +82,10 @@
 			return color_range[index_color];
 		};
 
-		function init(data_source, view) {
-
-			read_sp_data(data_source, view);
-		};
-
 		function updateData(value) {    // Update data from combobox onChange
 
-			var v2_source= "";
-			
+			v2_source= "";
+
 			x_axis_horizon= 1;
 
 			if (value=== "97_06") {
@@ -105,16 +97,16 @@
 			}
 
 			add_legend("legenda_df", value);
-			init(path + v2_source, "view2");
+			read_sp_data(path + v2_source, "view2");
 			read_df_data(path + "dif_" + v2_source, "view_df");
 		};
 
-		setTimeout(load_page, 500);
+		setTimeout(init, 500);
 
-		function load_page() {
+		function init() {
 
 			add_legend("legenda_sp");
-			init(v1_source, "view1");
+			read_sp_data(v1_source, "view1");
 			updateData("14_15");
 		};
 

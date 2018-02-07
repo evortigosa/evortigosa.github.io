@@ -25,6 +25,33 @@ function read_df_data(data_source, view) {
 	});
 };
 
+function update_df_data(data_source, view, begin, end) {
+
+	var subset= [];
+
+	var inicio= new Date(begin),
+		final= new Date(end);
+
+	d3.tsv(data_source, function(error, data) {
+		if (error) throw error;
+
+		data.forEach(function(d, index) {
+			d.date= parseDate(d.Data);
+			d.up= +d["Concentra_up"];
+			d.down= +d["Concentra_down"];
+
+			var aux= new Date(d.date);
+
+			if ((aux.getTime()>= inicio.getTime()) && (aux.getTime()<= final.getTime())) {
+				subset.push(data[index])
+			}
+		});
+
+		draw_difference(subset, view);
+
+	});
+};
+
 function draw_difference(data, view) {
 
 	var margin= {top: 10, right: 35, bottom: 25, left: 60};
@@ -182,12 +209,15 @@ function draw_difference(data, view) {
 
 	function mouseMove() {		// Add event listeners/handlers
 
-		var x0= x_scale.invert(d3.mouse(this)[0]),
+		var	pos_limite= x_scale(data[data.length- 1].date),
+			pos_cursor= d3.mouse(this)[0];
+
+		var x0= pos_cursor > pos_limite ? x_scale.invert(pos_limite) : x_scale.invert(pos_cursor),
 			index= bisectDate(data, x0, 1),
 			start= data[index- 1],
 			end= data[index],
 			d= x0 - start.date > end.date - x0 ? end : start;
-		
+
 		vertical_line.attr("transform", "translate(" + x_scale(d.date) + ",0)");
 
 		marker_up.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.up) + ")");
@@ -235,7 +265,7 @@ function draw_difference(data, view) {
 	var yAxis= d3.axisLeft(y_scale)
 		.ticks(4)
 		.tickFormat(d3.format(".1f"));
-	
+
 	canvas.append("g")
 		.attr("class", "axis-x")
 		.attr("transform", "translate(0," + height + ")")
