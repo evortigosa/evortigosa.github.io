@@ -43,16 +43,26 @@ function add_legend(view, data_down) {
 		.attr("y", vertical_pad+ 3);
 
 	if (view_flag== 0) {
-		top_label.text("Período:");
-
 		h_shift= h_shift+ 20;
 
-		texto= ["Verão","Outono","Inverno","Primavera"];
+		if (language=== "pt") {
+			top_label.text("Período:");
+			texto= ["Verão","Outono","Inverno","Primavera"];
+		}
+		else if (language=== "en") {
+			top_label.text("Season:");
+			texto= ["Summer","Autumn","Winter","Spring"];
+		}
 	}
 	else {
-		top_label.text("Variação:");
-
 		h_shift= h_shift -375;
+
+		if (language=== "pt") {
+			top_label.text("Variação:");
+		}
+		else if (language=== "en") {
+			top_label.text("Difference:");
+		}
 
 		if (data_down=== "14_15") texto= ["2015-2017","2014-2015"];
 		else if (data_down=== "97_06") texto= ["2015-2017","1997-2006"];

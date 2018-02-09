@@ -9,7 +9,7 @@
 	2018. All rights reserved.
 */
 
-function read_sp_data(data_source, view) {
+function read_sp_data(data_source, view, x_axis_horizon) {
 
 	d3.tsv(data_source, function(error, data) {
 		if (error) throw error;
@@ -32,14 +32,14 @@ function read_sp_data(data_source, view) {
 			});
 		}
 
-		draw_plot(data, view);
+		draw_plot(data, view, x_axis_horizon);
 	});
 };
 
-function draw_plot(data, view) {	   // view assume os valores (string), view1 ou view2
+function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (string), view1 ou view2
 
 	var y_axis_label= "Concentração";
-	var x_axis_label= "Período da Amostragem";
+	var x_axis_label= "Intervalo de Amostragem";
 
 	var format_dia= function(d) { return "Data: " + d3.timeFormat("%d-%b-%Y")(d); };
 	var format_con= function(d) { return "Concentração:  " + format_mass(d); };
@@ -48,6 +48,19 @@ function draw_plot(data, view) {	   // view assume os valores (string), view1 ou
 	var format_d_v= function(d) { return "Direção do vento: " + d + "°"; };
 	var format_tem= function(d) { return "Temperatura: " + d + " °C"; };
 	var format_umi= function(d) { return "Umidade relativa: " + d + "%"; };
+
+	if (language=== "en") {
+		y_axis_label= "Concentration";
+		x_axis_label= "Sampling Interval";
+
+		format_dia= function(d) { return "Date: " + d3.timeFormat("%d-%b-%Y")(d); };
+		format_con= function(d) { return "Concentration:  " + format_mass(d); };
+		format_chu= function(d) { return "Precipitation: " + d + " mm"; };
+		format_v_v= function(d) { return "Wind speed: " + d + " m/s"; };
+		format_d_v= function(d) { return "Wind direction: " + d + "°"; };
+		format_tem= function(d) { return "Temperature: " + d + " °C"; };
+		format_umi= function(d) { return "Relative humidity: " + d + "%"; };
+	}
 
 
 	var margin= {top: 10, right: 35, bottom: 50, left: 60};

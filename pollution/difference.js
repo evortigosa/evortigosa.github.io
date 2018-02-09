@@ -56,6 +56,10 @@ function draw_difference(data, view) {
 
 	var y_axis_label= "Variação";
 
+	if (language=== "en") {
+		y_axis_label= "Difference";
+	}
+
 
 	var margin= {top: 10, right: 35, bottom: 25, left: 60};
 
@@ -279,7 +283,7 @@ function draw_difference(data, view) {
 	canvas.append("text")
 		.attr("class", "label")
 		.attr("transform", "rotate(-90)")
-		.attr("x", -(height/ 2))
+		.attr("x", -(height/ 2)- 4)
 		.attr("y", 1 -margin.left)
 		.attr("dy", ".71em")
 		.style("text-anchor", "middle")
