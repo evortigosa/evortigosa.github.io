@@ -273,6 +273,7 @@ function draw_difference(data, view) {
 		.tickFormat(d3.format(".0f"));
 
 	if (data.length> 1) yAxis.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]]);
+	else yAxis.tickValues([]);
 
 	canvas.append("g")
 		.attr("class", "axis-x")
