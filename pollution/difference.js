@@ -112,164 +112,167 @@ function draw_difference(data, view) {
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-	canvas.datum(data);
+	if (data.length> 0) {
+		canvas.datum(data);
 
-	canvas.append("clipPath")
-		.attr("id", "clip-below")
-		.append("path")
-		.attr("d", area.y0(height));
+		canvas.append("clipPath")
+			.attr("id", "clip-below")
+			.append("path")
+			.attr("d", area.y0(height));
 
-	canvas.append("clipPath")
-		.attr("id", "clip-above")
-		.append("path")
-		.attr("d", area.y0(0));
+		canvas.append("clipPath")
+			.attr("id", "clip-above")
+			.append("path")
+			.attr("d", area.y0(0));
 
-	canvas.append("path")
-		.attr("class", "area_below")
-		.attr("clip-path", "url(#clip-below)")
-		.style("fill", color_group(4))
-		.attr("d", area.y0(function(d) { return y_scale(d.down); }));
+		canvas.append("path")
+			.attr("class", "area_below")
+			.attr("clip-path", "url(#clip-below)")
+			.style("fill", color_group(4))
+			.attr("d", area.y0(function(d) { return y_scale(d.down); }));
 
-	canvas.append("path")
-		.attr("class", "area_above")
-		.attr("clip-path", "url(#clip-above)")
-		.style("fill", color_group(5))
-		.attr("d", area.y0(function(d) { return y_scale(d.down); }));
+		canvas.append("path")
+			.attr("class", "area_above")
+			.attr("clip-path", "url(#clip-above)")
+			.style("fill", color_group(5))
+			.attr("d", area.y0(function(d) { return y_scale(d.down); }));
 
-	canvas.append("path")
-		.attr("class", "line")
-		.style("stroke", "darkblue")
-		.attr("d", lineUP);
+		canvas.append("path")
+			.attr("class", "line")
+			.style("stroke", "darkblue")
+			.attr("d", lineUP);
 
-	canvas.append("path")
-		.attr("class", "line")
-		.style("stroke", "darkred")
-		.attr("d", lineDW);
-
-
-	var vertical_line= canvas.append("g")		// Append a vertical line in the Chart
-		.attr("class", "marker_line")
-		.style("display", "none");
-
-	vertical_line.append("line")
-		.attr("y1", -5)
-		.attr("y2", height)
-		.attr("fill", "none")
-		.style("stroke-width", "1px")
-		.style("stroke", "black")
-		.style("stroke-dasharray", "4,4");
+		canvas.append("path")
+			.attr("class", "line")
+			.style("stroke", "darkred")
+			.attr("d", lineDW);
 
 
-	var marker_up= canvas.append("g")		// Append marker in the Up Chart
-		.style("display", "none");
+		var vertical_line= canvas.append("g")		// Append a vertical line in the Chart
+			.attr("class", "marker_line")
+			.style("display", "none");
 
-	marker_up.append("circle")
-		.attr("class", "marker")
-		.attr("r", 5)
-		.style("fill", "steelblue")
-		.style("pointer-events", "none");
-
-	marker_up.append("text")
-		.attr("class", "df_label")
-		.attr("x", 10)
-		.attr("dy", ".4em");
+		vertical_line.append("line")
+			.attr("y1", -5)
+			.attr("y2", height)
+			.attr("fill", "none")
+			.style("stroke-width", "1px")
+			.style("stroke", "black")
+			.style("stroke-dasharray", "4,4");
 
 
-	var marker_down= canvas.append("g")		// Append marker in the Down Chart
-		.style("display", "none");
+		var marker_up= canvas.append("g")		// Append marker in the Up Chart
+			.style("display", "none");
 
-	marker_down.append("circle")
-		.attr("class", "marker")
-		.attr("r", 5)
-		.style("fill", "darkred")
-		.style("pointer-events", "none");
+		marker_up.append("circle")
+			.attr("class", "marker")
+			.attr("r", 5)
+			.style("fill", "steelblue")
+			.style("pointer-events", "none");
 
-	marker_down.append("text")
-		.attr("class", "df_label")
-		.attr("x", 10)
-		.attr("dy", ".4em");
-
-
-	canvas.append("rect")		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
-		.attr("width", width)
-		.attr("height", height)
-		.style("fill", "none")
-		.on("mouseover", function() {
-			vertical_line.style("display", null);
-			marker_up.style("display", null); 
-			marker_down.style("display", null); 
-		})
-		.on("mouseout", function() { 
-			vertical_line.style("display", "none");
-			marker_up.style("display", "none"); 
-			marker_down.style("display", "none"); 
-		})
-		.on("mousemove", mouseMove)
-		.transition()
-			.delay(delay_time)
-			.style("pointer-events", "all");
+		marker_up.append("text")
+			.attr("class", "df_label")
+			.attr("x", 10)
+			.attr("dy", ".4em");
 
 
-	var bisectDate= d3.bisector(function(d) { return d.date; }).left;	// Create custom bisector
+		var marker_down= canvas.append("g")		// Append marker in the Down Chart
+			.style("display", "none");
 
-	function mouseMove() {		// Add event listeners/handlers
+		marker_down.append("circle")
+			.attr("class", "marker")
+			.attr("r", 5)
+			.style("fill", "darkred")
+			.style("pointer-events", "none");
 
-		var	pos_limite= x_scale(data[data.length- 1].date),
-			pos_cursor= d3.mouse(this)[0];
-
-		var x0= pos_cursor > pos_limite ? x_scale.invert(pos_limite) : x_scale.invert(pos_cursor),
-			index= bisectDate(data, x0, 1),
-			start= data[index- 1],
-			end= data[index],
-			d= x0 - start.date > end.date - x0 ? end : start;
-
-		vertical_line.attr("transform", "translate(" + x_scale(d.date) + ",0)");
-
-		marker_up.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.up) + ")");
-		
-		if (d.up< 5) {
-			marker_up.select("text")
-				.attr("y", -5)
-				.text(format_mass(d.up));
-		}
-		else {
-			marker_up.select("text")
-				.attr("y", -8)
-				.text(format_mass(d.up));
-		}
-
-		marker_down.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.down) + ")");
-		
-		if (d.down< 5) {
-			marker_down.select("text")
-				.attr("y", -5)
-				.text(format_mass(d.down));
-		}
-		else {
-			marker_down.select("text")
-				.attr("y", 2)
-				.text(format_mass(d.down));
-		}
-	};
+		marker_down.append("text")
+			.attr("class", "df_label")
+			.attr("x", 10)
+			.attr("dy", ".4em");
 
 
-	canvas.append("rect")		// Plano de transicao, efeito de construcao da area
-		.attr("width", width)
-		.attr("height", height)
-		.attr("x", 0)
-		.style("fill", "white")
-		.transition()
-			.duration(1000)
-			.attr("x", width)
-			.remove();
+		canvas.append("rect")		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
+			.attr("width", width)
+			.attr("height", height)
+			.style("fill", "none")
+			.on("mouseover", function() {
+				vertical_line.style("display", null);
+				marker_up.style("display", null); 
+				marker_down.style("display", null); 
+			})
+			.on("mouseout", function() { 
+				vertical_line.style("display", "none");
+				marker_up.style("display", "none"); 
+				marker_down.style("display", "none"); 
+			})
+			.on("mousemove", mouseMove)
+			.transition()
+				.delay(delay_time)
+				.style("pointer-events", "all");
+
+
+		var bisectDate= d3.bisector(function(d) { return d.date; }).left;	// Create custom bisector
+
+		function mouseMove() {		// Add event listeners/handlers
+
+			var	pos_limite= x_scale(data[data.length- 1].date),
+				pos_cursor= d3.mouse(this)[0];
+
+			var x0= pos_cursor > pos_limite ? x_scale.invert(pos_limite) : x_scale.invert(pos_cursor),
+				index= bisectDate(data, x0, 1),
+				start= data[index- 1],
+				end= data[index],
+				d= x0 - start.date > end.date - x0 ? end : start;
+
+			vertical_line.attr("transform", "translate(" + x_scale(d.date) + ",0)");
+
+			marker_up.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.up) + ")");
+			
+			if (d.up< 5) {
+				marker_up.select("text")
+					.attr("y", -5)
+					.text(format_mass(d.up));
+			}
+			else {
+				marker_up.select("text")
+					.attr("y", -8)
+					.text(format_mass(d.up));
+			}
+
+			marker_down.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.down) + ")");
+			
+			if (d.down< 5) {
+				marker_down.select("text")
+					.attr("y", -5)
+					.text(format_mass(d.down));
+			}
+			else {
+				marker_down.select("text")
+					.attr("y", 2)
+					.text(format_mass(d.down));
+			}
+		};
+
+
+		canvas.append("rect")		// Plano de transicao, efeito de construcao da area
+			.attr("width", width)
+			.attr("height", height)
+			.attr("x", 0)
+			.style("fill", "white")
+			.transition()
+				.duration(1000)
+				.attr("x", width)
+				.remove();
+	}
 
 
 	var xAxis= d3.axisBottom(x_scale)			// Construcao dos eixos
 		.tickValues([]);
 
 	var yAxis= d3.axisLeft(y_scale)
-		.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]])
 		.tickFormat(d3.format(".0f"));
+
+	if (data.length> 0) yAxis.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]]);
 
 	canvas.append("g")
 		.attr("class", "axis-x")

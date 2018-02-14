@@ -21,7 +21,7 @@ function create_info_data(data, view, x_axis_horizon) {
 			subset_d.push({date:d.date, info:d.umidade});
 		}
 	});
-	
+
 	if (view=== "view1") {
 		draw_comp_info(subset_a, "info_v1_a", x_axis_horizon);
 		draw_comp_info(subset_b, "info_v1_b", x_axis_horizon);
@@ -45,7 +45,7 @@ function update_info_data(data_source, view, x_axis_horizon, begin, end) {
 
 	d3.tsv(data_source, function(error, data) {
 		if (error) throw error;
-		
+
 		data.forEach(function(d, index) {
 			d.date= parseDate(d.Data);
 
@@ -78,19 +78,19 @@ function draw_comp_info(data, view, x_axis_horizon) {
 	if ((view=== "info_v1_b") || (view=== "info_v2_b")) {
 		y_axis_label= "Temperatura";
 		format_scale= function(d) { return d + " °C"; };
-		
+
 		if (language=== "en") y_axis_label= "Temperature";
 	}
 	else if ((view=== "info_v1_c") || (view=== "info_v2_c")) {
 		y_axis_label= "Vel. vento";
 		format_scale= function(d) { return d + " m/s"; };
-		
+
 		if (language=== "en") y_axis_label= "Wind speed";
 	}
 	else if ((view=== "info_v1_d") || (view=== "info_v2_d")) {
 		y_axis_label= "Umidade";
 		format_scale= function(d) { return d + " %"; };
-		
+
 		if (language=== "en") y_axis_label= "Humidity";
 	}
 
@@ -110,7 +110,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 		.range([height, 0]);
 
 	x_scale.domain(d3.extent(data, function(d) { return d.date; }));
-	
+
 	if ((view=== "info_v1_a") || (view=== "info_v2_a")) {
 		y_scale.domain([0, 125]);
 	}
@@ -156,7 +156,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 			dt_avlb.text("Data not available");
 		}
 	}
-	else {									// Senao, construo os graficos normalmente
+	else if (data.length> 0) {						// Senao, construo os graficos normalmente
 		area.y0(y_scale(0));
 
 		canvas.append("path")
@@ -239,7 +239,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 			vertical_line.attr("transform", "translate(" + x_scale(d.date) + ",0)");
 
 			marker.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.info) + ")");
-			
+
 			if (d.info< 10) {
 				marker.select("text")
 					.attr("y", -5)
