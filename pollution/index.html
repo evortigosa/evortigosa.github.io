@@ -23,30 +23,48 @@
 </head>
 <body>
 	<div style="width:100%;height:100%">
-		<div style="margin:auto;width:1895px;height:455px">
-			<div id="view1" class="Graph" style="width:100%;height:100%"></div>
-		</div>
-		<div style="margin:auto;width:1895px;height:125px">
-			<div id="view_df" class="Graph" style="width:100%;height:100%"></div>
-		</div>
-		<div style="margin:auto;width:1895px;height:455px">
-			<div id="view2" class="Graph" style="width:100%;height:100%"></div>
-		</div>
-		<div style="width:1895px;height:20px">
-			<div id="combo" class="Graph" style="float:left;width:14%;height:100%">
-				<select type="select" onchange="updateData(value);">
-					<option value="14_15" selected="true">2014 to 2015</option>
-					<option value="97_06">Sep 1997 to Feb 2006</option>
-				</select>
+		<div style="margin:auto;width:1897px;height:455px">
+			<div id="view1" class="Graph" style="float:left;width:80%;height:100%"></div>
+			<div style="float:left;width:20%;height:95%">
+				<div id="info_v1_a" class="Graph" style="width:100%;height:25%"></div>
+				<div id="info_v1_b" class="Graph" style="width:100%;height:25%"></div>
+				<div id="info_v1_c" class="Graph" style="width:100%;height:25%"></div>
+				<div id="info_v1_d" class="Graph" style="width:100%;height:25%"></div>
 			</div>
-			<div id="legenda_sp" class="Graph" style="float:left;width:55%;height:100%"></div>
-			<div id="legenda_df" class="Graph" style="float:left;width:30%;height:100%"></div>
+		</div>
+		<div style="margin:auto;width:1897px;height:125px">
+			<div id="view_df" class="Graph" style="float:left;width:80%;height:100%"></div>
+			<div id="space1" class="Graph" style="float:left;width:8%;height:100%"></div>
+			<div id="space2" class="Graph" style="float:left;width:12%;height:100%">
+				<div id="space3" class="Graph" style="width:100%;height:32%"></div>
+				<div id="combo" class="Graph" style="width:100%;height:60%">
+					<select type="select" onchange="updateData(value);">
+						<option value="14_15" selected="true">2014 to 2015</option>
+						<option value="97_06">Sep 1997 to Feb 2006</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div style="margin:auto;width:1897px;height:455px">
+			<div id="view2" class="Graph" style="float:left;width:80%;height:100%"></div>
+			<div style="float:left;width:20%;height:95%">
+				<div id="info_v2_a" class="Graph" style="width:100%;height:25%"></div>
+				<div id="info_v2_b" class="Graph" style="width:100%;height:25%"></div>
+				<div id="info_v2_c" class="Graph" style="width:100%;height:25%"></div>
+				<div id="info_v2_d" class="Graph" style="width:100%;height:25%"></div>
+			</div>
+		</div>
+		<div style="margin:auto;width:1897px;height:20px">
+			<div id="space4" class="Graph" style="float:left;width:10%;height:100%"></div>
+			<div id="legenda_sp" class="Graph" style="float:left;width:43%;height:100%"></div>
+			<div id="legenda_df" class="Graph" style="float:left;width:40%;height:100%"></div>
 		</div>
 	</div>
 
-	<script type="text/javascript" src="legend.js"></script>
 	<script type="text/javascript" src="scatter_plot.js"></script>
+	<script type="text/javascript" src="multi_info.js"></script>
 	<script type="text/javascript" src="difference.js"></script>
+	<script type="text/javascript" src="legend.js"></script>
 
 	<script type="text/javascript">
 
@@ -78,8 +96,8 @@
 		});
 
 		function color_group(index_color) {
-			//					verao     outono   inverno  primavera   var_up   var_down
-			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#2c7bb6","#d7191c"];
+			//					verao     outono   inverno  primavera   var_up   var_down   infos
+			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#2c7bb6","#d7191c","#4393c3"];
 
 			return color_range[index_color];
 		};

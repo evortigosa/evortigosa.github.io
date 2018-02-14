@@ -61,7 +61,7 @@ function draw_difference(data, view) {
 	}
 
 
-	var margin= {top: 10, right: 35, bottom: 25, left: 60};
+	var margin= {top: 10, right: 35, bottom: 25, left: 50};
 
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
@@ -268,8 +268,8 @@ function draw_difference(data, view) {
 		.tickValues([]);
 
 	var yAxis= d3.axisLeft(y_scale)
-		.ticks(4)
-		.tickFormat(d3.format(".1f"));
+		.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]])
+		.tickFormat(d3.format(".0f"));
 
 	canvas.append("g")
 		.attr("class", "axis-x")

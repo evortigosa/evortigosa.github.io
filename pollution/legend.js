@@ -15,7 +15,7 @@ function add_legend(view, data_down) {
 	var height= document.getElementById(view).clientHeight;
 
 	var h_shift= 20;
-	var vertical_pad= 10;
+	var vertical_pad= height/2;
 	var pos_box= 80;
 	var pos_text= 20;
 
@@ -81,5 +81,31 @@ function add_legend(view, data_down) {
 			.attr("x", ((i+ 1)*pos_box+ (i+ 1)*pos_text+ h_shift))
 			.attr("y", vertical_pad+ 3)
 			.text(texto[i- view_flag]);	
+	}
+
+
+	var width= document.getElementById("space1").clientWidth;	// imprime um texto em frente ao combo que troca os dados
+	var height= document.getElementById("space1").clientHeight;
+
+	document.getElementById("space1").innerHTML= "";
+
+	var canvas2= d3.select("#space1")
+			.append("svg")
+			.attr("width", width)
+			.attr("height", height)
+			.append("g")
+				.attr("transform", "translate(0,0)");
+
+	var dt_texto= canvas2.append("text")
+		.attr("class", "label")
+		.attr("x", (width/ 2)+ 25)
+		.attr("y", (height/ 2)- 8)
+		.style("text-anchor", "middle");
+
+	if (language=== "pt") {
+		dt_texto.text("Conjunto:");
+	}
+	else if (language=== "en") {
+		dt_texto.text("Data set:");
 	}
 };

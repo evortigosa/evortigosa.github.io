@@ -33,6 +33,7 @@ function read_sp_data(data_source, view, x_axis_horizon) {
 		}
 
 		draw_plot(data, view, x_axis_horizon);
+		create_info_data(data, view, x_axis_horizon);
 	});
 };
 
@@ -63,7 +64,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	}
 
 
-	var margin= {top: 10, right: 35, bottom: 50, left: 60};
+	var margin= {top: 10, right: 35, bottom: 50, left: 50};
 
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
@@ -218,7 +219,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	}
 
 	var yAxis= d3.axisLeft(y_scale)
-		.tickFormat(d3.format(".1f"));
+		.tickFormat(d3.format(".0f"));
 
 	canvas.append("g")
 		.attr("class", "axis-x")
@@ -228,7 +229,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	canvas.append("text")
 		.attr("class", "label")
 		.attr("x", width/ 2)
-		.attr("y", height+ margin.bottom- 4)
+		.attr("y", height+ margin.bottom- 10)
 		.style("text-anchor", "middle")
 		.text(x_axis_label);
 
@@ -239,7 +240,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	canvas.append("text")
 		.attr("class", "label")
 		.attr("transform", "rotate(-90)")
-		.attr("x", -(height/ 2))
+		.attr("x", -(height/ 2)- 4)
 		.attr("y", 1 -margin.left)
 		.attr("dy", ".71em")
 		.style("text-anchor", "middle")
@@ -261,6 +262,8 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 			if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
 				((view=== "view2") && (v2_source=== "1997_2006.tsv")))
 				read_df_data(path + "dif_" + v2_source, "view_df");
+
+			create_info_data(data, view, x_axis_horizon);
 		}
 		else {
 			//x_scale.domain([s[0][0], s[1][0]].map(x_scale.invert, x_scale));
@@ -275,6 +278,9 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 			if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
 				((view=== "view2") && (v2_source=== "1997_2006.tsv")))
 				update_df_data(path + "dif_" + v2_source, "view_df", inicio, final);
+
+			if (view=== "view1") update_info_data(v1_source, view, x_axis_horizon, inicio, final);
+			else if (view=== "view2") update_info_data(path + v2_source, view, x_axis_horizon, inicio, final);
 
 			x_scale.domain([s[0], s[1]].map(x_scale.invert, x_scale));
 
