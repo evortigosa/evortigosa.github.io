@@ -156,7 +156,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 			dt_avlb.text("Data not available");
 		}
 	}
-	else if (data.length> 0) {						// Senao, construo os graficos normalmente
+	else if (data.length> 1) {						// Senao, construo os graficos normalmente
 		area.y0(y_scale(0));
 
 		canvas.append("path")

@@ -112,7 +112,7 @@ function draw_difference(data, view) {
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-	if (data.length> 0) {
+	if (data.length> 1) {
 		canvas.datum(data);
 
 		canvas.append("clipPath")
@@ -272,7 +272,7 @@ function draw_difference(data, view) {
 	var yAxis= d3.axisLeft(y_scale)
 		.tickFormat(d3.format(".0f"));
 
-	if (data.length> 0) yAxis.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]]);
+	if (data.length> 1) yAxis.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]]);
 
 	canvas.append("g")
 		.attr("class", "axis-x")
