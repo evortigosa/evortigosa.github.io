@@ -166,13 +166,13 @@ function draw_difference(data, view) {
 
 		marker_up.append("circle")
 			.attr("class", "marker")
-			.attr("r", 5)
+			.attr("r", 4)
 			.style("fill", "steelblue")
 			.style("pointer-events", "none");
 
 		marker_up.append("text")
 			.attr("class", "df_label")
-			.attr("x", 10)
+			.attr("x", 7)
 			.attr("dy", ".4em");
 
 
@@ -181,13 +181,13 @@ function draw_difference(data, view) {
 
 		marker_down.append("circle")
 			.attr("class", "marker")
-			.attr("r", 5)
+			.attr("r", 4)
 			.style("fill", "darkred")
 			.style("pointer-events", "none");
 
 		marker_down.append("text")
 			.attr("class", "df_label")
-			.attr("x", 10)
+			.attr("x", 7)
 			.attr("dy", ".4em");
 
 

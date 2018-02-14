@@ -183,13 +183,13 @@ function draw_comp_info(data, view, x_axis_horizon) {
 
 		marker.append("circle")
 			.attr("class", "marker")
-			.attr("r", 5)
+			.attr("r", 4)
 			.style("fill", "steelblue")
 			.style("pointer-events", "none");
 
 		marker.append("text")
 			.attr("class", "df_label")
-			.attr("x", 10)
+			.attr("x", 7)
 			.attr("dy", ".4em");
 
 		var date_mkr= canvas.append("g")		// Append a date marker in the Chart
@@ -247,7 +247,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 			}
 			else {
 				marker.select("text")
-					.attr("y", 2)
+					.attr("y", 1)
 					.text(format_scale(d.info));
 			}
 
