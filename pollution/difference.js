@@ -20,7 +20,7 @@ function read_df_data(data_source, view) {
 			d.down= +d["Concentra_down"];
 		});
 
-		draw_difference(data, view);
+		draw_difference(data, view, true);
 
 	});
 };
@@ -47,12 +47,12 @@ function update_df_data(data_source, view, begin, end) {
 			}
 		});
 
-		draw_difference(subset, view);
+		draw_difference(subset, view, false);
 
 	});
 };
 
-function draw_difference(data, view) {
+function draw_difference(data, view, all_data) {
 
 	var y_axis_label= "Variação";
 
@@ -75,7 +75,9 @@ function draw_difference(data, view) {
 	var y_scale= d3.scaleLinear()	// Escala vertical
 		.range([height, 0]);
 
-	x_scale.domain(d3.extent(data, function(d) { return d.date; })).nice();
+	if (all_data) x_scale.domain(d3.extent(data, function(d) { return d.date; })).nice();
+	else x_scale.domain(d3.extent(data, function(d) { return d.date; }));
+
 	y_scale.domain([
 	//	0,
 		d3.min(data, function(d) { return Math.min(d.up, d.down); }),
