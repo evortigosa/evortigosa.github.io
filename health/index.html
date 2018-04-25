@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<!--
+	Evandro Scudeleti Ortigossa
+
+	M.Sc. Student in Computer Science
+	Institute of Mathematical and Computer Sciences - ICMC
+	University of São Paulo - USP
+	São Carlos, São Paulo, Brazil.
+	
+	2018. All rights reserved.
+-->
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Health Data Visualization</title>
+
+	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="health_style.css">
+	<link rel="icon" href="data:;base64,=">
+
+</head>
+<body>
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1895px;height:30px">
+			<div id="combo" class="Graph" style="width:100%;height:100%">
+				<select type="select" onchange="updateData(value);">
+					<option value="14_15" selected="true">2014 to 2015</option>
+					<option value="97_06">Sep 1997 to Feb 2006</option>
+				</select>
+			</div>
+		</div>
+		<div style="margin:auto;width:1895px;height:500px">
+			<div id="view" class="Graph" style="width:100%;height:100%"></div>
+		</div>
+		<div style="margin:auto;width:1895px;height:50px">
+			<div id="btn" class="Graph" style="float:left;width:20%;height:100%">
+				<form>
+					<label><input type="radio" name="mode" value="stacked" checked> Stacked</label>
+					<label><input type="radio" name="mode" value="grouped"> Grouped</label>
+				</form>
+			</div>
+			<div id="legenda" class="Graph" style="float:left;width:80%;height:100%"></div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="s2g_bars.js"></script>
+
+	<script type="text/javascript">
+
+		var path= "/data/";
+		var source= path + "";
+
+
+		function color_group(index_color) {
+			//					
+			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#2c7bb6","#d7191c"];
+
+			return color_range[index_color];
+		};
+
+		function updateData(value) {    // Update data from combobox onChange
+
+
+
+		};
+
+		setTimeout(init, 500);
+
+		function init() {
+
+			read_s2g_data(source, "view");
+		};
+
+	</script>
+
+</body>
+</html>
