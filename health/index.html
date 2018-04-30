@@ -23,39 +23,68 @@
 </head>
 <body>
 	<div style="width:100%;height:100%">
-		<div style="margin:auto;width:1895px;height:30px">
-			<div id="combo" class="Graph" style="width:100%;height:100%">
+		<div class="Setup1" style="margin:auto;width:1895px;height:30px">
+			<div id="label1" class="Graph" style="float:left;width:4%;height:100%"></div>
+			<div id="combo1" class="Graph" style="float:left;width:4%;height:100%">
 				<select type="select" onchange="updateData(value);">
-					<option value="14_15" selected="true">2014 to 2015</option>
-					<option value="97_06">Sep 1997 to Feb 2006</option>
+					<option value="98" selected="true">1998</option>
+					<option value="99">1999</option>
+					<option value="00">2000</option>
+					<option value="01">2001</option>
+					<option value="02">2002</option>
+					<option value="03">2003</option>
+					<option value="04">2004</option>
+					<option value="05">2005</option>
+					<option value="06">2006</option>
+					<option value="07">2007</option>
 				</select>
 			</div>
-		</div>
-		<div style="margin:auto;width:1895px;height:500px">
-			<div id="view" class="Graph" style="width:100%;height:100%"></div>
-		</div>
-		<div style="margin:auto;width:1895px;height:50px">
-			<div id="btn" class="Graph" style="float:left;width:20%;height:100%">
+			<div id="label2" class="Graph" style="float:left;width:4%;height:100%"></div>
+			<div id="combo2" class="Graph" style="float:left;width:4%;height:100%">
+				<select type="select" onchange="updateData(value);">
+					<option value="98" selected="true">1998</option>
+					<option value="99">1999</option>
+					<option value="00">2000</option>
+					<option value="01">2001</option>
+					<option value="02">2002</option>
+					<option value="03">2003</option>
+					<option value="04">2004</option>
+					<option value="05">2005</option>
+					<option value="06">2006</option>
+					<option value="07">2007</option>
+				</select>
+			</div>
+			<div id="label3" class="Graph" style="float:left;width:10%;height:100%"></div>
+			<div id="btnsty" class="Graph" style="float:left;width:10%;height:100%">
 				<form>
 					<label><input type="radio" name="mode" value="stacked" checked> Stacked</label>
 					<label><input type="radio" name="mode" value="grouped"> Grouped</label>
 				</form>
 			</div>
+		</div>
+		<div style="margin:auto;width:1895px;height:500px">
+			<div id="view1" class="Graph" style="float:left;width:50%;height:100%"></div>
+			<div id="view2" class="Graph" style="float:left;width:50%;height:100%"></div>
+		</div>
+		<div style="margin:auto;width:1895px;height:50px">
+			
 			<div id="legenda" class="Graph" style="float:left;width:80%;height:100%"></div>
 		</div>
 	</div>
 
+	<script type="text/javascript" src="labels.js"></script>
 	<script type="text/javascript" src="s2g_bars.js"></script>
 
 	<script type="text/javascript">
 
 		var path= "/data/";
-		var source= path + "";
+		var source1= path + "1998_2006.tsv";
+		var source2= path + "2014_2017.tsv";
 
 
 		function color_group(index_color) {
 			//					
-			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#2c7bb6","#d7191c"];
+			var color_range= ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#dfc27d"];
 
 			return color_range[index_color];
 		};
@@ -70,7 +99,8 @@
 
 		function init() {
 
-			read_s2g_data(source, "view");
+			draw_labels();
+			read_s2g_data(source1, "1998", "Laringite");
 		};
 
 	</script>

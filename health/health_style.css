@@ -9,14 +9,18 @@
 	2018. All rights reserved.
 */
 
+div.Setup1 {
+	border: 1px solid #d5d5d5;
+	padding:10px 0px 0px 0px; 
+	border-radius: 4px;
+	width:100%;
+	overflow: hidden;
+}
+
 form {
 	font: 13px sans-serif;
 	font-color: black;
 	font-weight: bold;
-}
-
-label {
-	display: block;
 }
 
 body {
