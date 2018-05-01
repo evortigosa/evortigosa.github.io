@@ -17,7 +17,7 @@ function draw_s2g_bars(data, view) {
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
 
 	var n= data.length;		// The number of series.
-    var m= data[0].length;	// The number of values per series.
+    	var m= data[0].length;	// The number of values per series.
 
 
 	// The xz array has m elements, representing the x-values shared by all series.
@@ -29,6 +29,8 @@ function draw_s2g_bars(data, view) {
 		y01z= d3.stack().keys(d3.range(n))(d3.transpose(yz)),
 		yMax= d3.max(yz, function(y) { return d3.max(y); }),
 		y1Max= d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
+	
+	console.log(y01z);
 
 
 	var x_scale= d3.scaleBand()
