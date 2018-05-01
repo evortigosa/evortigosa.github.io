@@ -30,6 +30,7 @@ function draw_s2g_bars(data, view) {
 		yMax= d3.max(yz, function(y) { return d3.max(y); }),
 		y1Max= d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
 	
+	console.log(yz);
 	console.log(y01z);
 
 
