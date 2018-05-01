@@ -26,32 +26,28 @@
 		<div class="Setup1" style="margin:auto;width:1895px;height:30px">
 			<div id="label1" class="Graph" style="float:left;width:4%;height:100%"></div>
 			<div id="combo1" class="Graph" style="float:left;width:4%;height:100%">
-				<select type="select" onchange="updateData(value);">
-					<option value="98" selected="true">1998</option>
-					<option value="99">1999</option>
-					<option value="00">2000</option>
-					<option value="01">2001</option>
-					<option value="02">2002</option>
-					<option value="03">2003</option>
-					<option value="04">2004</option>
-					<option value="05">2005</option>
-					<option value="06">2006</option>
-					<option value="07">2007</option>
+				<select type="select" onchange="updateData1(value);">
+					<option value="1998" selected="true">1998</option>
+					<option value="1999">1999</option>
+					<option value="2000">2000</option>
+					<option value="2001">2001</option>
+					<option value="2002">2002</option>
+					<option value="2003">2003</option>
+					<option value="2004">2004</option>
+					<option value="2005">2005</option>
+					<option value="2006">2006</option>
+					<option value="2007">2007</option>
 				</select>
 			</div>
 			<div id="label2" class="Graph" style="float:left;width:4%;height:100%"></div>
 			<div id="combo2" class="Graph" style="float:left;width:4%;height:100%">
-				<select type="select" onchange="updateData(value);">
-					<option value="98" selected="true">1998</option>
-					<option value="99">1999</option>
-					<option value="00">2000</option>
-					<option value="01">2001</option>
-					<option value="02">2002</option>
-					<option value="03">2003</option>
-					<option value="04">2004</option>
-					<option value="05">2005</option>
-					<option value="06">2006</option>
-					<option value="07">2007</option>
+				<select type="select" onchange="updateData2(value);">
+					<option value="0" selected="true">Laringite</option>
+					<option value="1">Pneumonia</option>
+					<option value="2">Bronquite</option>
+					<option value="3">Amigdalite</option>
+					<option value="4">Asma</option>
+					<option value="5">Outros</option>
 				</select>
 			</div>
 			<div id="label3" class="Graph" style="float:left;width:10%;height:100%"></div>
@@ -67,12 +63,12 @@
 			<div id="view2" class="Graph" style="float:left;width:50%;height:100%"></div>
 		</div>
 		<div style="margin:auto;width:1895px;height:50px">
-			
 			<div id="legenda" class="Graph" style="float:left;width:80%;height:100%"></div>
 		</div>
 	</div>
 
 	<script type="text/javascript" src="labels.js"></script>
+	<script type="text/javascript" src="read_data.js"></script>
 	<script type="text/javascript" src="s2g_bars.js"></script>
 
 	<script type="text/javascript">
@@ -81,18 +77,34 @@
 		var source1= path + "1998_2006.tsv";
 		var source2= path + "2014_2017.tsv";
 
+		var parseDate= d3.timeParse("%b-%y");
+
+		var init_year= "1998";
+		var init_dise= 0;
+		//					0			 1			 2			   3		 4		  5
+		var diseases= ["Laringite", "Pneumonia", "Bronquite", "Amigdalite", "Asma", "Outros"];
+		var age_range= ["0_4_", "5_9_", "10_19_", "20_29_", "30_39_", "40_49_", "50_59_", "60_"];
+
 
 		function color_group(index_color) {
 			//					
-			var color_range= ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#dfc27d"];
+			var color_range= ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#dfc27d", "#003c30"];
 
 			return color_range[index_color];
 		};
 
-		function updateData(value) {    // Update data from combobox onChange
+		function updateData1(value) {    // Update data from combobox onChange
 
+			init_year= value;
 
+			read_s2g_data(source1, init_year, diseases[init_dise]);
+		};
 
+		function updateData2(value) {    // Update data from combobox onChange
+
+			init_dise= value;
+
+			read_s2g_data(source1, init_year, diseases[init_dise]);
 		};
 
 		setTimeout(init, 500);
@@ -100,7 +112,7 @@
 		function init() {
 
 			draw_labels();
-			read_s2g_data(source1, "1998", "Laringite");
+			read_s2g_data(source1, init_year, diseases[init_dise]);
 		};
 
 	</script>

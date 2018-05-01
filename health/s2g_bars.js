@@ -9,44 +9,6 @@
 	2018. All rights reserved.
 */
 
-function read_s2g_data(data_source, year, disease) {
-	
-	var data= d3.range(4).map(function() { return bumps(40); });
-
-	// Returns an array of m psuedorandom, smoothly-varying non-negative numbers.
-	// Inspired by Lee Byron’s test data generator.
-	function bumps(m) {
-		var values= [], i, j, w, x, y, z;
-
-		// Initialize with uniform random values in [0.1, 0.2).
-		for (i= 0; i< m; ++i) {
-			values[i]= 0.1 + 0.1 * Math.random();
-		}
-
-		// Add five random bumps.
-		for (j= 0; j< 5; ++j) {
-			x= 1 / (0.1 + Math.random());
-			y= 2 * Math.random() - 0.5;
-			z= 10 / (0.1 + Math.random());
-			
-			for (i= 0; i< m; i++) {
-				w= (i / m - y) * z;
-				values[i] += x * Math.exp(-w * w);
-			}
-		}
-
-		// Ensure all values are positive.
-		for (i= 0; i< m; ++i) {
-			values[i]= Math.max(0, values[i]);
-		}
-
-		return values;
-	};
-
-	draw_s2g_bars(data, "view1");
-	draw_g_bars(data, "view2");
-};
-
 function draw_s2g_bars(data, view) {
 
 	var margin= {top: 10, right: 35, bottom: 40, left: 50};
