@@ -312,6 +312,8 @@ function draw_axis(canvas, x_scale, y_scale, width, height, grouped) {
 
 	/* Construcao dos eixos coordenados */
 	if (grouped== 1) {
+		y_axis_label= "Aggregated values - " + y_axis_label;
+		
 		canvas.append("g")
 			.attr("class", "axis-x")
 			.attr("transform", "translate(0," + height + ")")
