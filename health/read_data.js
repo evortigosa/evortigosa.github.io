@@ -42,11 +42,11 @@ function read_s2g_data(data_source, year, disease) {
 		}
 
 		if (year< 2014) {
-			draw_s2g_bars(d3.transpose(dis_year), "view1");
+			draw_g_bars(d3.transpose(dis_year), "view1");
 			draw_g_bars(d3.transpose(dis_aggr), "view2");
 		}
 		else {
-			draw_s2g_bars(d3.transpose(dis_year), "view3");
+			draw_g_bars(d3.transpose(dis_year), "view3");
 			draw_g_bars(d3.transpose(dis_aggr), "view4");
 		}
 	});

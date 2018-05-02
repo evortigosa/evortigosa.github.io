@@ -15,7 +15,7 @@ function add_legend(view) {
 	var height= document.getElementById(view).clientHeight;
 
 	var h_shift= 60;
-	var vertical_pad= 10;
+	var vertical_pad= 12;
 	var pos_box= 110;
 	var pos_text= 20;
 

@@ -223,9 +223,11 @@ function draw_g_bars(data, view) {
 		.padding(0.06);
 
 	var x_axis= d3.scaleBand()
-		.domain(x.map(function(d) { return parseDate2(d); }))
 		.rangeRound([0, width])
 		.padding(0.06);
+
+	if (view=== "view1" || view=== "view3") x_axis.domain(x.map(function(d) { return parseDate1(d); }));
+	else x_axis.domain(x.map(function(d) { return parseDate1(d); }))
 
 	var y_scale= d3.scaleLinear()
 		.domain([0, yMax])
@@ -257,8 +259,10 @@ function draw_g_bars(data, view) {
 
 	var series= canvas.selectAll(".series")
 		.data(y01z)
-		.enter().append("g")
-			.attr("fill", function(d, i) { return color_group(i* 9); });
+		.enter().append("g");
+
+	if (view=== "view1" || view=== "view3") series.attr("fill", function(d, i) { return color_group(i); });
+	else series.attr("fill", function(d, i) { return color_group(i* 9); });
 
 	var rect= series.selectAll("rect")
 		.data(function(d) { return d; })
@@ -296,7 +300,8 @@ function draw_g_bars(data, view) {
 		.attr("height", function(d) { return y_scale(0) - y_scale(d[1] - d[0]); });
 
 
-	draw_axis(canvas, x_axis, y_scale, width, height, 1);
+	if (view=== "view1" || view=== "view3") draw_axis(canvas, x_axis, y_scale, width, height, 0);
+	else draw_axis(canvas, x_axis, y_scale, width, height, 1);
 };
 
 function draw_axis(canvas, x_scale, y_scale, width, height, grouped) {
@@ -329,14 +334,12 @@ function draw_axis(canvas, x_scale, y_scale, width, height, grouped) {
 		.style("text-anchor", "middle")
 		.text(x_axis_label);
 
-	if (grouped== 1) {
-		canvas.append("g")
-			.attr("class", "axis--y")
-			.transition()
-			.duration(500)
-				.call(d3.axisLeft(y_scale)
-					.tickFormat(d3.format(".0f")));
-	}
+	canvas.append("g")
+		.attr("class", "axis--y")
+		.transition()
+		.duration(500)
+			.call(d3.axisLeft(y_scale)
+				.tickFormat(d3.format(".0f")));
 
 	canvas.append("text")
 		.attr("class", "info")
