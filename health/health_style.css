@@ -17,6 +17,10 @@ div.Setup1 {
 	overflow: hidden;
 }
 
+.rect:hover {
+   fill: #ae017e;
+}
+
 form {
 	font: 13px sans-serif;
 	font-color: black;

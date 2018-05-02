@@ -267,6 +267,7 @@ function draw_g_bars(data, view) {
 	var rect= series.selectAll("rect")
 		.data(function(d) { return d; })
 		.enter().append("rect")
+			.attr("class", "rect")
 			.attr("x", function(d, i) { return x_scale(i) + x_scale.bandwidth() / n * this.parentNode.__data__.key; })
 			.attr("y", height)
 			.attr("width", x_scale.bandwidth() / n)
