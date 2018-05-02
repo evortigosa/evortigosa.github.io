@@ -14,7 +14,7 @@ function draw_labels() {
 	var margin= {top: 1, right: 1, bottom: 10, left: 1};
 
 
-	for ((i= 1); (i< 4); (i++)) {
+	for ((i= 1); (i< 7); (i++)) {
 
 		var view_aux= "label" + i;
 
@@ -36,11 +36,11 @@ function draw_labels() {
 		var label_set= canvas.append("text")
 			.attr("class", "info")
 			.attr("x", width- 10)
-			.attr("y", height- 4)
+			.attr("y", height- 5)
 			.style("text-anchor", "end");
 			
-		if (i== 1) label_set.text("Year: ");
-		else if (i== 2) label_set.text("Disease: ");
-		else if (i== 3) label_set.text("Chart Style: ");
+		if (i== 1 || i== 4) label_set.text("Year: ");
+		else if (i== 2 || i== 5) label_set.text("Disease: ");
+		else if (i== 3 || i== 6) label_set.text("Chart Style: ");
 	}
 };

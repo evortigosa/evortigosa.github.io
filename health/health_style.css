@@ -10,7 +10,7 @@
 */
 
 div.Setup1 {
-	border: 1px solid #d5d5d5;
+	border: 1px solid #bababa;
 	padding:10px 0px 0px 0px; 
 	border-radius: 4px;
 	width:100%;
@@ -27,13 +27,14 @@ body {
 	font: 13px sans-serif;
 }
 
-.axis-x, .axis-y {
+.axis-x, .axis-y, .axis--y {
 	font: 13px sans-serif;
 	font-color: black;
 }
 
 .axis-x path, .axis-x line, 
-.axis-y path, .axis-y line {
+.axis-y path, .axis-y line,
+.axis--y path, .axis--y line {
 	fill: none;
 	stroke: #000;
 	stroke-width: 2px;

@@ -16,8 +16,11 @@ function draw_s2g_bars(data, view) {
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
 
-	var n= data.length;		// The number of series.
-    	var m= data[0].length;	// The number of values per series.
+	var x= d3.transpose(data.slice(0, 1));
+	var y= data.slice(1, data.length);
+
+	var n= y.length;		// The number of series.
+    var m= y[0].length;		// The number of values per series.
 
 
 	// The xz array has m elements, representing the x-values shared by all series.
@@ -25,19 +28,21 @@ function draw_s2g_bars(data, view) {
 	// Each yz[i] is an array of m non-negative numbers representing a y-value for xz[i].
 	// The y01z array has the same structure as yz, but with stacked [y0, y1] instead of y.
 	var xz= d3.range(m),
-		yz= data,
+		yz= y,
 		y01z= d3.stack().keys(d3.range(n))(d3.transpose(yz)),
 		yMax= d3.max(yz, function(y) { return d3.max(y); }),
 		y1Max= d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
-	
-	console.log(yz);
-	console.log(y01z);
 
 
 	var x_scale= d3.scaleBand()
 		.domain(xz)
 		.rangeRound([0, width])
-		.padding(0.08);
+		.padding(0.06);
+
+	var x_axis= d3.scaleBand()
+		.domain(x.map(function(d) { return parseDate1(d); }))
+		.rangeRound([0, width])
+		.padding(0.06);
 
 	var y_scale= d3.scaleLinear()
 		.domain([0, y1Max])
@@ -82,7 +87,7 @@ function draw_s2g_bars(data, view) {
 			.on("mouseover", function(d) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d[1]- d[0])
+				tip.html(d3.format(".2f")(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
@@ -92,7 +97,7 @@ function draw_s2g_bars(data, view) {
 			.on("mousemove", function(d) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d[1]- d[0])
+				tip.html(d3.format(".2f")(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})
@@ -153,7 +158,7 @@ function draw_s2g_bars(data, view) {
 				.attr("width", x_scale.bandwidth());
 	};
 
-	draw_axis(canvas, x_scale, y_scale, width, height, 0);
+	draw_axis(canvas, x_axis, y_scale, width, height, 0);
 
 	y_axis();
 
@@ -168,7 +173,7 @@ function draw_s2g_bars(data, view) {
 			.transition()
 			.duration(500)
 				.call(d3.axisLeft(y_scale)
-					.tickFormat(d3.format(".1f")));
+					.tickFormat(d3.format(".0f")));
 	};
 };
 
@@ -179,15 +184,19 @@ function draw_g_bars(data, view) {
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
 
-	var n= data.length;		// The number of series.
-    var m= data[0].length;	// The number of values per series.
+	var x= d3.transpose(data.slice(0, 1));
+	var y= data.slice(1, data.length);
+
+	var n= y.length;		// The number of series.
+    var m= y[0].length;		// The number of values per series.
 
 
 	// The xz array has m elements, representing the x-values shared by all series.
 	// The yz array has n elements, representing the y-values of each of the n series.
 	// Each yz[i] is an array of m non-negative numbers representing a y-value for xz[i].
+	// The y01z array has the same structure as yz, but with stacked [y0, y1] instead of y.
 	var xz= d3.range(m),
-		yz= data,
+		yz= y,
 		y01z= d3.stack().keys(d3.range(n))(d3.transpose(yz)),
 		yMax= d3.max(yz, function(y) { return d3.max(y); });
 
@@ -195,7 +204,12 @@ function draw_g_bars(data, view) {
 	var x_scale= d3.scaleBand()
 		.domain(xz)
 		.rangeRound([0, width])
-		.padding(0.08);
+		.padding(0.06);
+
+	var x_axis= d3.scaleBand()
+		.domain(x.map(function(d) { return parseDate2(d); }))
+		.rangeRound([0, width])
+		.padding(0.06);
 
 	var y_scale= d3.scaleLinear()
 		.domain([0, yMax])
@@ -228,7 +242,7 @@ function draw_g_bars(data, view) {
 	var series= canvas.selectAll(".series")
 		.data(y01z)
 		.enter().append("g")
-			.attr("fill", function(d, i) { return color_group(i); });
+			.attr("fill", function(d, i) { return color_group(i* 9); });
 
 	var rect= series.selectAll("rect")
 		.data(function(d) { return d; })
@@ -240,7 +254,7 @@ function draw_g_bars(data, view) {
 			.on("mouseover", function(d) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d[1]- d[0])
+				tip.html(d3.format(".2f")(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
@@ -250,7 +264,7 @@ function draw_g_bars(data, view) {
 			.on("mousemove", function(d) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d[1]- d[0])
+				tip.html(d3.format(".2f")(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})
@@ -266,21 +280,31 @@ function draw_g_bars(data, view) {
 		.attr("height", function(d) { return y_scale(0) - y_scale(d[1] - d[0]); });
 
 
-	draw_axis(canvas, x_scale, y_scale, width, height, 1);
+	draw_axis(canvas, x_axis, y_scale, width, height, 1);
 };
 
 function draw_axis(canvas, x_scale, y_scale, width, height, grouped) {
 
-	var y_axis_label= "Concentration";
+	var y_axis_label= "PM10 (μg/m³) / Disease cases";
 	var x_axis_label= "Sampling Interval";
 
 	/* Construcao dos eixos coordenados */
-	canvas.append("g")
-		.attr("class", "axis-x")
-		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x_scale)
-			.tickSize(0)
-			.tickPadding(6));
+	if (grouped== 1) {
+		canvas.append("g")
+			.attr("class", "axis-x")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x_scale)
+				.tickFormat(d3.timeFormat("%Y"))
+				.tickPadding(6));
+	}
+	else {
+		canvas.append("g")
+			.attr("class", "axis-x")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x_scale)
+				.tickFormat(d3.timeFormat("%b-%Y"))
+				.tickPadding(6));
+	}
 
 	canvas.append("text")
 		.attr("class", "info")
@@ -291,11 +315,11 @@ function draw_axis(canvas, x_scale, y_scale, width, height, grouped) {
 
 	if (grouped== 1) {
 		canvas.append("g")
-			.attr("class", "axis-y")
+			.attr("class", "axis--y")
 			.transition()
 			.duration(500)
 				.call(d3.axisLeft(y_scale)
-					.tickFormat(d3.format(".1f")));
+					.tickFormat(d3.format(".0f")));
 	}
 
 	canvas.append("text")

@@ -10,66 +10,113 @@
 */
 
 function read_s2g_data(data_source, year, disease) {
-	
-	var data1= d3.range(8).map(function() { return bumps(12); });
-	var data2= d3.range(2).map(function() { return bumps(10); });
 
-	// Returns an array of m psuedorandom, smoothly-varying non-negative numbers.
-	// Inspired by Lee Byron’s test data generator.
-	function bumps(m) {
-		var values= [], i, j, w, x, y, z;
+	var year_first, year_last;
 
-		// Initialize with uniform random values in [0.1, 0.2).
-		for (i= 0; i< m; ++i) {
-			values[i]= 0.1 + 0.1 * Math.random();
-		}
+	if (year< 2014) {
+		year_first= 1998;
+		year_last= 2006;
+	}
+	else {
+		year_first= 2014;
+		year_last= 2017;
+	}
 
-		// Add five random bumps.
-		for (j= 0; j< 5; ++j) {
-			x= 1 / (0.1 + Math.random());
-			y= 2 * Math.random() - 0.5;
-			z= 10 / (0.1 + Math.random());
-			
-			for (i= 0; i< m; i++) {
-				w= (i / m - y) * z;
-				values[i] += x * Math.exp(-w * w);
+	d3.tsv(data_source, function(error, data) {
+		if (error) throw error;
+
+		var dis_year= [];
+		var dis_aggr= [];
+
+		for ((ano= year_first); (ano<= year_last); (ano++)) {
+
+			var subset= year_subset_gen(data, ano);	// Subconjunto de data restrito a year
+
+			var disease_subset= disease_subset_gen(subset, disease);	// Subconjunto com pm10 e a doenca alvo por faixa etaria
+
+			if (year== ano) {
+				dis_year= disease_subset;
 			}
+
+			dis_aggr.push(year_data_aggregator(disease_subset));	// Valores de pm10 e doenca alvo acumulados por ano
 		}
 
-		// Ensure all values are positive.
-		for (i= 0; i< m; ++i) {
-			values[i]= Math.max(0, values[i]);
+		if (year< 2014) {
+			draw_s2g_bars(d3.transpose(dis_year), "view1");
+			draw_g_bars(d3.transpose(dis_aggr), "view2");
 		}
+		else {
+			draw_s2g_bars(d3.transpose(dis_year), "view3");
+			draw_g_bars(d3.transpose(dis_aggr), "view4");
+		}
+	});
+};
 
-		return values;
-	};
+function year_subset_gen(data, year) {	// Gera e retorna um subconjunto de data restrito ao ano alvo
 
 	var subset= [];
 
 	var inicio= new Date(year, 0, 1),
 		final= new Date(year, 11, 31);
 
-	d3.tsv(data_source, function(error, data) {
-		if (error) throw error;
+	data.forEach(function(d, index) {
+		d.date= parseDate1(d.Data);
 
-		data.forEach(function(d, index) {
-			d.date= parseDate(d.Data);
+		var aux= new Date(d.date);
 
-			var aux= new Date(d.date);
+		if ((aux.getTime()>= inicio.getTime()) && (aux.getTime()<= final.getTime())) {
+			subset.push(data[index]);
+		}
+	});
 
-			if ((aux.getTime()>= inicio.getTime()) && (aux.getTime()<= final.getTime())) {
-				subset.push(data[index]);
-			}
-		});
+	return subset;
+};
 
-		for ((i= 0); (i< age_range.length); (i++)) {
-			var age_disease= age_range[i]+ disease;
+function disease_subset_gen(data, disease) {	// Gera e retorna um subconjunto de data restrito a doenca alvo por faixa etaria
 
-			console.log(age_disease);
+	var subset= [];
+	var age_dis_set= [];
+
+	for ((i= 0); (i< age_range.length); (i++)) {	// Gera o conjunto de identificadores (age_range + disease) para as
+		var age_disease= age_range[i]+ disease;		// faixa etarias relativas a doenca alvo
+
+		age_dis_set.push(age_disease);
+	}
+
+	for ((i= 0); (i< data.length); (i++)) {
+		var aux_a= [];
+		var aux_b= [];
+
+		for ((j= 0); (j< age_dis_set.length); (j++)) {		
+
+			if (data[i][age_dis_set[j]]=== undefined)	// Caso a doenca nao tenha sido registrada, recebe valor zero
+				aux_a.push(0);
+			else 
+				aux_a.push(+data[i][age_dis_set[j]]);
 		}
 
-		draw_s2g_bars(data1, "view1");
-		draw_g_bars(data2, "view2");
+		aux_b.push(data[i].Data, +data[i].PM10);
 
-	});
+		aux_b= aux_b.concat(aux_a);
+
+		subset.push(aux_b);
+	}
+
+	return subset;
+};
+
+function year_data_aggregator(data) {	// Gera um subconjunto com os numeros da doenca e pm10 agregados por ano
+
+	var pm10_year= 0;
+	var dise_year= 0;
+
+	for ((i= 0); (i< data.length); (i++)) {		// Gera os valores acumulados por ano
+		pm10_year += data[i][1];
+
+		for ((j= 0); (j< age_range.length); (j++)) {
+			dise_year += data[i][2+ j];
+		}
+	}
+
+	return [d3.timeFormat("%Y")(parseDate1(data[0][0])), pm10_year, dise_year];
 };

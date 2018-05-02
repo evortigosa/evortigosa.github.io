@@ -36,7 +36,6 @@
 					<option value="2004">2004</option>
 					<option value="2005">2005</option>
 					<option value="2006">2006</option>
-					<option value="2007">2007</option>
 				</select>
 			</div>
 			<div id="label2" class="Graph" style="float:left;width:4%;height:100%"></div>
@@ -52,24 +51,60 @@
 			</div>
 			<div id="label3" class="Graph" style="float:left;width:10%;height:100%"></div>
 			<div id="btnsty" class="Graph" style="float:left;width:10%;height:100%">
-				<form>
+				<form id="chart_type">
 					<label><input type="radio" name="mode" value="stacked" checked> Stacked</label>
 					<label><input type="radio" name="mode" value="grouped"> Grouped</label>
 				</form>
 			</div>
 		</div>
-		<div style="margin:auto;width:1895px;height:500px">
-			<div id="view1" class="Graph" style="float:left;width:50%;height:100%"></div>
-			<div id="view2" class="Graph" style="float:left;width:50%;height:100%"></div>
+		<div style="margin:auto;width:1895px;height:465px">
+			<div id="view1" class="Graph" style="float:left;width:75%;height:100%"></div>
+			<div id="view2" class="Graph" style="float:left;width:25%;height:100%"></div>
 		</div>
-		<div style="margin:auto;width:1895px;height:50px">
-			<div id="legenda" class="Graph" style="float:left;width:80%;height:100%"></div>
+		<div class="Spacing" style="margin:auto;width:1895px;height:5px"></div>
+		<div class="Setup1" style="margin:auto;width:1895px;height:30px">
+			<div id="label4" class="Graph" style="float:left;width:4%;height:100%"></div>
+			<div id="combo3" class="Graph" style="float:left;width:4%;height:100%">
+				<select type="select" onchange="updateData3(value);">
+					<option value="2014" selected="true">2014</option>
+					<option value="2015">2015</option>
+					<option value="2016">2016</option>
+					<option value="2017">2017</option>
+				</select>
+			</div>
+			<div id="label5" class="Graph" style="float:left;width:4%;height:100%"></div>
+			<div id="combo4" class="Graph" style="float:left;width:4%;height:100%">
+				<select type="select" onchange="updateData4(value);">
+					<option value="0" selected="true">Laringite</option>
+					<option value="1">Pneumonia</option>
+					<option value="2">Bronquite</option>
+					<option value="3">Amigdalite</option>
+					<option value="4">Asma</option>
+					<option value="5">Outros</option>
+				</select>
+			</div>
+			<div id="label6" class="Graph" style="float:left;width:10%;height:100%"></div>
+			<div id="btnsty2" class="Graph" style="float:left;width:10%;height:100%">
+				<form id="chart_type2">
+					<label><input type="radio" name="mode" value="stacked" checked> Stacked</label>
+					<label><input type="radio" name="mode" value="grouped"> Grouped</label>
+				</form>
+			</div>
+		</div>
+		<div style="margin:auto;width:1895px;height:465px">
+			<div id="view3" class="Graph" style="float:left;width:75%;height:100%"></div>
+			<div id="view4" class="Graph" style="float:left;width:25%;height:100%"></div>
+		</div>
+		<div class="Spacing" style="margin:auto;width:1895px;height:15px"></div>
+		<div style="margin:auto;width:1895px;height:20px">
+			<div id="legenda" class="Graph" style="float:left;width:100%;height:100%"></div>
 		</div>
 	</div>
 
 	<script type="text/javascript" src="labels.js"></script>
 	<script type="text/javascript" src="read_data.js"></script>
 	<script type="text/javascript" src="s2g_bars.js"></script>
+	<script type="text/javascript" src="legend.js"></script>
 
 	<script type="text/javascript">
 
@@ -77,34 +112,63 @@
 		var source1= path + "1998_2006.tsv";
 		var source2= path + "2014_2017.tsv";
 
-		var parseDate= d3.timeParse("%b-%y");
+		var parseDate1= d3.timeParse("%b-%y");
+		var parseDate2= d3.timeParse("%Y");
 
-		var init_year= "1998";
-		var init_dise= 0;
+		var init_yearA= "1998";
+		var init_diseA= 0;
+
+		var init_yearB= "2014";
+		var init_diseB= 0;
+
 		//					0			 1			 2			   3		 4		  5
-		var diseases= ["Laringite", "Pneumonia", "Bronquite", "Amigdalite", "Asma", "Outros"];
+		var diseases= ["Laringite", "Pneumonia", "Bronquite", "Amigdalas", "Asma", "Outros"];
 		var age_range= ["0_4_", "5_9_", "10_19_", "20_29_", "30_39_", "40_49_", "50_59_", "60_"];
 
 
 		function color_group(index_color) {
 			//					
-			var color_range= ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#dfc27d", "#003c30"];
+			var color_range= ["#2c7bb6","#d7191c","#e66101","#4393c3","#01665e","#fdb863","#b2abd2","#5e3c99","#66bd63","#4d4d4d"];
 
 			return color_range[index_color];
 		};
 
-		function updateData1(value) {    // Update data from combobox onChange
+		// Update data from combobox 1 and 2 onChange, init value
+		function updateData1(value) {
 
-			init_year= value;
+			init_yearA= value;
 
-			read_s2g_data(source1, init_year, diseases[init_dise]);
+			document.getElementById("chart_type").reset();
+
+			read_s2g_data(source1, init_yearA, diseases[init_diseA]);
 		};
 
-		function updateData2(value) {    // Update data from combobox onChange
+		function updateData2(value) {
 
-			init_dise= value;
+			init_diseA= value;
 
-			read_s2g_data(source1, init_year, diseases[init_dise]);
+			document.getElementById("chart_type").reset();
+
+			read_s2g_data(source1, init_yearA, diseases[init_diseA]);
+		};
+
+		// Update data from combobox 2 and 3 onChange
+		function updateData3(value) {
+
+			init_yearB= value;
+
+			document.getElementById("chart_type2").reset();
+
+			read_s2g_data(source2, init_yearB, diseases[init_diseB]);
+		};
+
+		function updateData4(value) {
+
+			init_diseB= value;
+
+			document.getElementById("chart_type2").reset();
+
+			read_s2g_data(source2, init_yearB, diseases[init_diseB]);
 		};
 
 		setTimeout(init, 500);
@@ -112,7 +176,9 @@
 		function init() {
 
 			draw_labels();
-			read_s2g_data(source1, init_year, diseases[init_dise]);
+			read_s2g_data(source1, init_yearA, diseases[init_diseA]);
+			read_s2g_data(source2, init_yearB, diseases[init_diseB]);
+			add_legend("legenda");
 		};
 
 	</script>
