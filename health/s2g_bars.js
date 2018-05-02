@@ -227,7 +227,7 @@ function draw_g_bars(data, view) {
 		.padding(0.06);
 
 	if (view=== "view1" || view=== "view3") x_axis.domain(x.map(function(d) { return parseDate1(d); }));
-	else x_axis.domain(x.map(function(d) { return parseDate1(d); }))
+	else x_axis.domain(x.map(function(d) { return parseDate2(d); }))
 
 	var y_scale= d3.scaleLinear()
 		.domain([0, yMax])
