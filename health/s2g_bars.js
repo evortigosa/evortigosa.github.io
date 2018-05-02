@@ -163,17 +163,33 @@ function draw_s2g_bars(data, view) {
 	y_axis();
 
 	function y_axis() {
-		d3.select(".axis-y")
-			.transition()
-			.duration(300)
-				.remove();
 
-		canvas.append("g")
-			.attr("class", "axis-y")
-			.transition()
-			.duration(500)
-				.call(d3.axisLeft(y_scale)
-					.tickFormat(d3.format(".0f")));
+		if (view=== "view1" || view=== "view2") {
+			d3.select(".axisA-y")
+				.transition()
+				.duration(300)
+					.remove();
+
+			canvas.append("g")
+				.attr("class", "axisA-y")
+				.transition()
+				.duration(500)
+					.call(d3.axisLeft(y_scale)
+						.tickFormat(d3.format(".0f")));
+		}
+		else {
+			d3.select(".axisB-y")
+				.transition()
+				.duration(300)
+					.remove();
+
+			canvas.append("g")
+				.attr("class", "axisB-y")
+				.transition()
+				.duration(500)
+					.call(d3.axisLeft(y_scale)
+						.tickFormat(d3.format(".0f")));
+		}
 	};
 };
 

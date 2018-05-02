@@ -27,13 +27,14 @@ body {
 	font: 13px sans-serif;
 }
 
-.axis-x, .axis-y, .axis--y {
+.axis-x, .axisA-y, .axisB-y, .axis--y {
 	font: 13px sans-serif;
 	font-color: black;
 }
 
 .axis-x path, .axis-x line, 
-.axis-y path, .axis-y line,
+.axisA-y path, .axisA-y line,
+.axisB-y path, .axisB-y line,
 .axis--y path, .axis--y line {
 	fill: none;
 	stroke: #000;
