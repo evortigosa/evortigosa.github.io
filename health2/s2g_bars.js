@@ -115,7 +115,7 @@ function draw_g_bars(data, view) {	// Grouped chart only
 			});
 
 	rect.transition()
-		.delay(function(d, i) { return i * 10; })
+		.delay(function(d, i) { return i * 50; })
 		.attr("y", function(d) { return y_scale(d[1] - d[0]); })
 		.attr("height", function(d) { return y_scale(0) - y_scale(d[1] - d[0]); });
 
@@ -224,7 +224,7 @@ function draw_s_bars(data, view) {	// Stacked chart only
 			});
 
 	rect.transition()
-		.delay(function(d, i) { return i * 10; })
+		.delay(function(d, i) { return i * 50; })
 		.attr("y", function(d) { return y_scale(d[1]); })
 		.attr("height", function(d) { return y_scale(d[0]) - y_scale(d[1]); });
 
@@ -330,7 +330,7 @@ function draw_s2g_bars(data, view) {	// Stacked to Grouped chart with transition
 			});
 
 	rect.transition()
-		.delay(function(d, i) { return i * 10; })
+		.delay(function(d, i) { return i * 50; })
 		.attr("y", function(d) { return y_scale(d[1]); })
 		.attr("height", function(d) { return y_scale(d[0]) - y_scale(d[1]); });
 
