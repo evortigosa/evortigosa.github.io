@@ -1,0 +1,102 @@
+/*
+	Evandro Scudeleti Ortigossa
+
+	M.Sc. Student in Computer Science
+	Institute of Mathematical and Computer Sciences - ICMC
+	University of São Paulo - USP
+	São Carlos, São Paulo, Brazil.
+	
+	2018. All rights reserved.
+*/
+
+div.Setup1 {
+	border: 1px solid #bababa;
+	padding:10px 0px 0px 0px; 
+	border-radius: 4px;
+	width:100%;
+	overflow: hidden;
+}
+
+.rect:hover {
+	stroke: #000;
+	stroke-width: 2px;
+}
+
+form {
+	font: 13px sans-serif;
+	font-color: black;
+	font-weight: bold;
+}
+
+body {
+	font: 13px sans-serif;
+}
+
+.axis-x, .axis-y, .axis--y {
+	font: 13px sans-serif;
+	font-color: black;
+}
+
+.axis-x path, .axis-x line,
+.axis-y path, .axis-y line,
+.axis--y path, .axis--y line {
+	fill: none;
+	stroke: #000;
+	stroke-width: 2px;
+	shape-rendering: crispEdges;
+}
+
+.info {
+	font: 14px sans-serif;
+	font-color: black;
+	font-weight: bold;
+}
+
+div.tooltip {
+	width: 110px;
+	padding: 5px;
+	font: 11px sans-serif;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+	position: absolute;
+	background: rgba(0,0,0,0.7);
+	border: 0px;
+	border-radius: 8px;
+	pointer-events: none;
+}
+
+/* Line Chart */
+.fill_area {
+	opacity: 0.75;
+	fill: #2171b5;
+}
+
+.line {
+	fill: none;
+	stroke: darkblue;
+	stroke-width: 1.5px;
+}
+
+.m_label {
+	font: 11px sans-serif;
+	font-color: black;
+	font-weight: bold;
+}
+
+.marker {
+	stroke: black;
+	stroke-width: 2px;
+}
+
+/* Small multiples */
+.small_area {
+	opacity: 0.8;
+	fill: #d7191c;
+}
+
+.small_line {
+	fill: none;
+	stroke: darkred;
+	stroke-width: 1.5px;
+}
