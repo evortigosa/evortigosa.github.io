@@ -40,15 +40,16 @@ function draw_small_info(data, view, disease) {
 
 	x_scale.domain(d3.extent(data, function(d) { return d[0]; }));
 
-	y_scale.domain([0, 45]);
+	if (disease== 0) y_scale.domain([0, 160]);
+	else y_scale.domain([0, 50]);
 
 	var line= d3.area()
-		.curve(d3.curveNatural)
+		//.curve(d3.curveNatural)
 		.x(function(d) { return x_scale(d[0]); })
 		.y(function(d) { return y_scale(d[1]); });
 
 	var area= d3.area()
-		.curve(d3.curveNatural)
+		//.curve(d3.curveNatural)
 		.x(function(d) { return x_scale(d[0]); })
 		.y1(function(d) { return y_scale(d[1]); });
 
