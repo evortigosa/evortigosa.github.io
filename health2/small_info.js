@@ -44,12 +44,12 @@ function draw_small_info(data, view, disease) {
 	else y_scale.domain([0, 50]);
 
 	var line= d3.area()
-		//.curve(d3.curveNatural)
+		.curve(d3.curveNatural)
 		.x(function(d) { return x_scale(d[0]); })
 		.y(function(d) { return y_scale(d[1]); });
 
 	var area= d3.area()
-		//.curve(d3.curveNatural)
+		.curve(d3.curveNatural)
 		.x(function(d) { return x_scale(d[0]); })
 		.y1(function(d) { return y_scale(d[1]); });
 
@@ -157,12 +157,12 @@ function draw_small_info(data, view, disease) {
 
 			if (d[1]< 10) {
 				marker.select("text")
-					.attr("y", -5)
+					.attr("y", -6)
 					.text((d[1]));
 			}
 			else {
 				marker.select("text")
-					.attr("y", 1)
+					.attr("y", -3)
 					.text((d[1]));
 			}
 

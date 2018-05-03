@@ -152,12 +152,12 @@ function draw_line_area(data, view, max_vertical) {
 			
 			if (d[1]< 5) {
 				marker.select("text")
-					.attr("y", -5)
+					.attr("y", -6)
 					.text(format_mass(d[1]));
 			}
 			else {
 				marker.select("text")
-					.attr("y", -8)
+					.attr("y", -3)
 					.text(format_mass(d[1]));
 			}
 
