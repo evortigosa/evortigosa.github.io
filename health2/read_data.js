@@ -52,11 +52,15 @@ function read_s2g_data(data_source, year, disease) {
 			draw_g_bars(subset, "view1");
 			draw_s_bars(s_aggr, "view2");
 
-			draw_small_info(pm10, "small_up_1", 1);
-			draw_small_info(pm10, "small_up_2", 2);
-			draw_small_info(pm10, "small_up_3", 3);
-			draw_small_info(pm10, "small_up_4", 4);
-			draw_small_info(pm10, "small_up_5", 5);
+			var small_view= 1;
+
+			for ((a= 0); (a< diseases.length); (a++)) {
+
+				if (diseases[a]!== disease) {
+					draw_small_info(disease_aggregator(disease_subset_gen(data, diseases[a])), ("small_up_" + small_view), a);
+					small_view++;
+				}
+			}
 		}
 		else {
 			draw_line_area(pm10_year, "pm10_v3", pm10_max);
@@ -64,16 +68,20 @@ function read_s2g_data(data_source, year, disease) {
 			draw_g_bars(subset, "view3");
 			draw_s_bars(s_aggr, "view4");
 
-			draw_small_info(pm10, "small_dw_1", 1);
-			draw_small_info(pm10, "small_dw_2", 2);
-			draw_small_info(pm10, "small_dw_3", 3);
-			draw_small_info(pm10, "small_dw_4", 4);
-			draw_small_info(pm10, "small_dw_5", 5);
+			var small_view= 1;
+
+			for ((a= 0); (a< diseases.length); (a++)) {
+
+				if (diseases[a]!== disease) {
+					draw_small_info(disease_aggregator(disease_subset_gen(data, diseases[a])), ("small_dw_" + small_view), a);
+					small_view++;
+				}
+			}
 		}
 	});
 };
 
-function pm10_subset_gen(data) {
+function pm10_subset_gen(data) {	// Retorna um subconjunto de data contendo apenas date e pm10
 
 	var subset= [];
 
@@ -84,13 +92,13 @@ function pm10_subset_gen(data) {
 	return subset;
 };
 
-function disease_subset_gen(data, disease) {	// Gera e retorna um subconjunto de data restrito a doenca alvo por faixa etaria
+function disease_subset_gen(data, disease) {	// Retorna um subconjunto de data restrito a doenca alvo por faixa etaria
 
 	var subset= [];
 	var age_dis_set= [];
 
 	for ((i= 0); (i< age_range.length); (i++)) {	// Gera o conjunto de identificadores (age_range + disease) para as
-		var age_disease= age_range[i]+ disease;		// faixa etarias relativas a doenca alvo
+		var age_disease= (age_range[i]+ disease);		// faixa etarias relativas a doenca alvo
 
 		age_dis_set.push(age_disease);
 	}
@@ -117,7 +125,7 @@ function disease_subset_gen(data, disease) {	// Gera e retorna um subconjunto de
 	return subset;
 };
 
-function year_disease_aggregator(data) {	// Gera um subconjunto com os numeros da doenca agregados por ano e faixa etaria
+function year_disease_aggregator(data) {	// Retorna um subconjunto com os numeros da doenca agregados por faixa etaria (data tem q ser pre-processado)
 
 	var data_t= d3.transpose(data);
 
@@ -134,4 +142,21 @@ function year_disease_aggregator(data) {	// Gera um subconjunto com os numeros d
 	}
 
 	return [d3.timeFormat("%Y")(parseDate1(data[0][0]))].concat(dise_year);
+};
+
+function disease_aggregator(data) {		// Retorna um subconjunto de data com valores totais agregados (data tem q ser pre-processado)
+
+	var subset= [];
+
+	for ((i= 0); (i< data.length); (i++)) {
+		var aux_sum= 0;
+
+		for ((j= 0); (j< age_range.length); (j++)) {
+			aux_sum += data[i][j+ 1];
+		}
+
+		subset.push([parseDate1(data[i][0]), aux_sum]);
+	}
+
+	return subset;
 };

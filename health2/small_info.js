@@ -40,13 +40,15 @@ function draw_small_info(data, view, disease) {
 
 	x_scale.domain(d3.extent(data, function(d) { return d[0]; }));
 
-	y_scale.domain([0, 125]);
+	y_scale.domain([0, 45]);
 
 	var line= d3.area()
+		.curve(d3.curveNatural)
 		.x(function(d) { return x_scale(d[0]); })
 		.y(function(d) { return y_scale(d[1]); });
 
 	var area= d3.area()
+		.curve(d3.curveNatural)
 		.x(function(d) { return x_scale(d[0]); })
 		.y1(function(d) { return y_scale(d[1]); });
 
@@ -202,7 +204,7 @@ function draw_small_info(data, view, disease) {
 	canvas.append("text")
 		.attr("class", "info")
 		.attr("transform", "rotate(-90)")
-		.attr("x", -(height/ 2)- 7)
+		.attr("x", -(height/ 2)- 8)
 		.attr("y", 10 -margin.left)
 		.attr("dy", ".71em")
 		.style("text-anchor", "middle")
