@@ -24,7 +24,7 @@ function draw_small_info(data, view, disease) {
 	else if (disease== 5) y_axis_label= "Others";
 
 
-	var margin= {top: 4, right: 15, bottom: 18, left: 40};
+	var margin= {top: 5, right: 15, bottom: 18, left: 40};
 
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;

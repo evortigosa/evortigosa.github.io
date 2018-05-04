@@ -17,7 +17,7 @@ function draw_line_area(data, view, max_vertical) {
 	var y_axis_label= "PM10 (" + mass_un + ")";
 
 
-	var margin= {top: 4, right: 15, bottom: 13, left: 50};
+	var margin= {top: 5, right: 15, bottom: 13, left: 50};
 
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
