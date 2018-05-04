@@ -33,15 +33,15 @@ function draw_small_info(data, view, disease) {
 
 
 	var x_scale= d3.scaleTime()		// Escala horizontal
-		.rangeRound([0, width]);
+		.rangeRound([0, width])
+		.domain(d3.extent(data, function(d) { return d[0]; }));
 
 	var y_scale= d3.scaleLinear()	// Escala vertical
 		.range([height, 0]);
 
-	x_scale.domain(d3.extent(data, function(d) { return d[0]; }));
-
 	if (disease== 0) y_scale.domain([0, 160]);
 	else y_scale.domain([0, 50]);
+
 
 	var line= d3.area()
 		.curve(d3.curveNatural)
@@ -187,7 +187,7 @@ function draw_small_info(data, view, disease) {
 
 	var xAxis= d3.axisBottom(x_scale);			// Construcao dos eixos
 		
-	if (view=== "small_up_5" || view=== "small_dw_5") xAxis.tickFormat(d3.timeFormat("%Y")).ticks(3).tickPadding(2);
+	if (view=== "small_up_5" || view=== "small_dw_5") xAxis.tickFormat(d3.timeFormat("%Y")).ticks(4).tickPadding(2);
 	else xAxis.tickValues([]);
 
 	var yAxis= d3.axisLeft(y_scale)
