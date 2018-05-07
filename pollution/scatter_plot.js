@@ -39,7 +39,7 @@ function read_sp_data(data_source, view, x_axis_horizon) {
 
 function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (string), view1 ou view2
 
-	var y_axis_label= "Concentração";
+	var y_axis_label= "MP10 Concentração";
 	var x_axis_label= "Intervalo de Amostragem";
 
 	var format_dia= function(d) { return "Data: " + d3.timeFormat("%d-%b-%Y")(d); };
@@ -51,7 +51,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	var format_umi= function(d) { return "Umidade relativa: " + d + "%"; };
 
 	if (language=== "en") {
-		y_axis_label= "Concentration";
+		y_axis_label= "PM10 Concentration";
 		x_axis_label= "Sampling Interval";
 
 		format_dia= function(d) { return "Date: " + d3.timeFormat("%d-%b-%Y")(d); };
