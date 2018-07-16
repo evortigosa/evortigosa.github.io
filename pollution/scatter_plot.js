@@ -29,6 +29,10 @@ function read_sp_data(data_source, view, x_axis_horizon) {
 			data.forEach(function(d) {
 				d.date= parseDate(d.Data);
 				d.concentracao= +d.Concentracao;
+				d.chuva= +d.Precipitacao;
+				d.v_vento= +d.Velocidade_vento;
+				d.temperatura= +d.Temperatura;
+				d.umidade= +d.Umidade;
 			});
 		}
 
@@ -39,7 +43,7 @@ function read_sp_data(data_source, view, x_axis_horizon) {
 
 function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (string), view1 ou view2
 
-	var y_axis_label= "MP10 Concentração";
+	var y_axis_label= "Concentração";
 	var x_axis_label= "Intervalo de Amostragem";
 
 	var format_dia= function(d) { return "Data: " + d3.timeFormat("%d-%b-%Y")(d); };
@@ -51,7 +55,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 	var format_umi= function(d) { return "Umidade relativa: " + d + "%"; };
 
 	if (language=== "en") {
-		y_axis_label= "PM10 Concentration";
+		y_axis_label= "Concentration";
 		x_axis_label= "Sampling Interval";
 
 		format_dia= function(d) { return "Date: " + d3.timeFormat("%d-%b-%Y")(d); };
@@ -169,7 +173,8 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 							.duration(100);
 				}
 				else {
-					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao))
+					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
+							format_v_v(d.v_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px")
 						.style("opacity", 1)
@@ -190,7 +195,8 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 						.style("top", (mousePos[1]+ p_vertc) + "px");
 				}
 				else {
-					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao))
+					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
+							format_v_v(d.v_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px");
 				}

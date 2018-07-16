@@ -14,12 +14,10 @@ function create_info_data(data, view, x_axis_horizon) {
 	var subset_a= [], subset_b= [], subset_c= [], subset_d= [];
 
 	data.forEach(function(d) {
-		if (x_axis_horizon== 1) {
-			subset_a.push({date:d.date, info:d.chuva});
-			subset_b.push({date:d.date, info:d.temperatura});
-			subset_c.push({date:d.date, info:d.v_vento});
-			subset_d.push({date:d.date, info:d.umidade});
-		}
+		subset_a.push({date:d.date, info:d.chuva});
+		subset_b.push({date:d.date, info:d.temperatura});
+		subset_c.push({date:d.date, info:d.v_vento});
+		subset_d.push({date:d.date, info:d.umidade});
 	});
 
 	if (view=== "view1") {
@@ -48,13 +46,10 @@ function update_info_data(data_source, view, x_axis_horizon, begin, end) {
 
 		data.forEach(function(d, index) {
 			d.date= parseDate(d.Data);
-
-			if (x_axis_horizon== 1) {
-				d.chuva= +d.Precipitacao;
-				d.v_vento= +d.Velocidade_vento;
-				d.temperatura= +d.Temperatura;
-				d.umidade= +d.Umidade;
-			}
+			d.chuva= +d.Precipitacao;
+			d.v_vento= +d.Velocidade_vento;
+			d.temperatura= +d.Temperatura;
+			d.umidade= +d.Umidade;
 
 			var aux= new Date(d.date);
 
@@ -118,7 +113,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 		y_scale.domain([0, 45]);
 	}
 	else if ((view=== "info_v1_c") || (view=== "info_v2_c")) {
-		y_scale.domain([0, 25]);
+		y_scale.domain([0, 72]);
 	}
 	else if ((view=== "info_v1_d") || (view=== "info_v2_d")) {
 		y_scale.domain([0, 100]);
@@ -142,21 +137,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-	if (x_axis_horizon== 2) {
-		var dt_avlb= canvas.append("text")	// Caso o dataset escolhido seja 97-06, sem infos complementares, informo nao haver esses dados
-			.attr("class", "label")
-			.attr("x", width/ 2)
-			.attr("y", height/ 2)
-			.style("text-anchor", "middle");
-
-		if (language=== "pt") {
-			dt_avlb.text("Dados não disponíveis");
-		}
-		else if (language=== "en") {
-			dt_avlb.text("Data not available");
-		}
-	}
-	else if (data.length> 1) {						// Senao, construo os graficos normalmente
+	if (data.length> 1) {						// Senao, construo os graficos normalmente
 		area.y0(y_scale(0));
 
 		canvas.append("path")
