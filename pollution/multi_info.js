@@ -90,7 +90,7 @@ function draw_comp_info(data, view, x_axis_horizon) {
 	}
 
 
-	var margin= {top: 4, right: 20, bottom: 13, left: 30};
+	var margin= {top: 5, right: 20, bottom: 13, left: 30};
 
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
 	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
