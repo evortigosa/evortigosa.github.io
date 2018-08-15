@@ -16,7 +16,7 @@ var p_vertc= 28;
 
 function draw_g_bars(data, view) {	// Grouped chart only
 
-	var format_date= function(d) { return d3.timeFormat("%b-%Y")(d); };
+	var format_date= function(d) { return d3.timeFormat("%B-%Y")(d); };
 	var format_case= function(d) { return d3.format(".0f")(d) + " Cases"; };
 
 	var margin= {top: 5, right: 15, bottom: 45, left: 50};
