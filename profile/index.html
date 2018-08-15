@@ -1,1 +1,66 @@
-index
+<!DOCTYPE html>
+
+<!--
+	Evandro Scudeleti Ortigossa
+
+	M.Sc. Student in Computer Science
+	Institute of Mathematical and Computer Sciences - ICMC
+	University of São Paulo - USP
+	São Carlos, São Paulo, Brazil.
+	
+	2017. All rights reserved.
+-->
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Evandro Scudeleti Ortigossa</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="ev_page.css">
+
+</head>
+<body>
+
+	<div style="width:100%;height:100%">
+		<div style="margin:auto;width:1800px;height:880px">
+			<div style="width:100%;height:165px">
+				<div id="photo" class="TopPage" style="float:left;width:20%;height:100%"></div>
+				<div id="my_id" class="TopPage" style="float:left;width:60%;height:100%"></div>
+				<div id="logo" class="TopPage" style="float:left;width:20%;height:100%"></div>
+			</div>
+			<div id="line1" class="Line" style="background:black;width:100%;height:2px">
+			<div style="overflow-y:scroll;overflow-x:hidden;width:100%;height:665px">
+				<div id="middle" class="Middle" style="width:100%;height:815px"></div>
+			</div>
+			<div id="line3" class="Line" style="background:black;width:99%;height:2px">
+			<div style="width:100%;height:140px">
+				<div id="publi" class="Bottom" style="float:left;width:20%;height:100%"></div>
+				<div id="b_info" class="Bottom" style="float:left;width:60%;height:100%"></div>
+				<div id="grupo" class="Bottom" style="float:left;width:20%;height:100%"></div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="profile.js"></script>
+
+	<script>
+
+		function init() {
+
+			load_my_face();
+			load_my_id();
+			load_logo();
+			load_research();
+			load_publications();
+			load_b_info();
+			load_vgpg();
+		};
+
+		init();
+
+	</script>
+
+</body>
+</html>
