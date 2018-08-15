@@ -105,7 +105,7 @@ function draw_g_bars(data, view) {	// Grouped chart only
 					ages++;
 				}
 
-				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
+				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + text_ages[ages- 1] + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
@@ -123,7 +123,7 @@ function draw_g_bars(data, view) {	// Grouped chart only
 					ages++;
 				}
 
-				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
+				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + text_ages[ages- 1] + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})
@@ -233,7 +233,7 @@ function draw_s_bars(data, view) {	// Stacked chart only
 					ages++;
 				}
 
-				tip.html(format_date(parseDate2(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
+				tip.html(format_date(parseDate2(x[i][0])) + "<br>" + text_ages[ages- 1] + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
@@ -251,7 +251,7 @@ function draw_s_bars(data, view) {	// Stacked chart only
 					ages++;
 				}
 
-				tip.html(format_date(parseDate2(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
+				tip.html(format_date(parseDate2(x[i][0])) + "<br>" + text_ages[ages- 1] + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})
