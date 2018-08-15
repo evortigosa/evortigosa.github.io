@@ -97,7 +97,15 @@ function draw_g_bars(data, view) {	// Grouped chart only
 			.on("mouseover", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]))
+				var ages= 0;
+				var aux_sum= 0;
+
+				while (aux_sum<= d[0]) {
+					aux_sum += d.data[ages];
+					ages++;
+				}
+
+				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
@@ -107,7 +115,15 @@ function draw_g_bars(data, view) {	// Grouped chart only
 			.on("mousemove", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]))
+				var ages= 0;
+				var aux_sum= 0;
+
+				while (aux_sum<= d[0]) {
+					aux_sum += d.data[ages];
+					ages++;
+				}
+
+				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})
@@ -209,7 +225,15 @@ function draw_s_bars(data, view) {	// Stacked chart only
 			.on("mouseover", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(format_date(parseDate2(x[i])) + "<br>" + format_case(d[1]- d[0]))
+				var ages= 0;
+				var aux_sum= 0;
+
+				while (aux_sum<= d[0]) {
+					aux_sum += d.data[ages];
+					ages++;
+				}
+
+				tip.html(format_date(parseDate2(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
@@ -219,7 +243,15 @@ function draw_s_bars(data, view) {	// Stacked chart only
 			.on("mousemove", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(format_date(parseDate2(x[i])) + "<br>" + format_case(d[1]- d[0]))
+				var ages= 0;
+				var aux_sum= 0;
+
+				while (aux_sum<= d[0]) {
+					aux_sum += d.data[ages];
+					ages++;
+				}
+
+				tip.html(format_date(parseDate2(x[i][0])) + "<br>" + format_case(d[1]- d[0]) + "<br>" + text_ages[ages- 1])
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})

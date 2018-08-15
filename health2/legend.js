@@ -42,7 +42,7 @@ function add_legend(view) {
 
 
 	h_shift= h_shift+ 20;
-	texto= ["Under 5 Years","5 to 9 Years","10 to 19 Years","20 to 29 Years","30 to 39 Years","40 to 49 Years","50 to 59 Years","60 Years and Over"];
+	texto= text_ages;
 
 
 	for ((i= 0); (i< 8); (i++)) {
