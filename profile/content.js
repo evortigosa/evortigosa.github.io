@@ -25,7 +25,7 @@ function load_my_face() {
 		.attr("transform", "translate(0,0)");
 
 	var img= g.append("svg:image")
-		.attr("xlink:href", "eu.jpg")
+		.attr("xlink:href", path_i + "eu.jpg")
 		.attr("width", 320)
 		.attr("height", 320)
 		.attr("x", 1)
@@ -48,7 +48,7 @@ function load_logo() {
 		.attr("transform", "translate(0,0)");
 
 	var img= g.append("svg:image")
-		.attr("xlink:href", "logo.JPG")
+		.attr("xlink:href", path_i + "logo.JPG")
 		.attr("width", 320)
 		.attr("height", 320)
 		.attr("x", 1)
@@ -525,7 +525,7 @@ function load_research() {
 		.attr("transform", "translate(0,0)");
 
 	var img= g.append("svg:image")
-		.attr("xlink:href", "CNPq.png")
+		.attr("xlink:href", path_i + "CNPq.png")
 		.attr("width", 270)
 		.attr("height", 270)
 		.attr("x", x_pos2+ 10)
@@ -642,7 +642,7 @@ function load_vgpg() {
 		.attr("transform", "translate(0,0)");
 
 	var img= g.append("svg:image")
-		.attr("xlink:href", "vgpg.jpg")
+		.attr("xlink:href", path_i + "vgpg.jpg")
 		.attr("width", 200)
 		.attr("height", 200)
 		.attr("x", 75)
