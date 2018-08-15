@@ -16,6 +16,9 @@ var p_vertc= 28;
 
 function draw_g_bars(data, view) {	// Grouped chart only
 
+	var format_date= function(d) { return d3.timeFormat("%b-%Y")(d); };
+	var format_case= function(d) { return d3.format(".0f")(d) + " Cases"; };
+
 	var margin= {top: 5, right: 15, bottom: 45, left: 50};
 
 	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
@@ -91,20 +94,20 @@ function draw_g_bars(data, view) {	// Grouped chart only
 			.attr("y", height)
 			.attr("width", x_scale.bandwidth() / n)
 			.attr("height", 0)
-			.on("mouseover", function(d) {
+			.on("mouseover", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d3.format(".0f")(d[1]- d[0]) + " Cases")
+				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
 					.transition()
 						.duration(100);
 			})
-			.on("mousemove", function(d) {
+			.on("mousemove", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d3.format(".0f")(d[1]- d[0]) + " Cases")
+				tip.html(format_date(parseDate1(x[i][0])) + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})
@@ -125,6 +128,9 @@ function draw_g_bars(data, view) {	// Grouped chart only
 };
 
 function draw_s_bars(data, view) {	// Stacked chart only
+
+	var format_date= function(d) { return d3.timeFormat("%Y")(d); };
+	var format_case= function(d) { return d3.format(".0f")(d) + " Cases"; };
 
 	var margin= {top: 5, right: 15, bottom: 45, left: 50};
 
@@ -200,20 +206,20 @@ function draw_s_bars(data, view) {	// Stacked chart only
 			.attr("y", height)
 			.attr("width", x_scale.bandwidth())
 			.attr("height", 0)
-			.on("mouseover", function(d) {
+			.on("mouseover", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d3.format(".0f")(d[1]- d[0]) + " Cases")
+				tip.html(format_date(parseDate2(x[i])) + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px")
 					.style("opacity", 1)
 					.transition()
 						.duration(100);
 			})
-			.on("mousemove", function(d) {
+			.on("mousemove", function(d, i) {
 				var mousePos= d3.mouse(d3.select("body").node());
 
-				tip.html(d3.format(".0f")(d[1]- d[0]) + " Cases")
+				tip.html(format_date(parseDate2(x[i])) + "<br>" + format_case(d[1]- d[0]))
 					.style("left", (mousePos[0]- p_horiz) + "px")
 					.style("top", (mousePos[1]+ p_vertc) + "px");
 			})
