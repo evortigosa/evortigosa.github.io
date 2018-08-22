@@ -150,29 +150,25 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 			.attr("cy", function(d) { return height; })
 			.style("fill", function(d) { 
 				var date_aux= new Date(d.date);
-				var n_day= date_aux.getDate();			// getDate() returns 1 - 31
-				var n_month= date_aux.getMonth()+ 1;	// getMonth() returns 0 - 11
+				var n_day= date_aux.getDate();				// getDate() returns 1 - 31
+				var n_month= date_aux.getMonth()+ 1;		// getMonth() returns 0 - 11
 
-				if ((n_month>= 3) && (n_month<= 6)) {	// outono
-					if ((n_month> 3) && (n_month< 6)) return color_group(1);
-					else if ((n_month== 3) && (n_day>= 20)) return color_group(1);
-					else if ((n_month== 6) && (n_day<= 20)) return color_group(1);
+				if ((n_month>= 3) && (n_month<= 6)) {		// outono
+					if (((n_month> 3) && (n_month< 6)) || ((n_month== 3) && (n_day>= 20)) || ((n_month== 6) && (n_day<= 20)))
+						return color_group(1);
 				}
 				else if ((n_month>= 9) && (n_month<= 12)) {	// primavera
-					if ((n_month> 9) && (n_month< 12)) return color_group(3);
-					else if ((n_month== 9) && (n_day>= 23)) return color_group(3);
-					else if ((n_month== 12) && (n_day<= 21)) return color_group(3);
+					if (((n_month> 9) && (n_month< 12)) || ((n_month== 9) && (n_day>= 23)) || ((n_month== 12) && (n_day<= 21)))
+						return color_group(3);
 				}
 
-				if ((n_month>= 6) && (n_month<= 9)) {	// inverno
-					if ((n_month> 6) && (n_month< 9)) return color_group(2);
-					else if ((n_month== 6) && (n_day>= 21)) return color_group(2);
-					else if ((n_month== 9) && (n_day<= 22)) return color_group(2);
+				if ((n_month>= 6) && (n_month<= 9)) {		// inverno
+					if (((n_month> 6) && (n_month< 9)) || ((n_month== 6) && (n_day>= 21)) || ((n_month== 9) && (n_day<= 22)))
+						return color_group(2);
 				}
 				else if ((n_month== 12) || (n_month<= 3)) {	// verao
-					if (n_month< 3) return color_group(0);
-					else if ((n_month== 12) && (n_day>= 22)) return color_group(0);
-					else if ((n_month== 3) && (n_day<= 19)) return color_group(0);
+					if ((n_month< 3) || ((n_month== 12) && (n_day>= 22)) || ((n_month== 3) && (n_day<= 19)))
+						return color_group(0);
 				}
 			})
 			.on("mouseover", function(d) {
