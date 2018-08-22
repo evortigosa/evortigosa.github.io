@@ -157,18 +157,19 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 					if ((n_month> 3) && (n_month< 6)) return color_group(1);
 					else if ((n_month== 3) && (n_day>= 20)) return color_group(1);
 					else if ((n_month== 6) && (n_day<= 20)) return color_group(1);
-				}	
+				}
+				else if ((n_month>= 9) && (n_month<= 12)) {	// primavera
+					if ((n_month> 9) && (n_month< 12)) return color_group(3);
+					else if ((n_month== 9) && (n_day>= 23)) return color_group(3);
+					else if ((n_month== 12) && (n_day<= 21)) return color_group(3);
+				}
+
 				if ((n_month>= 6) && (n_month<= 9)) {	// inverno
 					if ((n_month> 6) && (n_month< 9)) return color_group(2);
 					else if ((n_month== 6) && (n_day>= 21)) return color_group(2);
 					else if ((n_month== 9) && (n_day<= 22)) return color_group(2);
 				}
-				if ((n_month>= 9) && (n_month<= 12)) {	// primavera
-					if ((n_month> 9) && (n_month< 12)) return color_group(3);
-					else if ((n_month== 9) && (n_day>= 23)) return color_group(3);
-					else if ((n_month== 12) && (n_day<= 21)) return color_group(3);
-				}
-				if ((n_month== 12) || (n_month<= 3)) {	// verao
+				else if ((n_month== 12) || (n_month<= 3)) {	// verao
 					if (n_month< 3) return color_group(0);
 					else if ((n_month== 12) && (n_day>= 22)) return color_group(0);
 					else if ((n_month== 3) && (n_day<= 19)) return color_group(0);
