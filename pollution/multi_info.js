@@ -11,26 +11,11 @@
 
 function create_info_data(data, view, x_axis_horizon) {
 
-	var subset_a= [], subset_b= [], subset_c= [], subset_d= [];
-
-	data.forEach(function(d) {
-		subset_a.push({date:d.date, info:d.chuva});
-		subset_b.push({date:d.date, info:d.temperatura});
-		subset_c.push({date:d.date, info:d.v_vento});
-		subset_d.push({date:d.date, info:d.umidade});
-	});
-
 	if (view=== "view1") {
-		draw_comp_info(subset_a, "info_v1_a", x_axis_horizon);
-		draw_comp_info(subset_b, "info_v1_b", x_axis_horizon);
-		draw_comp_info(subset_c, "info_v1_c", x_axis_horizon);
-		draw_comp_info(subset_d, "info_v1_d", x_axis_horizon);
+		draw_comp_info(data, "info_v1");
 	}
 	else if (view=== "view2") {
-		draw_comp_info(subset_a, "info_v2_a", x_axis_horizon);
-		draw_comp_info(subset_b, "info_v2_b", x_axis_horizon);
-		draw_comp_info(subset_c, "info_v2_c", x_axis_horizon);
-		draw_comp_info(subset_d, "info_v2_d", x_axis_horizon);
+		draw_comp_info(data, "info_v2");
 	}
 };
 
@@ -63,67 +48,12 @@ function update_info_data(data_source, view, x_axis_horizon, begin, end) {
 	});
 };
 
-function draw_comp_info(data, view, x_axis_horizon) {
+function draw_comp_info(data, view) {
 
-	var y_axis_label= "Precipitação";
-	var format_scale= function(d) { return d + " mm"; };
+	var width= document.getElementById(view).clientWidth;
+	var height= document.getElementById(view).clientHeight;
 
-	if (language=== "en") y_axis_label= "Precipitation";
-
-	if ((view=== "info_v1_b") || (view=== "info_v2_b")) {
-		y_axis_label= "Temperatura";
-		format_scale= function(d) { return d + " °C"; };
-
-		if (language=== "en") y_axis_label= "Temperature";
-	}
-	else if ((view=== "info_v1_c") || (view=== "info_v2_c")) {
-		y_axis_label= "Vel. vento";
-		format_scale= function(d) { return d + " m/s"; };
-
-		if (language=== "en") y_axis_label= "Wind speed";
-	}
-	else if ((view=== "info_v1_d") || (view=== "info_v2_d")) {
-		y_axis_label= "Umidade";
-		format_scale= function(d) { return d + " %"; };
-
-		if (language=== "en") y_axis_label= "Humidity";
-	}
-
-
-	var margin= {top: 5, right: 20, bottom: 13, left: 30};
-
-	var width= document.getElementById(view).clientWidth- margin.left- margin.right;
-	var height= document.getElementById(view).clientHeight- margin.top- margin.bottom;
-
-	var delay_time= 500;
-
-
-	var x_scale= d3.scaleTime()		// Escala horizontal
-		.range([0, width]);
-
-	var y_scale= d3.scaleLinear()	// Escala vertical
-		.range([height, 0]);
-
-	x_scale.domain(d3.extent(data, function(d) { return d.date; }));
-
-	if ((view=== "info_v1_a") || (view=== "info_v2_a")) {
-		y_scale.domain([0, 125]);
-	}
-	else if ((view=== "info_v1_b") || (view=== "info_v2_b")) {
-		y_scale.domain([0, 45]);
-	}
-	else if ((view=== "info_v1_c") || (view=== "info_v2_c")) {
-		y_scale.domain([0, 72]);
-	}
-	else if ((view=== "info_v1_d") || (view=== "info_v2_d")) {
-		y_scale.domain([0, 100]);
-	}
-
-
-	var area= d3.area()
-		.x(function(d) { return x_scale(d.date); })
-		.y1(function(d) { return y_scale(d.info); });
-
+	var num_charts= 4;
 
 	document.getElementById(view).innerHTML= "";
 
@@ -131,49 +61,173 @@ function draw_comp_info(data, view, x_axis_horizon) {
 
 	var canvas= d3.select(view_aux)
 		.append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
+		.attr("width", width)
+		.attr("height", height)
 		.append("g")
+			.attr("transform", "translate(0,0)");
+
+
+	var margin= {top: 5, right: 20, bottom: 13, left: 30};
+
+	var in_width= width - margin.left - margin.right;
+	var in_height= (height/ num_charts) - margin.top - margin.bottom;
+
+	var delay_time= 500;
+	var y_axis_label= "Precipitação";
+
+
+	var x_scale= d3.scaleTime()					// Escala horizontal
+		.range([0, in_width])
+		.domain(d3.extent(data, function(d) { return d.date; }));
+
+	var y_scale= [], format_scale= [], sub_canvas= [], v_offset= [];
+
+
+	for ((v_chart= 0); (v_chart< num_charts); (v_chart++)) {
+
+		y_scale[v_chart]= d3.scaleLinear()		// Escala vertical
+			.range([in_height, 0]);
+
+		var area= d3.area()
+			.x(function(d) { return x_scale(d.date); });
+
+
+		if (v_chart== 0) {						// Definicoes de cada uma das variaveis
+			format_scale[v_chart]= function(d) { return d + " mm"; };
+			
+			if (language=== "en") y_axis_label= "Precipitation";
+			
+			y_scale[v_chart].domain([0, 125]);
+
+			area.y1(function(d) { return y_scale[v_chart](d.chuva); });
+		}
+		else if (v_chart== 1) {
+			format_scale[v_chart]= function(d) { return d + " °C"; };
+			
+			y_axis_label= "Temperatura";
+			if (language=== "en") y_axis_label= "Temperature";
+			
+			y_scale[v_chart].domain([0, 45]);
+
+			area.y1(function(d) { return y_scale[v_chart](d.temperatura); });
+		}
+		else if (v_chart== 2) {
+			format_scale[v_chart]= function(d) { return d + " m/s"; };
+			
+			y_axis_label= "Vel. vento";
+			if (language=== "en") y_axis_label= "Wind speed";
+			
+			y_scale[v_chart].domain([0, 72]);
+
+			area.y1(function(d) { return y_scale[v_chart](d.v_vento); });
+		}
+		else if (v_chart== 3) {
+			format_scale[v_chart]= function(d) { return d + " %"; };
+			
+			y_axis_label= "Umidade";
+			if (language=== "en") y_axis_label= "Humidity";
+			
+			y_scale[v_chart].domain([0, 100]);
+
+			area.y1(function(d) { return y_scale[v_chart](d.umidade); });
+		}
+
+
+		v_offset[v_chart]= (v_chart* (margin.top + margin.bottom + in_height))+ margin.top;
+
+		sub_canvas[v_chart]= canvas.append("g")
+			.attr("width", in_width + margin.left + margin.right)
+			.attr("height", in_height + margin.top + margin.bottom)
+			.attr("transform", "translate(" + margin.left + "," + v_offset[v_chart] + ")");
+
+
+		if (data.length> 1) {						// Senao, nao construo o conteudo dos graficos
+			area.y0(y_scale[v_chart](0));
+
+			sub_canvas[v_chart].append("path")
+				.datum(data)
+					.style("fill", color_group(6))
+					.attr("d", area);
+
+			sub_canvas[v_chart].append("rect")		// Plano de transicao, efeito de construcao da area
+				.attr("width", width)
+				.attr("height", height)
+				.attr("x", 0)
+				.style("fill", "white")
+				.transition()
+					.duration(1000)
+					.attr("x", width)
+					.remove();
+		}
+
+
+		var xAxis= d3.axisBottom(x_scale)			// Construcao dos eixos
+			.tickValues([]);
+
+		var yAxis= d3.axisLeft(y_scale[v_chart])
+			.tickValues([0, y_scale[v_chart].domain()[1]]);
+
+		sub_canvas[v_chart].append("g")
+			.attr("class", "axis-x")
+			.attr("transform", "translate(0," + in_height + ")")
+			.call(xAxis);
+
+		sub_canvas[v_chart].append("g")
+			.attr("class", "axis-y")
+			.call(yAxis);
+
+		sub_canvas[v_chart].append("text")
+			.attr("class", "label")
+			.attr("transform", "rotate(-90)")
+			.attr("x", -(in_height/ 2)- 5)
+			.attr("y", 1 -margin.left)
+			.attr("dy", ".71em")
+			.style("text-anchor", "middle")
+			.text(y_axis_label);
+	}
+
+	if (data.length> 1) {						// Eventos de mouse
+
+		var events_pl= canvas.append("g")
+			.attr("width", in_width)
+			.attr("height", height - margin.top - margin.bottom)
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
-	if (data.length> 1) {						// Senao, construo os graficos normalmente
-		area.y0(y_scale(0));
-
-		canvas.append("path")
-			.datum(data)
-				.style("fill", color_group(6))
-				.attr("d", area);
+		var vertical_line= [], marker= [];
 
 
-		var vertical_line= canvas.append("g")		// Append a vertical line in the Chart
-			.attr("class", "marker_line")
-			.style("display", "none");
+		for ((v_chart= 0); (v_chart< num_charts); (v_chart++)) {
 
-		vertical_line.append("line")
-			.attr("y1", -5)
-			.attr("y2", height)
-			.attr("fill", "none")
-			.style("stroke-width", "1px")
-			.style("stroke", "black")
-			.style("stroke-dasharray", "4,4");
+			vertical_line[v_chart]= events_pl.append("g")	// Append a vertical line in the Chart
+				.attr("class", "marker_line")
+				.style("display", "none");
+
+			vertical_line[v_chart].append("line")
+				.attr("y1", -5)
+				.attr("y2", in_height)
+				.attr("fill", "none")
+				.style("stroke-width", "1px")
+				.style("stroke", "black")
+				.style("stroke-dasharray", "4,4");
 
 
-		var marker= canvas.append("g")		// Append marker in the Chart
-			.style("display", "none");
+			marker[v_chart]= events_pl.append("g")			// Append marker in the Chart
+				.style("display", "none");
 
-		marker.append("circle")
-			.attr("class", "marker")
-			.attr("r", 4)
-			.style("fill", "steelblue")
-			.style("pointer-events", "none");
+			marker[v_chart].append("circle")
+				.attr("class", "marker")
+				.attr("r", 4)
+				.style("fill", "steelblue")
+				.style("pointer-events", "none");
 
-		marker.append("text")
-			.attr("class", "df_label")
-			.attr("x", 7)
-			.attr("dy", ".4em");
+			marker[v_chart].append("text")
+				.attr("class", "df_label")
+				.attr("x", 7)
+				.attr("dy", ".4em");
+		}
 
-		var date_mkr= canvas.append("g")		// Append a date marker in the Chart
+
+		var date_mkr= events_pl.append("g")					// Append a date marker in the Chart
 			.style("display", "none");
 
 		date_mkr.append("text")
@@ -184,18 +238,35 @@ function draw_comp_info(data, view, x_axis_horizon) {
 			.attr("dy", ".4em");
 
 
-		canvas.append("rect")		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
-			.attr("width", width)
-			.attr("height", height)
+		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
+		events_pl.append("rect")
+			.attr("width", in_width)
+			.attr("height", height - margin.top - margin.bottom)
 			.style("fill", "none")
 			.on("mouseover", function() {
-				vertical_line.style("display", null);
-				marker.style("display", null);
+				vertical_line[0].style("display", null);
+				vertical_line[1].style("display", null);
+				vertical_line[2].style("display", null);
+				vertical_line[3].style("display", null);
+
+				marker[0].style("display", null);
+				marker[1].style("display", null);
+				marker[2].style("display", null);
+				marker[3].style("display", null);
+
 				date_mkr.style("display", null);
 			})
 			.on("mouseout", function() { 
-				vertical_line.style("display", "none");
-				marker.style("display", "none");
+				vertical_line[0].style("display", "none");
+				vertical_line[1].style("display", "none");
+				vertical_line[2].style("display", "none");
+				vertical_line[3].style("display", "none");
+
+				marker[0].style("display", "none");
+				marker[1].style("display", "none");
+				marker[2].style("display", "none");
+				marker[3].style("display", "none");
+
 				date_mkr.style("display", "none");
 			})
 			.on("mousemove", mouseMove)
@@ -206,72 +277,53 @@ function draw_comp_info(data, view, x_axis_horizon) {
 
 		var bisectDate= d3.bisector(function(d) { return d.date; }).left;	// Create custom bisector
 
-		function mouseMove() {		// Add event listeners/handlers
+		function mouseMove() {			// Add event listeners/handlers
 
 			var	pos_limite= x_scale(data[data.length- 1].date),
-				pos_cursor= d3.mouse(this)[0];
+				pos_cursorX= d3.mouse(this)[0],
+				pos_cursorY= d3.mouse(this)[1];
 
-			var x0= pos_cursor > pos_limite ? x_scale.invert(pos_limite) : x_scale.invert(pos_cursor),
+			var x0= pos_cursorX > pos_limite ? x_scale.invert(pos_limite) : x_scale.invert(pos_cursorX),
 				index= bisectDate(data, x0, 1),
 				start= data[index- 1],
 				end= data[index],
 				d= x0 - start.date > end.date - x0 ? end : start;
 
-			vertical_line.attr("transform", "translate(" + x_scale(d.date) + ",0)");
+			var y_mov1= -8,
+				y_mov2= 0;
 
-			marker.attr("transform", "translate(" + x_scale(d.date) + "," + y_scale(d.info) + ")");
 
-			if (d.info< 10) {
-				marker.select("text")
-					.attr("y", -5)
-					.text(format_scale(d.info));
-			}
-			else {
-				marker.select("text")
-					.attr("y", 1)
-					.text(format_scale(d.info));
-			}
+			vertical_line[0].attr("transform", "translate(" + x_scale(d.date) + "," + v_offset[0] + ")")
+			vertical_line[1].attr("transform", "translate(" + x_scale(d.date) + "," + v_offset[1] + ")")
+			vertical_line[2].attr("transform", "translate(" + x_scale(d.date) + "," + v_offset[2] + ")")
+			vertical_line[3].attr("transform", "translate(" + x_scale(d.date) + "," + v_offset[3] + ")")
 
-			date_mkr.attr("transform", "translate(" + x_scale(d.date) + "," + height + ")");
+			marker[0].attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[0] - margin.top + y_scale[0](d.chuva)) + ")");
+			marker[1].attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[1] - margin.top + y_scale[1](d.temperatura)) + ")");
+			marker[2].attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[2] - margin.top + y_scale[2](d.v_vento)) + ")");
+			marker[3].attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[3] - margin.top + y_scale[3](d.umidade)) + ")");
+
+			if (d.chuva< 10) marker[0].select("text").attr("y", y_mov1).text(format_scale[0](d.chuva));
+			else marker[0].select("text").attr("y", y_mov2).text(format_scale[0](d.chuva));
+
+			if (d.temperatura< 10) marker[1].select("text").attr("y", y_mov1).text(format_scale[1](d.temperatura));
+			else marker[1].select("text").attr("y", y_mov2).text(format_scale[1](d.temperatura));
+
+			if (d.v_vento< 10) marker[2].select("text").attr("y", y_mov1).text(format_scale[2](d.v_vento));
+			else marker[2].select("text").attr("y", y_mov2).text(format_scale[2](d.v_vento));
+
+			if (d.umidade< 10) marker[3].select("text").attr("y", y_mov1).text(format_scale[3](d.umidade));
+			else marker[3].select("text").attr("y", y_mov2).text(format_scale[3](d.umidade));
+
+
+			if (pos_cursorY< v_offset[1]) date_mkr.attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[0] - margin.top + in_height) + ")");
+			else if (pos_cursorY< v_offset[2]) date_mkr.attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[1] - margin.top + in_height) + ")");
+			else if (pos_cursorY< v_offset[3]) date_mkr.attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[2] - margin.top + in_height) + ")");
+			else date_mkr.attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[3] - margin.top + in_height) + ")");
 
 			date_mkr.select("text")
 				.attr("y", 7)
 				.text(d3.timeFormat("%d-%b-%y")(d.date));
 		};
-
-
-		canvas.append("rect")		// Plano de transicao, efeito de construcao da area
-			.attr("width", width)
-			.attr("height", height)
-			.attr("x", 0)
-			.style("fill", "white")
-			.transition()
-				.duration(1000)
-				.attr("x", width)
-				.remove();
 	}
-
-	var xAxis= d3.axisBottom(x_scale)			// Construcao dos eixos
-		.tickValues([]);
-
-	var yAxis= d3.axisLeft(y_scale)
-		.tickValues([0, y_scale.domain()[1]]);
-
-	canvas.append("g")
-		.attr("class", "axis-x")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
-
-	canvas.append("g")
-		.attr("class", "axis-y")
-		.call(yAxis);
-
-	canvas.append("text")
-		.attr("class", "label")
-		.attr("transform", "rotate(-90)")
-		.attr("x", -(height/ 2)- 5)
-		.attr("y", 1 -margin.left)
-		.attr("dy", ".71em")
-		.style("text-anchor", "middle")
-		.text(y_axis_label);
 };

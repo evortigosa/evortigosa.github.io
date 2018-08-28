@@ -179,7 +179,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 
 				if (x_axis_horizon== 1) {
 					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
-							format_v_v(d.v_vento) + "<br>" + format_d_v(d.d_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
+							format_tem(d.temperatura) + "<br>" + format_v_v(d.v_vento) + "<br>" + format_d_v(d.d_vento) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px")
 						.style("opacity", 1)
@@ -188,7 +188,7 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 				}
 				else {
 					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
-							format_v_v(d.v_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
+							format_tem(d.temperatura) + "<br>" + format_v_v(d.v_vento) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px")
 						.style("opacity", 1)
@@ -204,13 +204,13 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 
 				if (x_axis_horizon== 1) {
 					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
-							format_v_v(d.v_vento) + "<br>" + format_d_v(d.d_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
+							format_tem(d.temperatura) + "<br>" + format_v_v(d.v_vento) + "<br>" + format_d_v(d.d_vento) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px");
 				}
 				else {
 					tip.html(format_dia(d.date) + "<br>" + format_con(d.concentracao) + "<br>" + format_chu(d.chuva) + "<br>" + 
-							format_v_v(d.v_vento) + "<br>" + format_tem(d.temperatura) + "<br>" + format_umi(d.umidade))
+							format_tem(d.temperatura) + "<br>" + format_v_v(d.v_vento) + "<br>" + format_umi(d.umidade))
 						.style("left", (mousePos[0]- p_horiz) + "px")
 						.style("top", (mousePos[1]+ p_vertc) + "px");
 				}
