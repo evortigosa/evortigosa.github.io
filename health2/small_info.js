@@ -66,7 +66,7 @@ function draw_small_info(data, view, disease) {
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-	if (data.length> 1) {						// Senao, construo os graficos normalmente
+	if (data.length> 1) {				// Se, construo os graficos normalmente
 		area.y0(y_scale(0));
 
 		canvas.append("path")
@@ -80,7 +80,48 @@ function draw_small_info(data, view, disease) {
 				.attr("d", line);
 
 
-		var vertical_line= canvas.append("g")		// Append a vertical line in the Chart
+		canvas.append("rect")			// Plano de transicao, efeito de construcao da area
+			.attr("width", width)
+			.attr("height", height)
+			.attr("x", 0)
+			.style("fill", "white")
+			.transition()
+				.duration(1000)
+				.attr("x", width)
+				.remove();
+	}
+
+
+	var xAxis= d3.axisBottom(x_scale);		// Construcao dos eixos
+	
+	if (view=== "small_up_5" || view=== "small_dw_5") xAxis.tickFormat(d3.timeFormat("%Y")).ticks(4).tickPadding(2);
+	else xAxis.tickValues([]);
+
+	var yAxis= d3.axisLeft(y_scale)
+		.tickValues([0, y_scale.domain()[1]]);
+
+	canvas.append("g")
+		.attr("class", "axis-x")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis);
+
+	canvas.append("g")
+		.attr("class", "axis-y")
+		.call(yAxis);
+
+	canvas.append("text")
+		.attr("class", "info")
+		.attr("transform", "rotate(-90)")
+		.attr("x", -(height/ 2)- 8)
+		.attr("y", 10 -margin.left)
+		.attr("dy", ".71em")
+		.style("text-anchor", "middle")
+		.text(y_axis_label);
+
+
+	if (data.length> 1) {			// Se, construo os eventos de mouse
+
+		var vertical_line= canvas.append("g")	// Append a vertical line in the Chart
 			.attr("class", "marker_line")
 			.style("display", "none");
 
@@ -93,7 +134,7 @@ function draw_small_info(data, view, disease) {
 			.style("stroke-dasharray", "4,4");
 
 
-		var marker= canvas.append("g")		// Append marker in the Chart
+		var marker= canvas.append("g")			// Append marker in the Chart
 			.style("display", "none");
 
 		marker.append("circle")
@@ -114,11 +155,12 @@ function draw_small_info(data, view, disease) {
 			.attr("class", "m_label")
 			.style("pointer-events", "none")
 			.style("text-anchor", "middle")
-			.attr("x", 3)
+			.attr("x", -3)
 			.attr("dy", ".4em");
 
 
-		canvas.append("rect")		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
+		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
+		canvas.append("rect")
 			.attr("width", width)
 			.attr("height", height)
 			.style("fill", "none")
@@ -157,12 +199,12 @@ function draw_small_info(data, view, disease) {
 
 			if (d[1]< 10) {
 				marker.select("text")
-					.attr("y", -6)
+					.attr("y", -8)
 					.text((d[1]));
 			}
 			else {
 				marker.select("text")
-					.attr("y", -3)
+					.attr("y", 0)
 					.text((d[1]));
 			}
 
@@ -172,42 +214,5 @@ function draw_small_info(data, view, disease) {
 				.attr("y", 7)
 				.text(d3.timeFormat("%b-%y")(d[0]));
 		};
-
-
-		canvas.append("rect")		// Plano de transicao, efeito de construcao da area
-			.attr("width", width)
-			.attr("height", height)
-			.attr("x", 0)
-			.style("fill", "white")
-			.transition()
-				.duration(1000)
-				.attr("x", width)
-				.remove();
 	}
-
-	var xAxis= d3.axisBottom(x_scale);			// Construcao dos eixos
-		
-	if (view=== "small_up_5" || view=== "small_dw_5") xAxis.tickFormat(d3.timeFormat("%Y")).ticks(4).tickPadding(2);
-	else xAxis.tickValues([]);
-
-	var yAxis= d3.axisLeft(y_scale)
-		.tickValues([0, y_scale.domain()[1]]);
-
-	canvas.append("g")
-		.attr("class", "axis-x")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
-
-	canvas.append("g")
-		.attr("class", "axis-y")
-		.call(yAxis);
-
-	canvas.append("text")
-		.attr("class", "info")
-		.attr("transform", "rotate(-90)")
-		.attr("x", -(height/ 2)- 8)
-		.attr("y", 10 -margin.left)
-		.attr("dy", ".71em")
-		.style("text-anchor", "middle")
-		.text(y_axis_label);
 };

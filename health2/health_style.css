@@ -81,6 +81,11 @@ div.tooltip {
 .m_label {
 	font: 11px sans-serif;
 	font-color: black;
+	paint-order: stroke;
+	stroke: #fff;
+	stroke-width: 0.6px;
+	stroke-linecap: butt;
+	stroke-linejoin: miter;
 	font-weight: bold;
 }
 
