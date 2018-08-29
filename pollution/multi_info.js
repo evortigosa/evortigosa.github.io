@@ -107,7 +107,7 @@ function draw_comp_info(data, view) {
 			y_axis_label= "Temperatura";
 			if (language=== "en") y_axis_label= "Temperature";
 			
-			y_scale[v_chart].domain([0, 45]);
+			y_scale[v_chart].domain([0, 40]);
 
 			area.y1(function(d) { return y_scale[v_chart](d.temperatura); });
 		}
@@ -117,7 +117,8 @@ function draw_comp_info(data, view) {
 			y_axis_label= "Vel. vento";
 			if (language=== "en") y_axis_label= "Wind speed";
 			
-			y_scale[v_chart].domain([0, 72]);
+			if (v2_source=== "1997_2006.tsv") y_scale[v_chart].domain([0, 71]);
+			else y_scale[v_chart].domain([0, 25]);
 
 			area.y1(function(d) { return y_scale[v_chart](d.v_vento); });
 		}
