@@ -235,7 +235,7 @@ function draw_comp_info(data, view) {
 			.attr("class", "df_label")
 			.style("pointer-events", "none")
 			.style("text-anchor", "middle")
-			.attr("x", 3)
+			.attr("x", -1)
 			.attr("dy", ".4em");
 
 
