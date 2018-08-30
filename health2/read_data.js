@@ -51,35 +51,18 @@ function read_s2g_data(data_source, year, disease) {
 			draw_line_area(pm10, "pm10_v2", pm10_max);
 			draw_g_bars(subset, "view1");
 			draw_s_bars(s_aggr, "view2");
-
-			var small_view= 1;
-
-			for ((a= 0); (a< diseases.length); (a++)) {
-
-				if (diseases[a]!== disease) {
-					draw_small_info(disease_aggregator(disease_subset_gen(data, diseases[a])), ("small_up_" + small_view), a);
-					small_view++;
-				}
-			}
+			draw_small_info(aggregated_subset_diseases(data, diseases), disease, "small_up");
 		}
 		else {
 			draw_line_area(pm10_year, "pm10_v3", pm10_max);
 			draw_line_area(pm10, "pm10_v4", pm10_max);
 			draw_g_bars(subset, "view3");
 			draw_s_bars(s_aggr, "view4");
-
-			var small_view= 1;
-
-			for ((a= 0); (a< diseases.length); (a++)) {
-
-				if (diseases[a]!== disease) {
-					draw_small_info(disease_aggregator(disease_subset_gen(data, diseases[a])), ("small_dw_" + small_view), a);
-					small_view++;
-				}
-			}
+			draw_small_info(aggregated_subset_diseases(data, diseases), disease, "small_dw");
 		}
 	});
 };
+
 
 function pm10_subset_gen(data) {	// Retorna um subconjunto de data contendo apenas date e pm10
 
@@ -156,6 +139,25 @@ function disease_aggregator(data) {		// Retorna um subconjunto de data com valor
 		}
 
 		subset.push([parseDate1(data[i][0]), aux_sum]);
+	}
+
+	return subset;
+};
+
+function aggregated_subset_diseases(data, idx) { // Retorna data com valores totais agregados (data tem q ser pre-processado)
+
+	var subset= [], aux_dis= [];
+
+	for ((id= 0); (id< idx.length); (id++))
+		aux_dis.push(disease_aggregator(disease_subset_gen(data, idx[id])));
+
+	for ((k= 0); (k< aux_dis[0].length); (k++)) {
+		var aux= [aux_dis[0][k][0]];
+
+		for ((id= 0); (id< idx.length); (id++))
+			aux= aux.concat(aux_dis[id][k][1]);
+
+		subset.push(aux);
 	}
 
 	return subset;
