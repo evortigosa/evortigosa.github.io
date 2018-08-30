@@ -37,7 +37,7 @@ function draw_small_info(data, disease, view) {
 	var idx_dis= [], y_axis_label= "";
 
 	for ((i= 0); (i< diseases.length); (i++))
-		if (diseases[i]!== disease) idx_dis.push(i+ 1);	// Somo 1 pra shiftar date
+		if (diseases[i]!== disease) idx_dis.push(i+ 1);	// Somo 1 pra shiftar date em data
 
 
 	var x_scale= d3.scaleTime()					// Escala horizontal
@@ -82,7 +82,7 @@ function draw_small_info(data, disease, view) {
 			.attr("transform", "translate(" + margin.left + "," + v_offset[v_chart] + ")");
 
 
-		if (data.length> 1) {				// Se, construo os graficos normalmente
+		if (data.length> 1) {				// Se, construo o conteudo dos graficos
 			area.y0(y_scale[v_chart](0));
 
 			sub_canvas.append("path")
@@ -108,7 +108,7 @@ function draw_small_info(data, disease, view) {
 		}
 
 
-		var xAxis= d3.axisBottom(x_scale);		// Construcao dos eixos
+		var xAxis= d3.axisBottom(x_scale);	// Construcao dos eixos
 		
 		if (v_chart== 4) xAxis.tickFormat(d3.timeFormat("%Y")).ticks(4).tickPadding(2);
 		else xAxis.tickValues([]);
@@ -136,7 +136,7 @@ function draw_small_info(data, disease, view) {
 	}
 
 
-	if (data.length> 1) {			// Se, construo os eventos de mouse
+	if (data.length> 1) {					// Se, construo os eventos de mouse
 
 		var events_pl= canvas.append("g")
 			.attr("width", in_width)
