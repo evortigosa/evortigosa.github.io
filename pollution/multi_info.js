@@ -80,7 +80,7 @@ function draw_comp_info(data, view) {
 		.range([0, in_width])
 		.domain(d3.extent(data, function(d) { return d.date; }));
 
-	var y_scale= [], format_scale= [], sub_canvas= [], v_offset= [];
+	var y_scale= [], format_scale= [], v_offset= [];
 
 
 	for ((v_chart= 0); (v_chart< num_charts); (v_chart++)) {
@@ -136,7 +136,7 @@ function draw_comp_info(data, view) {
 
 		v_offset[v_chart]= (v_chart* (margin.top + margin.bottom + in_height))+ margin.top;
 
-		sub_canvas[v_chart]= canvas.append("g")
+		var sub_canvas= canvas.append("g")
 			.attr("width", in_width + margin.left + margin.right)
 			.attr("height", in_height + margin.top + margin.bottom)
 			.attr("transform", "translate(" + margin.left + "," + v_offset[v_chart] + ")");
@@ -145,12 +145,12 @@ function draw_comp_info(data, view) {
 		if (data.length> 1) {						// Senao, nao construo o conteudo dos graficos
 			area.y0(y_scale[v_chart](0));
 
-			sub_canvas[v_chart].append("path")
+			sub_canvas.append("path")
 				.datum(data)
 					.style("fill", color_group(6))
 					.attr("d", area);
 
-			sub_canvas[v_chart].append("rect")		// Plano de transicao, efeito de construcao da area
+			sub_canvas.append("rect")		// Plano de transicao, efeito de construcao da area
 				.attr("width", width)
 				.attr("height", height)
 				.attr("x", 0)
@@ -168,16 +168,16 @@ function draw_comp_info(data, view) {
 		var yAxis= d3.axisLeft(y_scale[v_chart])
 			.tickValues([0, y_scale[v_chart].domain()[1]]);
 
-		sub_canvas[v_chart].append("g")
+		sub_canvas.append("g")
 			.attr("class", "axis-x")
 			.attr("transform", "translate(0," + in_height + ")")
 			.call(xAxis);
 
-		sub_canvas[v_chart].append("g")
+		sub_canvas.append("g")
 			.attr("class", "axis-y")
 			.call(yAxis);
 
-		sub_canvas[v_chart].append("text")
+		sub_canvas.append("text")
 			.attr("class", "label")
 			.attr("transform", "rotate(-90)")
 			.attr("x", -(in_height/ 2)- 5)
