@@ -142,7 +142,7 @@ function draw_comp_info(data, view) {
 			.attr("transform", "translate(" + margin.left + "," + v_offset[v_chart] + ")");
 
 
-		if (data.length> 1) {						// Senao, nao construo o conteudo dos graficos
+		if (data.length> 1) {				// Se, construo o conteudo dos graficos
 			area.y0(y_scale[v_chart](0));
 
 			sub_canvas.append("path")
@@ -162,7 +162,7 @@ function draw_comp_info(data, view) {
 		}
 
 
-		var xAxis= d3.axisBottom(x_scale)			// Construcao dos eixos
+		var xAxis= d3.axisBottom(x_scale)	// Construcao dos eixos
 			.tickValues([]);
 
 		var yAxis= d3.axisLeft(y_scale[v_chart])
@@ -187,7 +187,7 @@ function draw_comp_info(data, view) {
 			.text(y_axis_label);
 	}
 
-	if (data.length> 1) {						// Eventos de mouse
+	if (data.length> 1) {					// Eventos de mouse
 
 		var events_pl= canvas.append("g")
 			.attr("width", in_width)
