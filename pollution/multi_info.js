@@ -223,7 +223,6 @@ function draw_comp_info(data, view) {
 
 			marker[v_chart].append("text")
 				.attr("class", "df_label")
-				.attr("x", 7)
 				.attr("dy", ".4em");
 		}
 
@@ -290,8 +289,8 @@ function draw_comp_info(data, view) {
 				end= data[index],
 				d= x0 - start.date > end.date - x0 ? end : start;
 
-			var y_mov1= -8,
-				y_mov2= 0;
+			var y_mov1= -8, y_mov2= 0,
+				x_mov1= -7, x_mov2= 7;
 
 
 			vertical_line[0].attr("transform", "translate(" + x_scale(d.date) + "," + v_offset[0] + ")")
@@ -316,6 +315,18 @@ function draw_comp_info(data, view) {
 			if (d.umidade< 10) marker[3].select("text").attr("y", y_mov1).text(format_scale[3](d.umidade));
 			else marker[3].select("text").attr("y", y_mov2).text(format_scale[3](d.umidade));
 
+			if (pos_cursorX> (in_width* 0.9)) {
+				marker[0].select("text").style("text-anchor", "end").attr("x", x_mov1);
+				marker[1].select("text").style("text-anchor", "end").attr("x", x_mov1);
+				marker[2].select("text").style("text-anchor", "end").attr("x", x_mov1);
+				marker[3].select("text").style("text-anchor", "end").attr("x", x_mov1);
+			}
+			else {
+				marker[0].select("text").style("text-anchor", "start").attr("x", x_mov2);
+				marker[1].select("text").style("text-anchor", "start").attr("x", x_mov2);
+				marker[2].select("text").style("text-anchor", "start").attr("x", x_mov2);
+				marker[3].select("text").style("text-anchor", "start").attr("x", x_mov2);
+			}
 
 			if (pos_cursorY< v_offset[1]) date_mkr.attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[0] - margin.top + in_height) + ")");
 			else if (pos_cursorY< v_offset[2]) date_mkr.attr("transform", "translate(" + x_scale(d.date) + "," + (v_offset[1] - margin.top + in_height) + ")");
