@@ -243,7 +243,7 @@ function draw_small_info(data, disease, view) {
 				d= x0 - start[0] > end[0] - x0 ? end : start;
 
 			var y_mov1= -8, y_mov2= 0,
-				x_mov1= -7, x_mov2= 7;
+				x_mov1= "start", x_mov2= 7;
 
 
 			vertical_line[0].attr("transform", "translate(" + x_scale(d[0]) + "," + (v_offset[0] - margin.top) + ")")
@@ -274,19 +274,15 @@ function draw_small_info(data, disease, view) {
 			else marker[4].select("text").attr("y", y_mov2).text(d[idx_dis[4]]);
 
 			if (pos_cursorX> (in_width* 0.97)) {
-				marker[0].select("text").style("text-anchor", "end").attr("x", x_mov1);
-				marker[1].select("text").style("text-anchor", "end").attr("x", x_mov1);
-				marker[2].select("text").style("text-anchor", "end").attr("x", x_mov1);
-				marker[3].select("text").style("text-anchor", "end").attr("x", x_mov1);
-				marker[4].select("text").style("text-anchor", "end").attr("x", x_mov1);
+				x_mov1= "end";
+				x_mov2= x_mov2* (-1);
 			}
-			else {
-				marker[0].select("text").style("text-anchor", "start").attr("x", x_mov2);
-				marker[1].select("text").style("text-anchor", "start").attr("x", x_mov2);
-				marker[2].select("text").style("text-anchor", "start").attr("x", x_mov2);
-				marker[3].select("text").style("text-anchor", "start").attr("x", x_mov2);
-				marker[4].select("text").style("text-anchor", "start").attr("x", x_mov2);
-			}
+
+			marker[0].select("text").style("text-anchor", x_mov1).attr("x", x_mov2);
+			marker[1].select("text").style("text-anchor", x_mov1).attr("x", x_mov2);
+			marker[2].select("text").style("text-anchor", x_mov1).attr("x", x_mov2);
+			marker[3].select("text").style("text-anchor", x_mov1).attr("x", x_mov2);
+			marker[4].select("text").style("text-anchor", x_mov1).attr("x", x_mov2);
 
 			if (pos_cursorY< v_offset[1]) date_mkr.attr("transform", "translate(" + x_scale(d[0]) + "," + (v_offset[0] - margin.top + in_height) + ")");
 			else if (pos_cursorY< v_offset[2]) date_mkr.attr("transform", "translate(" + x_scale(d[0]) + "," + (v_offset[1] - margin.top + in_height) + ")");
