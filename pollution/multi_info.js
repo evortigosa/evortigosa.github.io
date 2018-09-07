@@ -69,19 +69,19 @@ function pm10avg(data, view) {
 		.append("g")
 			.attr("transform", "translate(0,0)");
 
+	if (data.length> 0) {
+		var day0= d3.timeFormat("%b-%y")(d3.min(data, function(d) { return d.date; }));
+		var dayN= d3.timeFormat("%b-%y")(d3.max(data, function(d) { return d.date; }));
 
-	var day0= d3.timeFormat("%b-%y")(d3.min(data, function(d) { return d.date; }));
-	var dayN= d3.timeFormat("%b-%y")(d3.max(data, function(d) { return d.date; }));
+		var pm10mean= d3.mean(data, function(d) { return d.concentracao; });
 
-	var pm10mean= d3.mean(data, function(d) { return d.concentracao; });
-
-
-	canvas.append("text")
-		.attr("class", "label")
-		.attr("x", (width/ 2))
-		.attr("y", 10)
-		.style("text-anchor", "middle")
-		.html(day0 + " to " + dayN + " PM<tspan font-size=9 baseline-shift=sub>10</tspan> average: " + format_con(pm10mean));
+		canvas.append("text")
+			.attr("class", "label")
+			.attr("x", (width/ 2))
+			.attr("y", 10)
+			.style("text-anchor", "middle")
+			.html(day0 + " to " + dayN + " PM<tspan font-size=9 baseline-shift=sub>10</tspan> average: " + format_con(pm10mean));
+	}
 };
 
 function draw_comp_info(data, view) {
