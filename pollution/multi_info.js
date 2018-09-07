@@ -12,9 +12,11 @@
 function create_info_data(data, view, x_axis_horizon) {
 
 	if (view=== "view1") {
+		pm10avg(data, "avg_up");
 		draw_comp_info(data, "info_v1");
 	}
 	else if (view=== "view2") {
+		pm10avg(data, "avg_dw");
 		draw_comp_info(data, "info_v2");
 	}
 };
@@ -31,6 +33,7 @@ function update_info_data(data_source, view, x_axis_horizon, begin, end) {
 
 		data.forEach(function(d, index) {
 			d.date= parseDate(d.Data);
+			d.concentracao= +d.Concentracao;
 			d.chuva= +d.Precipitacao;
 			d.v_vento= +d.Velocidade_vento;
 			d.temperatura= +d.Temperatura;
@@ -46,6 +49,39 @@ function update_info_data(data_source, view, x_axis_horizon, begin, end) {
 		create_info_data(subset, view, x_axis_horizon);
 
 	});
+};
+
+function pm10avg(data, view) {
+
+	format_con= function(d) { return format_mass(d); };
+
+	var width= document.getElementById(view).clientWidth;
+	var height= document.getElementById(view).clientHeight;
+
+	document.getElementById(view).innerHTML= "";
+
+	var view_aux= "#" + view;
+
+	var canvas= d3.select(view_aux)
+		.append("svg")
+		.attr("width", width)
+		.attr("height", height)
+		.append("g")
+			.attr("transform", "translate(0,0)");
+
+
+	var day0= d3.timeFormat("%b-%y")(d3.min(data, function(d) { return d.date; }));
+	var dayN= d3.timeFormat("%b-%y")(d3.max(data, function(d) { return d.date; }));
+
+	var pm10mean= d3.mean(data, function(d) { return d.concentracao; });
+
+
+	canvas.append("text")
+		.attr("class", "label")
+		.attr("x", (width/ 2))
+		.attr("y", 10)
+		.style("text-anchor", "middle")
+		.html(day0 + " to " + dayN + " PM<tspan font-size=9 baseline-shift=sub>10</tspan> average: " + format_con(pm10mean));
 };
 
 function draw_comp_info(data, view) {

@@ -99,7 +99,7 @@ function add_legend(view, data_down) {
 	var dt_texto= canvas2.append("text")
 		.attr("class", "label")
 		.attr("x", (width/ 2)+ 25)
-		.attr("y", (height/ 2)- 8)
+		.attr("y", (height/ 2)- 10)
 		.style("text-anchor", "middle");
 
 	if (language=== "pt") {
