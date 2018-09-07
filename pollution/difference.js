@@ -150,7 +150,49 @@ function draw_difference(data, view, all_data) {
 			.attr("d", lineDW);
 
 
-		var vertical_line= canvas.append("g")		// Append a vertical line in the Chart
+		canvas.append("rect")			// Plano de transicao, efeito de construcao da area
+			.attr("width", width)
+			.attr("height", height)
+			.attr("x", 0)
+			.style("fill", "white")
+			.transition()
+				.duration(1000)
+				.attr("x", width)
+				.remove();
+	}
+
+
+	var xAxis= d3.axisBottom(x_scale)			// Construcao dos eixos
+		.tickValues([]);
+
+	var yAxis= d3.axisLeft(y_scale)
+		.tickFormat(d3.format(".0f"));
+
+	if (data.length> 1) yAxis.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]]);
+	else yAxis.tickValues([]);
+
+	canvas.append("g")
+		.attr("class", "axis-x")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis);
+
+	canvas.append("g")
+		.attr("class", "axis-y")
+		.call(yAxis);
+
+	canvas.append("text")
+		.attr("class", "label")
+		.attr("transform", "rotate(-90)")
+		.attr("x", -(height/ 2)- 4)
+		.attr("y", 1 -margin.left)
+		.attr("dy", ".71em")
+		.style("text-anchor", "middle")
+		.text(y_axis_label + " (" + mass_un + ")");
+
+
+	if (data.length> 1) {						// Eventos de mouse
+
+		var vertical_line= canvas.append("g")	// Append a vertical line in the Chart
 			.attr("class", "marker_line")
 			.style("display", "none");
 
@@ -193,7 +235,8 @@ function draw_difference(data, view, all_data) {
 			.attr("dy", ".4em");
 
 
-		canvas.append("rect")		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
+		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
+		canvas.append("rect")
 			.attr("width", width)
 			.attr("height", height)
 			.style("fill", "none")
@@ -254,44 +297,5 @@ function draw_difference(data, view, all_data) {
 					.text(format_mass(d.down));
 			}
 		};
-
-
-		canvas.append("rect")		// Plano de transicao, efeito de construcao da area
-			.attr("width", width)
-			.attr("height", height)
-			.attr("x", 0)
-			.style("fill", "white")
-			.transition()
-				.duration(1000)
-				.attr("x", width)
-				.remove();
 	}
-
-
-	var xAxis= d3.axisBottom(x_scale)			// Construcao dos eixos
-		.tickValues([]);
-
-	var yAxis= d3.axisLeft(y_scale)
-		.tickFormat(d3.format(".0f"));
-
-	if (data.length> 1) yAxis.tickValues([0, y_scale.domain()[1]/2, y_scale.domain()[1]]);
-	else yAxis.tickValues([]);
-
-	canvas.append("g")
-		.attr("class", "axis-x")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
-
-	canvas.append("g")
-		.attr("class", "axis-y")
-		.call(yAxis);
-
-	canvas.append("text")
-		.attr("class", "label")
-		.attr("transform", "rotate(-90)")
-		.attr("x", -(height/ 2)- 4)
-		.attr("y", 1 -margin.left)
-		.attr("dy", ".71em")
-		.style("text-anchor", "middle")
-		.text(y_axis_label + " (" + mass_un + ")");
 };
