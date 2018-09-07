@@ -267,27 +267,47 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 		.html(y_axis_label + " (" + mass_un + ")");
 
 
+	var zoomStack= [],		// Variaveis que empilharao o historico do zoom (dominio horizontal, intervalo temporal)
+		daysStack= [];
+
 	/* Brush and Zoom functions */
 	/* Linhas comentadas servem para zoom bi-dimensional, brush= d3.brush() */
 	function brushended() {
 
 		var s= d3.event.selection;
 
-		if (!s) {
+		if (!s) {	// Zoom out
 			if (!idleTimeout) return idleTimeout= setTimeout(idled, idleDelay);
 
-			x_scale.domain(x0).nice();
-			//y_scale.domain(y0).nice();
+			var zoomOut= zoomStack.pop();	// Caso receba um duplo clique, desempilho o ultimo dominio horizontal
+			var auxDays= daysStack.pop();
 
-			if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
-				((view=== "view2") && (v2_source=== "1997_2006.tsv")))
-				read_df_data(path + "dif_" + v2_source, "view_df");
+			if (zoomStack.length!= 0) {		// Se esta pilha nao estiver vazia, retorno ao estado anterior do modulo
 
-			create_info_data(data, view, x_axis_horizon);
+				var inicio= d3.timeFormat("%m/%d/%Y")(auxDays[0]),
+					final= d3.timeFormat("%m/%d/%Y")(auxDays[1]);
+
+				if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
+					((view=== "view2") && (v2_source=== "1997_2006.tsv")))
+					update_df_data(path + "dif_" + v2_source, "view_df", inicio, final);	// Estado anterior do grafico bivariado
+
+				if (view=== "view1") update_info_data(v1_source, view, x_axis_horizon, inicio, final);	// Estado anterior dos small multiples
+				else if (view=== "view2") update_info_data(path + v2_source, view, x_axis_horizon, inicio, final);
+
+				x_scale.domain(zoomOut);	// Estado anterior do dominio horizontal
+			}
+			else {							// Senao, retorno ao estado inicial do modulo
+				x_scale.domain(x0).nice();	// Estado inicial do dominio horizontal
+				//y_scale.domain(y0).nice();
+
+				if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
+					((view=== "view2") && (v2_source=== "1997_2006.tsv")))
+					read_df_data(path + "dif_" + v2_source, "view_df");			// Estado inicial do grafico bivariado
+
+				create_info_data(data, view, x_axis_horizon);					// Estado inicial dos small multiples
+			}
 		}
-		else {
-			//x_scale.domain([s[0][0], s[1][0]].map(x_scale.invert, x_scale));
-			//y_scale.domain([s[1][1], s[0][1]].map(y_scale.invert, y_scale));
+		else {		// Zoom in
 
 			var d0= s.map(x_scale.invert, x_scale),
 				d1= d0.map(d3.timeDay.round);
@@ -297,12 +317,17 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 
 			if (((view=== "view1") && (v2_source=== "2014_2015.tsv")) ||
 				((view=== "view2") && (v2_source=== "1997_2006.tsv")))
-				update_df_data(path + "dif_" + v2_source, "view_df", inicio, final);
+				update_df_data(path + "dif_" + v2_source, "view_df", inicio, final);	// Zoom in no grafico bivariado
 
-			if (view=== "view1") update_info_data(v1_source, view, x_axis_horizon, inicio, final);
+			if (view=== "view1") update_info_data(v1_source, view, x_axis_horizon, inicio, final);		// Zoom in nos small multiples
 			else if (view=== "view2") update_info_data(path + v2_source, view, x_axis_horizon, inicio, final);
 
-			x_scale.domain([s[0], s[1]].map(x_scale.invert, x_scale));
+			zoomStack.push(x_scale.domain());
+			daysStack.push([0, width].map(x_scale.invert, x_scale));	// Empilho os estados graficos atuais (dominio horizontal, intervalo temporal)
+
+			x_scale.domain([s[0], s[1]].map(x_scale.invert, x_scale));	// Atualizo o dominio horizontal para o novo estado de zoom in
+			//x_scale.domain([s[0][0], s[1][0]].map(x_scale.invert, x_scale));
+			//y_scale.domain([s[1][1], s[0][1]].map(y_scale.invert, y_scale));
 
 			canvas.select(".brush")
 				.call(brush.move, null);
