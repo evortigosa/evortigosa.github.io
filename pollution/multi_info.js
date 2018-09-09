@@ -153,7 +153,9 @@ function draw_comp_info(data, view) {
 			y_axis_label= "Vel. vento";
 			if (language=== "en") y_axis_label= "Wind speed";
 			
-			if (v2_source=== "1997_2006.tsv") y_scale[v_chart].domain([0, 71]);
+			console.log(view, v2_source);
+
+			if ((view=== "info_v2") && (v2_source=== "1997_2006.tsv")) y_scale[v_chart].domain([0, 71]);
 			else y_scale[v_chart].domain([0, 25]);
 
 			area.y1(function(d) { return y_scale[v_chart](d.v_vento); });
