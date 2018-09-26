@@ -207,7 +207,7 @@ function draw_line_area(data, view, max_vertical) {
 					.text(format_mass(d[1]));
 			}
 
-			if (pos_cursor> (width* 0.8)) {
+			if (pos_cursor> (width* 0.85)) {
 				x_mov1= "end";
 				x_mov2= x_mov2* (-1);
 			}
