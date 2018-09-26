@@ -141,7 +141,6 @@ function draw_line_area(data, view, max_vertical) {
 
 		marker.append("text")
 			.attr("class", "m_label")
-			.attr("x", 7)
 			.attr("dy", ".4em");
 
 		var date_mkr= canvas.append("g")		// Append a date marker in the Chart
@@ -189,20 +188,31 @@ function draw_line_area(data, view, max_vertical) {
 				end= data[index],
 				d= x0 - start[0] > end[0] - x0 ? end : start;
 
+			var y_mov1= -8, y_mov2= 0,
+				x_mov1= "start", x_mov2= 7;
+
+
 			vertical_line.attr("transform", "translate(" + x_scale(d[0]) + ",0)");
 
 			marker.attr("transform", "translate(" + x_scale(d[0]) + "," + y_scale(d[1]) + ")");
 			
 			if (d[1]< 5) {
 				marker.select("text")
-					.attr("y", -8)
+					.attr("y", y_mov1)
 					.text(format_mass(d[1]));
 			}
 			else {
 				marker.select("text")
-					.attr("y", 0)
+					.attr("y", y_mov2)
 					.text(format_mass(d[1]));
 			}
+
+			if (pos_cursor> (width* 0.9)) {
+				x_mov1= "end";
+				x_mov2= x_mov2* (-1);
+			}
+
+			marker.select("text").style("text-anchor", x_mov1).attr("x", x_mov2);
 
 			if (view== "pm10_v2" || view== "pm10_v4") {
 				date_mkr.attr("transform", "translate(" + x_scale(d[0]) + "," + height + ")");
