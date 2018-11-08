@@ -226,6 +226,40 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 				.attr("r", function(d) { return r_scale(d.concentracao); });
 
 
+	/* Linhas dos niveis aceitaveis de poluicao - OMS */
+	canvas.append("rect")
+		.attr("class", "level-line")
+		.style("fill", "darkred")
+		.attr("x", 0)
+		.attr("y", y_scale(50))
+		.attr("width", width)
+		.attr("height", 2);
+
+	canvas.append("text")
+		.style("fill", "darkred")
+		.style("font-size", 10)
+		.attr("x", 3)
+		.attr("y", y_scale(50)- 2)
+		.text("WHO 24-hour mean");
+
+	if (x_axis_horizon== 2) {
+		canvas.append("rect")
+			.attr("class", "level-line")
+			.style("fill", "darkred")
+			.attr("x", 0)
+			.attr("y", y_scale(120))
+			.attr("width", width)
+			.attr("height", 2);
+
+		canvas.append("text")
+			.style("fill", "darkred")
+			.style("font-size", 10)
+			.attr("x", 3)
+			.attr("y", y_scale(120)- 2)
+			.text("CETESB 24-hour mean");
+	}
+
+
 	/* Construcao dos eixos */
 	var xAxis;
 
