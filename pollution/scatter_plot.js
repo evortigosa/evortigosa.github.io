@@ -231,14 +231,16 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 		canvas.append("rect")
 			.attr("class", "level-line")
 			.style("fill", "black")
+			.style("stroke-width", 1)
+			.style("stroke", "black")
 			.attr("x", 0)
 			.attr("y", y_scale(50))
 			.attr("width", width)
-			.attr("height", 2);
+			.attr("height", 1.5);
 
 		canvas.append("text")
 			.style("fill", "black")
-			.style("font-size", 10)
+			.style("font-size", 11)
 			.attr("x", 3)
 			.attr("y", y_scale(50)- 2)
 			.text("WHO 24-hour mean");
@@ -247,11 +249,13 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 
 /*	canvas.append("rect")
 		.attr("class", "level-line")
-		.style("opacity", 1)
+		.style("fill", "black")
+		.style("stroke-width", 1)
+		.style("stroke", "black")
 		.attr("x", 0)
-		.attr("y", y_scale(120))
+		.attr("y", y_scale(50))
 		.attr("width", width)
-		.attr("height", 2);
+		.attr("height", 1.5);
 
 	canvas.append("text")
 		.style("fill", "black")
