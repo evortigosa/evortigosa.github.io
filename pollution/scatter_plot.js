@@ -227,38 +227,39 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 
 
 	/* Linhas dos niveis aceitaveis de poluicao - OMS */
-	canvas.append("rect")
-		.attr("class", "level-line")
-		.style("fill", "darkred")
-		.attr("x", 0)
-		.attr("y", y_scale(50))
-		.attr("width", width)
-		.attr("height", 2);
-
-	canvas.append("text")
-		.style("fill", "darkred")
-		.style("font-size", 10)
-		.attr("x", 3)
-		.attr("y", y_scale(50)- 2)
-		.text("WHO 24-hour mean");
-
-	if (x_axis_horizon== 2) {
+	if (x_axis_horizon== 1) {
 		canvas.append("rect")
 			.attr("class", "level-line")
-			.style("fill", "darkred")
+			.style("fill", "black")
 			.attr("x", 0)
-			.attr("y", y_scale(120))
+			.attr("y", y_scale(50))
 			.attr("width", width)
 			.attr("height", 2);
 
 		canvas.append("text")
-			.style("fill", "darkred")
+			.style("fill", "black")
 			.style("font-size", 10)
 			.attr("x", 3)
-			.attr("y", y_scale(120)- 2)
-			.text("CETESB 24-hour mean");
+			.attr("y", y_scale(50)- 2)
+			.text("WHO 24-hour mean");
 	}
 
+
+/*	canvas.append("rect")
+		.attr("class", "level-line")
+		.style("opacity", 1)
+		.attr("x", 0)
+		.attr("y", y_scale(120))
+		.attr("width", width)
+		.attr("height", 2);
+
+	canvas.append("text")
+		.style("fill", "black")
+		.style("font-size", 10)
+		.attr("x", 3)
+		.attr("y", y_scale(120)- 2)
+		.text("CETESB 24-hour mean");
+*/
 
 	/* Construcao dos eixos */
 	var xAxis;
