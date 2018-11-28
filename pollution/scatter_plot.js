@@ -231,12 +231,12 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 		canvas.append("rect")
 			.attr("class", "level-line")
 			.style("fill", "black")
-			.style("stroke-width", 1)
+			.style("stroke-width", 0)
 			.style("stroke", "black")
 			.attr("x", 0)
 			.attr("y", y_scale(50))
 			.attr("width", width)
-			.attr("height", 1.5);
+			.attr("height", 2);
 
 		canvas.append("text")
 			.style("fill", "black")
@@ -250,12 +250,12 @@ function draw_plot(data, view, x_axis_horizon) {	   // view assume os valores (s
 /*	canvas.append("rect")
 		.attr("class", "level-line")
 		.style("fill", "black")
-		.style("stroke-width", 1)
+		.style("stroke-width", 0)
 		.style("stroke", "black")
 		.attr("x", 0)
-		.attr("y", y_scale(50))
+		.attr("y", y_scale(120))
 		.attr("width", width)
-		.attr("height", 1.5);
+		.attr("height", 2);
 
 	canvas.append("text")
 		.style("fill", "black")
