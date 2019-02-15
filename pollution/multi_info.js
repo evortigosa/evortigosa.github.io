@@ -274,6 +274,17 @@ function draw_comp_info(data, view) {
 			.attr("dy", ".4em");
 
 
+		var pm10_mkr= events_pl.append("g")					// Append a pm10 marker in the Chart
+			.style("display", "none");
+
+		pm10_mkr.append("text")
+			.attr("class", "df_label")
+			.style("pointer-events", "none")
+			.style("text-anchor", "middle")
+			.attr("x", -1)
+			.attr("dy", ".4em");
+
+
 		// Plano de eventos, ativa a linha que acompanha o mouse e os marcadores de valor
 		events_pl.append("rect")
 			.attr("width", in_width)
@@ -291,6 +302,7 @@ function draw_comp_info(data, view) {
 				marker[3].style("display", null);
 
 				date_mkr.style("display", null);
+				pm10_mkr.style("display", null);
 			})
 			.on("mouseout", function() { 
 				vertical_line[0].style("display", "none");
@@ -304,6 +316,7 @@ function draw_comp_info(data, view) {
 				marker[3].style("display", "none");
 
 				date_mkr.style("display", "none");
+				pm10_mkr.style("display", "none");
 			})
 			.on("mousemove", mouseMove)
 			.transition()
@@ -369,6 +382,16 @@ function draw_comp_info(data, view) {
 			date_mkr.select("text")
 				.attr("y", 7)
 				.text(d3.timeFormat("%d-%b-%y")(d.date));
+
+
+			if (pos_cursorY< v_offset[1]) pm10_mkr.attr("transform", "translate(35," + (v_offset[0] - 12) + ")");
+			else if (pos_cursorY< v_offset[2]) pm10_mkr.attr("transform", "translate(35," + (v_offset[1] - 12) + ")");
+			else if (pos_cursorY< v_offset[3]) pm10_mkr.attr("transform", "translate(35," + (v_offset[2] - 12) + ")");
+			else pm10_mkr.attr("transform", "translate(35," + (v_offset[3] - 12) + ")");
+
+			pm10_mkr.select("text")
+				.attr("y", 7)
+				.text(format_mass(d.concentracao));
 		};
 	}
 };
