@@ -39,6 +39,8 @@
 						<select type="select" onchange="updateData(value);">
 							<option value="14_15" selected="true">2014 to 2015</option>
 							<option value="97_06">Sep 1997 to Feb 2006</option>
+							<option value="arqa">Araraquara 2014-2017</option>
+							<option value="srcb">Sorocaba 2014-2017</option>
 						</select>
 					</div id="btn" class="Graph" style="float:left;width:27%;height:100%">
 						<button type="button" onclick="window.location.reload();"> Reset </button>
@@ -111,12 +113,25 @@
 			if (value=== "97_06") {
 				v2_source= "1997_2006.tsv";
 				horizon= 2;
+
+				add_legend("legenda_df", value);
 			}
 			else if (value=== "14_15") {
 				v2_source= "2014_2015.tsv";
+
+				add_legend("legenda_df", value);
+			}
+			else if (value=== "arqa") {
+				v2_source= "Araraquara_2014_2017.tsv";
+
+				read_sp_data(path + v2_source, "view1", horizon);
+			}
+			else if (value=== "srcb") {
+				v2_source= "Sorocaba_2014_2017.tsv";
+
+				read_sp_data(path + v2_source, "view1", horizon);
 			}
 
-			add_legend("legenda_df", value);
 			read_sp_data(path + v2_source, "view2", horizon);
 			read_df_data(path + "dif_" + v2_source, "view_df");
 		};
