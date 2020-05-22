@@ -57,7 +57,7 @@
 
 
 
-		var mymap = L.map('mapid').setView([-23.571225, -46.630096], 11);
+		var mymap = L.map('mapid').setView([-23.571225, -46.630096], 12);
 
 		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 			maxZoom: 16,
@@ -82,27 +82,36 @@
 		mymap.on('click', onMapClick);
 
 
-
-
-
 		function genMarks(data) {
 
 			for (i=0; i<data.length; i++) {
+
+				var veiculo;
+
+				if (data[i]['automovel']== 1) veiculo= "carro";
+				else if (data[i]['caminhonete']== 1) veiculo= "caminhonete";
+				else if (data[i]['onibus_caminhao']== 1) veiculo= "ônibus";
+				else if (data[i]['bicicleta']== 1) veiculo= "bicicleta";
+				else if (data[i]['moto']== 1) veiculo= "moto";
+				else if (data[i]['van']== 1) veiculo= "van";
+				else veiculo= "sem informações";
+
+
 				if (data[i]['Chuva']== 0) {
-					L.circle([data[i]['latitude'], data[i]['longitude']], 200, {
+					L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
 						weight: 0.5,
 						color: 'black',
 						fillColor: 'red',
 						fillOpacity: 1
-					}).addTo(mymap).bindPopup("I am a circle.");
+					}).addTo(mymap).bindPopup("Veículo envolvido no acidente: " + veiculo);
 				}
 				else {
-					L.circle([data[i]['latitude'], data[i]['longitude']], 200, {
+					L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
 						weight: 0.5,
 						color: 'black',
 						fillColor: 'blue',
 						fillOpacity: 1
-					}).addTo(mymap).bindPopup("I am a circle.");
+					}).addTo(mymap).bindPopup("Veículo envolvido no acidente: " + veiculo);
 				}
 
 			}
