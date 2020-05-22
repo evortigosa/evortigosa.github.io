@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<!--
+	Acidentes
+-->
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Acidentes</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+<body>
+	<div id="view_stup" class="Graph" style="width:1800px;height:30px">
+		<div id="space1" class="Graph" style="float:left;width:6%;height:100%"></div>
+		<div id="combo" class="Graph" style="float:left;width:43%;height:100%">
+			<select type="select" onchange="updateData(value);">
+				<option value="16" selected="true">2016</option>
+				<option value="17">2017</option>
+				<option value="18">2018</option>
+			</select>
+		</div>
+	</div>
+	<div id="mapid" style="width: 1800px; height: 920px;"></div>
+	<script>
+
+		var width= document.getElementById("space1").clientWidth;	// imprime um texto em frente ao combo que troca os dados
+		var height= document.getElementById("space1").clientHeight;
+
+		document.getElementById("space1").innerHTML= "";
+
+		var canvas= d3.select("#space1")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+		var dt_texto= canvas.append("text")
+			.attr("class", "label")
+			.attr("x", (width/ 2)+ 25)
+			.attr("y", (height/ 2)- 1)
+			.style("text-anchor", "middle")
+			.style("font", "14px sans-serif")
+			.style("font-color", "black")
+			.style("font-weight", "bold")
+			.text("Ano:");
+
+
+
+		var mymap = L.map('mapid').setView([-23.571225, -46.630096], 11);
+
+		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+			maxZoom: 16,
+			minZoom: 11,
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			id: 'mapbox/streets-v11',
+			tileSize: 512,
+			zoomOffset: -1
+		}).addTo(mymap);
+
+		var popup = L.popup();
+
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("Você clicou no mapa em " + e.latlng.toString())
+				.openOn(mymap);
+		}
+
+		mymap.on('click', onMapClick);
+
+
+
+
+
+		function genMarks(data) {
+
+			for (i=0; i<data.length; i++) {
+				if (data[i]['Chuva']== 0) {
+					L.circle([data[i]['latitude'], data[i]['longitude']], 200, {
+						weight: 0.5,
+						color: 'black',
+						fillColor: 'red',
+						fillOpacity: 1
+					}).addTo(mymap).bindPopup("I am a circle.");
+				}
+				else {
+					L.circle([data[i]['latitude'], data[i]['longitude']], 200, {
+						weight: 0.5,
+						color: 'black',
+						fillColor: 'blue',
+						fillOpacity: 1
+					}).addTo(mymap).bindPopup("I am a circle.");
+				}
+
+			}
+		
+		}
+
+
+		var subset= []
+
+		d3.csv("acidentes_full_v3.csv", function(error, data) {
+			if (error) throw error;
+
+			data.forEach(function(d, index) {
+				d.latitude= +d.latitude;
+				d.longitude= +d.longitude;
+				d.A2016= +d.A2016;
+				d.A2017= +d.A2017;
+				d.Chuva= +d.Chuva;
+				d.automovel= +d.automovel;
+				d.caminhonete= +d.caminhonete;
+				d.onibus_caminhao= +d.onibus_caminhao;
+				d.bicicleta= +d.bicicleta;
+				d.moto= +d.moto;
+				d.van= +d.van;
+				d.sem_informacao= +d.sem_informacao;
+			
+				if (d.A2016== 1) {
+					subset.push(data[index]);
+				}
+			});
+
+			genMarks(subset);
+		});
+
+
+		function updateData(value) {
+
+			subset= []
+
+			d3.csv("acidentes_full_v3.csv", function(error, data) {
+				if (error) throw error;
+
+				data.forEach(function(d, index) {
+					d.latitude= +d.latitude;
+					d.longitude= +d.longitude;
+					d.A2016= +d.A2016;
+					d.A2017= +d.A2017;
+					d.Chuva= +d.Chuva;
+					d.automovel= +d.automovel;
+					d.caminhonete= +d.caminhonete;
+					d.onibus_caminhao= +d.onibus_caminhao;
+					d.bicicleta= +d.bicicleta;
+					d.moto= +d.moto;
+					d.van= +d.van;
+					d.sem_informacao= +d.sem_informacao;
+				
+					if ((value== 16) && (d.A2016== 1)) {
+						subset.push(data[index]);
+					}
+					else if ((value== 17) && (d.A2017== 1)) {
+						subset.push(data[index]);
+					}
+					else if ((value== 18) && (d.A2016== 0) && (d.A2017== 0)) {
+						subset.push(data[index]);
+					}
+				});
+
+				genMarks(subset);
+			});
+
+		}
+
+		
+
+	</script>
+
+</body>
+</html>
