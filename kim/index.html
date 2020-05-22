@@ -81,12 +81,19 @@
 
 		mymap.on('click', onMapClick);
 
+		var markers = L.layerGroup();
+		mymap.addLayer(markers);
+
 
 		function genMarks(data) {
+
+			mymap.removeLayer(markers);
+			markers= L.layerGroup();
 
 			for (i=0; i<data.length; i++) {
 
 				var veiculo;
+				var marker;
 
 				if (data[i]['automovel']== 1) veiculo= "carro";
 				else if (data[i]['caminhonete']== 1) veiculo= "caminhonete";
@@ -98,28 +105,27 @@
 
 
 				if (data[i]['Chuva']== 0) {
-					L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
+					marker= L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
 						weight: 0.5,
 						color: 'black',
 						fillColor: 'red',
 						fillOpacity: 1
-					}).addTo(mymap).bindPopup("Veículo envolvido no acidente: " + veiculo);
+					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo);
 				}
 				else {
-					L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
+					marker= L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
 						weight: 0.5,
 						color: 'black',
 						fillColor: 'blue',
 						fillOpacity: 1
-					}).addTo(mymap).bindPopup("Veículo envolvido no acidente: " + veiculo);
+					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo);
 				}
-
 			}
-		
+			mymap.addLayer(markers);
 		}
 
 
-		var subset= []
+		var subset= [];
 
 		d3.csv("acidentes_full_v3.csv", function(error, data) {
 			if (error) throw error;
