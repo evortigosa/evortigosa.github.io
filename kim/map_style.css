@@ -1,0 +1,42 @@
+/*
+	CSS
+*/
+
+body {
+    font: 12px sans-serif;
+}
+
+.axis-x, .axis-y {
+    font: 13px sans-serif;
+    font-color: black;
+    stroke-width: 3px;
+}
+
+.label {
+    font: 14px sans-serif;
+    font-color: black;
+    font-weight: bold;
+}
+
+.dot {
+    stroke: #000;
+    opacity: 0.9;
+}
+
+.dot:hover {
+    stroke-width: 3px;
+}
+
+div.tooltip {
+    width: 160px;
+    padding: 5px;
+    font: 11px sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    background: rgba(0,0,0,0.7);
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}

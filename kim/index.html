@@ -16,11 +16,15 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 
+    <!--link rel="stylesheet" type="text/css" href="map_style.css"-->
+
     <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
 
 </head>
 <body>
-	<div id="view_stup" class="Graph" style="width:1800px;height:30px">
+
+	<div id="padding" class="Graph" style="width:1890px;height:5px">
+	<div id="view_stup" class="Graph" style="width:1890px;height:30px">
 		<div id="space1" class="Graph" style="float:left;width:6%;height:100%"></div>
 		<div id="combo" class="Graph" style="float:left;width:43%;height:100%">
 			<select type="select" onchange="updateData(value);">
@@ -30,7 +34,16 @@
 			</select>
 		</div>
 	</div>
-	<div id="mapid" style="width: 1800px; height: 920px;"></div>
+	<div style="margin:auto;width:1890px;height:920px">
+		<div id="mapid" style="float:left;width:70%;height:100%"></div>
+		<div style="float:left;width:30%;height:100%">
+			<div id="info" class="Graph" style="width:100%;height:95%"></div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="multi_info.js"></script>
+
+
 	<script>
 
 		var width= document.getElementById("space1").clientWidth;	// imprime um texto em frente ao combo que troca os dados
@@ -85,6 +98,7 @@
 		mymap.addLayer(markers);
 
 
+
 		function genMarks(data) {
 
 			mymap.removeLayer(markers);
@@ -110,7 +124,7 @@
 						color: 'black',
 						fillColor: 'red',
 						fillOpacity: 1
-					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo);
+					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo + "<br>Data e horário: " + data[i]["data"]);
 				}
 				else {
 					marker= L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
@@ -118,19 +132,20 @@
 						color: 'black',
 						fillColor: 'blue',
 						fillOpacity: 1
-					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo);
+					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo + "<br>Data e horário: " + data[i]["data"]);
 				}
 			}
 			mymap.addLayer(markers);
-		}
+		};
 
 
 		var subset= [];
 
-		d3.csv("acidentes_full_v3.csv", function(error, data) {
+		d3.csv("acidentes_full.csv", function(error, data) {
 			if (error) throw error;
 
 			data.forEach(function(d, index) {
+				d.data= d.data;
 				d.latitude= +d.latitude;
 				d.longitude= +d.longitude;
 				d.A2016= +d.A2016;
@@ -148,7 +163,6 @@
 					subset.push(data[index]);
 				}
 			});
-
 			genMarks(subset);
 		});
 
@@ -157,10 +171,11 @@
 
 			subset= []
 
-			d3.csv("acidentes_full_v3.csv", function(error, data) {
+			d3.csv("acidentes_full.csv", function(error, data) {
 				if (error) throw error;
 
 				data.forEach(function(d, index) {
+					d.data= d.data;
 					d.latitude= +d.latitude;
 					d.longitude= +d.longitude;
 					d.A2016= +d.A2016;
@@ -184,13 +199,11 @@
 						subset.push(data[index]);
 					}
 				});
-
 				genMarks(subset);
 			});
+		};
 
-		}
-
-		
+		create_info_data("2015_2017.tsv", "info");
 
 	</script>
 
