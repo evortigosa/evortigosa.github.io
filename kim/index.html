@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Acidentes</title>
+	<title>SmartViz Traffic</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
@@ -26,13 +26,14 @@
 	<div style="width:100%;height:100%;">
 		<div id="view_stup" class="Graph" style="width:1890px;height:30px">
 			<div id="space1" class="Graph" style="float:left;width:6%;height:100%"></div>
-			<div id="combo" class="Graph" style="float:left;width:43%;height:100%">
+			<div id="combo" class="Graph" style="float:left;width:10%;height:100%">
 				<select type="select" onchange="updateData(value);">
 					<option value="16" selected="true">2016</option>
 					<option value="17">2017</option>
 					<option value="18">2018</option>
 				</select>
 			</div>
+			<div id="nome" class="Graph" style="float:left;width:60%;height:100%"></div>
 		</div>
 		<div style="margin:auto;width:1890px;height:920px">
 			<div id="mapid" style="float:left;width:70%;height:100%"></div>
@@ -74,6 +75,30 @@
 			.style("font-color", "black")
 			.style("font-weight", "bold")
 			.text("Ano:");
+
+
+
+		width= document.getElementById("nome").clientWidth;	// imprime um texto em frente ao combo que troca os dados
+		height= document.getElementById("nome").clientHeight;
+
+		document.getElementById("nome").innerHTML= "";
+
+		var canvas2= d3.select("#nome")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+		var dt_texto= canvas2.append("text")
+			.attr("class", "label")
+			.attr("x", (width/ 2)+ 50)
+			.attr("y", (height/ 2)- 1)
+			.style("text-anchor", "middle")
+			.style("font", "16px sans-serif")
+			.style("font-color", "black")
+			.style("font-weight", "bold")
+			.text("São Paulo SmartViz Traffic");
 
 
 
