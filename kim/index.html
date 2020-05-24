@@ -1,149 +1,277 @@
 <!DOCTYPE html>
 
 <!--
-	Evandro Scudeleti Ortigossa
-
-	M.Sc. Student in Computer Science
-	Institute of Mathematical and Computer Sciences - ICMC
-	University of São Paulo - USP
-	São Carlos, São Paulo, Brazil.
-	
-	2017. All rights reserved.
+	Acidentes
 -->
 
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Pollution Data Visualization</title>
+	<title>SmartViz Traffic</title>
 
-	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="pollution_style.css">
-	<link rel="icon" href="data:;base64,=">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+
+    <!--link rel="stylesheet" type="text/css" href="map_style.css"-->
+
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
 
 </head>
 <body>
-	<div style="width:100%;height:100%">
-		<div style="margin:auto;width:1897px;height:455px">
-			<div id="view1" class="Graph" style="float:left;width:78%;height:100%"></div>
-			<div style="float:left;width:22%;height:100%">
-				<div id="info_v1" class="Graph" style="width:100%;height:95%"></div>
+
+	<div style="width:100%;height:100%;">
+		<div id="space" class="Graph" style="width:1890px;height:11px"></div>
+		<div id="view_stup" class="Graph" style="width:1890px;height:35px">
+			<div id="space1" class="Graph" style="float:left;width:6%;height:100%"></div>
+			<div id="combo" class="Graph" style="float:left;width:10%;height:100%">
+				<select type="select" onchange="updateData(value);">
+					<option value="16" selected="true">2016</option>
+					<option value="17">2017</option>
+					<option value="18">2018</option>
+				</select>
 			</div>
+			<div id="nome" class="Graph" style="float:left;width:60%;height:100%"></div>
 		</div>
-		<div style="margin:auto;width:1897px;height:125px">
-			<div id="view_df" class="Graph" style="float:left;width:78%;height:100%"></div>
-			<div id="view_op" class="Graph" style="float:left;width:22%;height:100%">
-				<div id="avg_up" class="Graph" style="width:100%;height:32%"></div>
-				<div id="view_stup" class="Graph" style="width:100%;height:40%">
-					<div id="space1" class="Graph" style="float:left;width:30%;height:100%"></div>
-					<div id="combo" class="Graph" style="float:left;width:43%;height:100%">
-						<select type="select" onchange="updateData(value);">
-							<option value="14_15" selected="true">2014 to 2015</option>
-							<option value="97_06">Sep 1997 to Feb 2006</option>
-							<option value="arqa">Araraquara 2014-2017</option>
-							<option value="srcb">Sorocaba 2014-2017</option>
-						</select>
-					</div id="btn" class="Graph" style="float:left;width:27%;height:100%">
-						<button type="button" onclick="window.location.reload();"> Reset </button>
-					<div> 
-					</div>
+		<div style="margin:auto;width:1890px;height:920px">
+			<div id="mapid" style="float:left;width:70%;height:100%"></div>
+			<div style="float:left;width:30%;height:100%">
+				<!--div id="info" class="Graph" style="width:100%;height:50%"></div-->
+				<div id="svg" class="Graph" style="width:100%;height:48%;text-align: center;">
+					<img src="Rplot-SPDE.svg" style="height:99%;">
 				</div>
-				<div id="avg_dw" class="Graph" style="width:100%;height:28%"></div>
+				<div id="gif_title" class="Graph" style="width:100%;height:4%"></div>
+				<div id="gif" class="Graph" style="width:100%;height:48%;text-align: center;">
+					<img src="gtfs.gif" style="height:99%;">
+				</div>
 			</div>
-		</div>
-		<div style="margin:auto;width:1897px;height:455px">
-			<div id="view2" class="Graph" style="float:left;width:78%;height:100%"></div>
-			<div style="float:left;width:22%;height:100%">
-				<div id="info_v2" class="Graph" style="width:100%;height:95%"></div>
-			</div>
-		</div>
-		<div style="margin:auto;width:1897px;height:20px">
-			<div id="space4" class="Graph" style="float:left;width:10%;height:100%"></div>
-			<div id="legenda_sp" class="Graph" style="float:left;width:43%;height:100%"></div>
-			<div id="legenda_df" class="Graph" style="float:left;width:40%;height:100%"></div>
 		</div>
 	</div>
 
-	<script type="text/javascript" src="scatter_plot.js"></script>
 	<script type="text/javascript" src="multi_info.js"></script>
-	<script type="text/javascript" src="difference.js"></script>
-	<script type="text/javascript" src="legend.js"></script>
-
-	<script type="text/javascript">
-
-		var language= "en";	// pt para portugues, en para ingles
-
-		var path= "/data/";
-		var v1_source= path + "2015_2017.tsv";
-		var v2_source= "";
-		var all_data= path + "1997_2017.tsv";
-
-		var parseDate= d3.timeParse("%m/%d/%Y");
-		var mass_un= "μg/m³";
-		var format_mass= function(d) { return d3.format(".2f")(d) + " " + mass_un; };
-
-		var r_scale;
-		var horizon= 1;	// Define se estamos tratando dos conjuntos de um ano, ou do de 10 anos
 
 
-		d3.tsv(all_data, function(error, data) {	
+	<script>
+
+		var width= document.getElementById("space1").clientWidth;	// imprime um texto em frente ao combo que troca os dados
+		var height= document.getElementById("space1").clientHeight;
+
+		document.getElementById("space1").innerHTML= "";
+
+		var canvas= d3.select("#space1")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+		var dt_texto= canvas.append("text")
+			.attr("class", "label")
+			.attr("x", (width/ 2)+ 25)
+			.attr("y", (height/ 2)- 4)
+			.style("text-anchor", "middle")
+			.style("font", "14px sans-serif")
+			.style("font-color", "black")
+			.style("font-weight", "bold")
+			.text("Ano:");
+
+
+
+		width= document.getElementById("nome").clientWidth;	// imprime um texto em frente ao combo que troca os dados
+		height= document.getElementById("nome").clientHeight;
+
+		document.getElementById("nome").innerHTML= "";
+
+		var canvas2= d3.select("#nome")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+		var dt_texto= canvas2.append("text")
+			.attr("class", "label")
+			.attr("x", (width/ 2)+ 50)
+			.attr("y", (height/ 2)+5)
+			.style("text-anchor", "middle")
+			.style("font", "32px sans-serif")
+			.style("font-color", "black")
+			.style("font-weight", "bold")
+			.text("São Paulo SmartViz Traffic");
+
+
+
+		width= document.getElementById("gif_title").clientWidth;	// imprime um texto em frente ao combo que troca os dados
+		height= document.getElementById("gif_title").clientHeight;
+
+		document.getElementById("gif_title").innerHTML= "";
+
+		var canvas3= d3.select("#gif_title")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+		var dt_texto= canvas3.append("text")
+			.attr("class", "label")
+			.attr("x", (width/ 2))
+			.attr("y", (height/ 2)+1)
+			.style("text-anchor", "middle")
+			.style("font", "12px sans-serif")
+			.style("font-color", "black")
+			.style("font-weight", "bold")
+			.text("Public transport nets using GTFS data");
+
+
+
+		var mymap = L.map('mapid').setView([-23.571225, -46.630096], 11.8);
+
+		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+			maxZoom: 16,
+			minZoom: 11,
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			id: 'mapbox/streets-v11',
+			tileSize: 512,
+			zoomOffset: -1
+		}).addTo(mymap);
+
+		var popup = L.popup();
+
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("Você clicou no mapa em " + e.latlng.toString())
+				.openOn(mymap);
+		}
+
+		mymap.on('click', onMapClick);
+
+		var markers = L.layerGroup();
+		mymap.addLayer(markers);
+
+
+
+		function genMarks(data) {
+
+			mymap.removeLayer(markers);
+			markers= L.layerGroup();
+
+			for (i=0; i<data.length; i++) {
+
+				var veiculo, esquina;
+				var marker;
+
+				if (data[i]['automovel']== 1) veiculo= "carro";
+				else if (data[i]['caminhonete']== 1) veiculo= "caminhonete";
+				else if (data[i]['onibus_caminhao']== 1) veiculo= "ônibus";
+				else if (data[i]['bicicleta']== 1) veiculo= "bicicleta";
+				else if (data[i]['moto']== 1) veiculo= "moto";
+				else if (data[i]['van']== 1) veiculo= "van";
+				else veiculo= "sem informações";
+
+				if (data[i]["Esquina"]== 1) esquina= "esquina";
+				else esquina= "meio da quadra";
+
+				if (data[i]['Chuva']== 0) {
+					marker= L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
+						weight: 0.5,
+						color: 'black',
+						fillColor: 'red',
+						fillOpacity: 1
+					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo + "<br>Data e horário: " + data[i]["data"] + "<br>Local do acidente: " + esquina + "<br>Distância do radar mais próximo: " + round(data[i]["dist"],1) + " m.");
+				}
+				else {
+					marker= L.circle([data[i]['latitude'], data[i]['longitude']], 50, {
+						weight: 0.5,
+						color: 'black',
+						fillColor: 'blue',
+						fillOpacity: 1
+					}).addTo(markers).bindPopup("Veículo envolvido no acidente: " + veiculo + "<br>Data e horário: " + data[i]["data"] + "<br>Local do acidente: " + esquina + "<br>Distância do radar mais próximo: " + round(data[i]["dist"],1) + " m.");
+				}
+			}
+			mymap.addLayer(markers);
+		};
+
+		function round(value, decimals) {
+			return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+		};
+
+
+		var subset= [];
+
+		d3.csv("acidentes_full.csv", function(error, data) {
 			if (error) throw error;
 
-			data.forEach(function(d) {
-				d.concentracao= +d.Concentracao;
+			data.forEach(function(d, index) {
+				d.data= d.data;
+				d.latitude= +d.latitude;
+				d.longitude= +d.longitude;
+				d.A2016= +d.A2016;
+				d.A2017= +d.A2017;
+				d.Chuva= +d.Chuva;
+				d.automovel= +d.automovel;
+				d.caminhonete= +d.caminhonete;
+				d.onibus_caminhao= +d.onibus_caminhao;
+				d.bicicleta= +d.bicicleta;
+				d.moto= +d.moto;
+				d.van= +d.van;
+				d.sem_informacao= +d.sem_informacao;
+				d.Esquina= +d.Esquina;
+				d.dist= +d.dist;
+			
+				if (d.A2016== 1) {
+					subset.push(data[index]);
+				}
 			});
-
-			r_scale= d3.scaleLinear()	// Dentre todas as concentracoes, encontra os extremos para escalar os circulos corretamente
-				.range([3, 16])
-				.domain(d3.extent(data, function(d) { return d.concentracao; }));
+			genMarks(subset);
 		});
 
-		function color_group(index_color) {
-			//					verao     outono   inverno  primavera   var_up   var_down   infos
-			var color_range= ["#5e3c99","#fdb863","#e66101","#b2abd2","#2c7bb6","#d7191c","#4393c3"];
 
-			return color_range[index_color];
+		function updateData(value) {
+
+			subset= []
+
+			d3.csv("acidentes_full.csv", function(error, data) {
+				if (error) throw error;
+
+				data.forEach(function(d, index) {
+					d.data= d.data;
+					d.latitude= +d.latitude;
+					d.longitude= +d.longitude;
+					d.A2016= +d.A2016;
+					d.A2017= +d.A2017;
+					d.Chuva= +d.Chuva;
+					d.automovel= +d.automovel;
+					d.caminhonete= +d.caminhonete;
+					d.onibus_caminhao= +d.onibus_caminhao;
+					d.bicicleta= +d.bicicleta;
+					d.moto= +d.moto;
+					d.van= +d.van;
+					d.sem_informacao= +d.sem_informacao;
+					d.Esquina= +d.Esquina;
+					d.dist= +d.dist;
+				
+					if ((value== 16) && (d.A2016== 1)) {
+						subset.push(data[index]);
+					}
+					else if ((value== 17) && (d.A2017== 1)) {
+						subset.push(data[index]);
+					}
+					else if ((value== 18) && (d.A2016== 0) && (d.A2017== 0)) {
+						subset.push(data[index]);
+					}
+				});
+				genMarks(subset);
+			});
 		};
 
-		function updateData(value) {    // Update data from combobox onChange
-
-			v2_source= "";
-
-			horizon= 1;
-
-			if (value=== "97_06") {
-				v2_source= "1997_2006.tsv";
-				horizon= 2;
-
-				add_legend("legenda_df", value);
-			}
-			else if (value=== "14_15") {
-				v2_source= "2014_2015.tsv";
-
-				add_legend("legenda_df", value);
-			}
-			else if (value=== "arqa") {
-				v2_source= "Araraquara_2014_2017.tsv";
-
-				read_sp_data(path + v2_source, "view1", horizon);
-			}
-			else if (value=== "srcb") {
-				v2_source= "Sorocaba_2014_2017.tsv";
-
-				read_sp_data(path + v2_source, "view1", horizon);
-			}
-
-			read_sp_data(path + v2_source, "view2", horizon);
-			read_df_data(path + "dif_" + v2_source, "view_df");
-		};
-
-		setTimeout(init, 500);
-
-		function init() {
-
-			add_legend("legenda_sp");
-			read_sp_data(v1_source, "view1", horizon);
-			updateData("14_15");
-		};
+		//create_info_data("2015_2017.tsv", "info");
 
 	</script>
 
