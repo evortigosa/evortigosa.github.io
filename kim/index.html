@@ -23,22 +23,27 @@
 </head>
 <body>
 
-	<div id="view_stup" class="Graph" style="width:1890px;height:30px">
-		<div id="space1" class="Graph" style="float:left;width:6%;height:100%"></div>
-		<div id="combo" class="Graph" style="float:left;width:43%;height:100%">
-			<select type="select" onchange="updateData(value);">
-				<option value="16" selected="true">2016</option>
-				<option value="17">2017</option>
-				<option value="18">2018</option>
-			</select>
+	<div style="width:100%;height:100%;">
+		<div id="view_stup" class="Graph" style="width:1890px;height:30px">
+			<div id="space1" class="Graph" style="float:left;width:6%;height:100%"></div>
+			<div id="combo" class="Graph" style="float:left;width:43%;height:100%">
+				<select type="select" onchange="updateData(value);">
+					<option value="16" selected="true">2016</option>
+					<option value="17">2017</option>
+					<option value="18">2018</option>
+				</select>
+			</div>
 		</div>
-	</div>
-	<div style="margin:auto;width:1890px;height:920px">
-		<div id="mapid" style="float:left;width:70%;height:100%"></div>
-		<div style="float:left;width:30%;height:100%">
-			<div id="info" class="Graph" style="width:100%;height:50%"></div>
-			<div id="gif" class="Graph" style="width:100%;height:50%;">
-				<img src="gtfs.gif" alt="Rotas de ônibus na cidade de São Paulo - GTFS" style="height:99%;">
+		<div style="margin:auto;width:1890px;height:920px">
+			<div id="mapid" style="float:left;width:70%;height:100%"></div>
+			<div style="float:left;width:30%;height:100%">
+				<!--div id="info" class="Graph" style="width:100%;height:50%"></div-->
+				<div id="svg" class="Graph" style="width:100%;height:50%;">
+					<img src="Rplot-SPDE.svg" alt="Rotas de ônibus na cidade de São Paulo - GTFS" style="height:99%;">
+				</div>
+				<div id="gif" class="Graph" style="width:100%;height:50%;">
+					<img src="gtfs.gif" alt="Rotas de ônibus na cidade de São Paulo - GTFS" style="height:99%;">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -205,7 +210,7 @@
 			});
 		};
 
-		create_info_data("2015_2017.tsv", "info");
+		//create_info_data("2015_2017.tsv", "info");
 
 	</script>
 
