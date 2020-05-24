@@ -40,11 +40,12 @@
 			<div id="mapid" style="float:left;width:70%;height:100%"></div>
 			<div style="float:left;width:30%;height:100%">
 				<!--div id="info" class="Graph" style="width:100%;height:50%"></div-->
-				<div id="svg" class="Graph" style="width:100%;height:50%;text-align: center;">
-					<img src="Rplot-SPDE.svg" alt="Rotas de ônibus na cidade de São Paulo - GTFS" style="height:99%;">
+				<div id="svg" class="Graph" style="width:100%;height:48%;text-align: center;">
+					<img src="Rplot-SPDE.svg" style="height:99%;">
 				</div>
-				<div id="gif" class="Graph" style="width:100%;height:50%;text-align: center;">
-					<img src="gtfs.gif" alt="Rotas de ônibus na cidade de São Paulo - GTFS" style="height:99%;">
+				<div id="gif_title" class="Graph" style="width:100%;height:4%"></div>
+				<div id="gif" class="Graph" style="width:100%;height:48%;text-align: center;">
+					<img src="gtfs.gif" style="height:99%;">
 				</div>
 			</div>
 		</div>
@@ -100,6 +101,30 @@
 			.style("font-color", "black")
 			.style("font-weight", "bold")
 			.text("São Paulo SmartViz Traffic");
+
+
+
+		width= document.getElementById("gif_title").clientWidth;	// imprime um texto em frente ao combo que troca os dados
+		height= document.getElementById("gif_title").clientHeight;
+
+		document.getElementById("gif_title").innerHTML= "";
+
+		var canvas3= d3.select("#gif_title")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+					.attr("transform", "translate(0,0)");
+
+		var dt_texto= canvas3.append("text")
+			.attr("class", "label")
+			.attr("x", (width/ 2))
+			.attr("y", (height/ 2)+1)
+			.style("text-anchor", "middle")
+			.style("font", "12px sans-serif")
+			.style("font-color", "black")
+			.style("font-weight", "bold")
+			.text("Public transport nets using GTFS data");
 
 
 
