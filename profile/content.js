@@ -164,7 +164,7 @@ function load_research() {
 	var size= document.getElementById("middle").clientWidth;
 
 	var width= size;		// Dimensoes internas do gafico
-	var height= 880;
+	var height= 840;
 
 	var x_pos1= 45;
 	var x_pos2= x_pos1 + size/ 2;
@@ -183,12 +183,12 @@ function load_research() {
 	var title_y= 370;
 	var motivation_y= 450;
 	var hypothesis_y= 690;
-	var linkedin_y= 830;
 
 	/* y Colunas da direita */
 	var objectives_y= 35;
 	var abstract_y= 220;
-	var cnpq_y= 610;
+	var cnpq_y= 600;
+	var linkedin_y= 710;
 
 	/* Espaçamento entre linhas */
 	var dy= 20
@@ -269,7 +269,7 @@ function load_research() {
 		.attr("x", x_pos1)
 		.attr("y", title_y)
 		.attr("class", "label-bold")
-		.text("PhD Research Title");
+		.text("Ph.D. Research Title");
 
 	var title1= canvas.append("text")
 		.attr("x", x_pos1)
@@ -477,16 +477,6 @@ function load_research() {
 			.text("compared to state-of-the-art explainability techniques.");
 
 
-	/* LINKEDIN */
-	var linkedin= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", linkedin_y)
-		.attr("class", "label-bold")
-		.attr("cursor", "pointer")
-		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); })
-		.text("Access my LinkedIn account.");
-
-
 	/* LOGO CAPES */
 	var cnpq= canvas.append("text")
 		.attr("x", x_pos2)
@@ -499,12 +489,22 @@ function load_research() {
 
 	var img= g.append("svg:image")
 		.attr("xlink:href", path_i + "CAPES.png")
-		.attr("width", 270)
-		.attr("height", 270)
+		.attr("width", 230)
+		.attr("height", 230)
 		.attr("x", x_pos2+ 10)
 		.attr("y", cnpq_y- 0)
 		.attr("cursor", "pointer")
 		.on("click", function() { window.open("https://www.gov.br/capes/pt-br"); });
+
+
+	/* LINKEDIN */
+	var linkedin= canvas.append("text")
+		.attr("x", x_pos2+ 440)
+		.attr("y", linkedin_y)
+		.attr("class", "label-bold")
+		.attr("cursor", "pointer")
+		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); })
+		.text("Access my LinkedIn account.");
 };
 
 function load_publications() {
