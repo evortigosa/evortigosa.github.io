@@ -1,12 +1,12 @@
 /*
 	Evandro Scudeleti Ortigossa
 
-	M.Sc. Student in Computer Science
+	Ph.D. Candidate in Computer Science
 	Institute of Mathematical and Computer Sciences - ICMC
 	University of São Paulo - USP
 	São Carlos, São Paulo, Brazil.
 	
-	2017. All rights reserved.
+	2022. All rights reserved.
 */
 
 function load_my_face() {
@@ -29,7 +29,9 @@ function load_my_face() {
 		.attr("width", 320)
 		.attr("height", 320)
 		.attr("x", 1)
-		.attr("y", -85);
+		.attr("y", -85)
+		.attr("cursor", "pointer")
+		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); });
 };
 
 function load_logo() {
@@ -104,7 +106,7 @@ function load_my_id() {
 		.attr("x", size/ 2)
 		.attr("y", 65)
 		.attr("class", "label-center-up")
-		.text("Ciências de Computação (B.Sc.) - ICMC-USP");
+		.text("Computer Scientist (MSc, BSc) - ICMC-USP");
 
 	var grad= canvas.append("text")
 		.attr("x", size/ 2)
@@ -126,13 +128,13 @@ function load_my_id() {
 				.duration(500)
 				.style("opacity", 0);
 		})
-		.text("Aluno de M.Sc. em Ciências de Computação e Matemática Computacional - ICMC-USP");
+		.text("PhD Candidate in Computer Science and Computational Mathematics - ICMC-USP");
 
 	var area= canvas.append("text")
 		.attr("x", size/ 2)
 		.attr("y", 122)
 		.attr("class", "label-center-up")
-		.text("Atuação: Processamento de Imagens Digitais e Visualização de Dados");
+		.text("Research area: Explainable Artificial Intelligence (XAI)");
 
 	var orientador= canvas.append("text")
 		.attr("x", size/ 2)
@@ -154,7 +156,7 @@ function load_my_id() {
 				.duration(500)
 				.style("opacity", 0);
 		})
-		.text("Orientação: Prof. Dr. Luis Gustavo Nonato");
+		.text("Advisor: Prof. Dr. Luis Gustavo Nonato");
 };
 
 function load_research() {
@@ -162,10 +164,10 @@ function load_research() {
 	var size= document.getElementById("middle").clientWidth;
 
 	var width= size;		// Dimensoes internas do gafico
-	var height= 800;
+	var height= 880;
 
-	var x_pos1= 70;
-	var x_pos2= size/ 2;
+	var x_pos1= 45;
+	var x_pos2= x_pos1 + size/ 2;
 
 	var canvas= d3.select("#middle")
 		.append("svg")
@@ -176,362 +178,333 @@ function load_research() {
 
 
 	/* y Colunas da esquerda */
-	var titulo_y= 35;
-	var lacuna_y= 110;
-	var justificativa_y= 220;
-	var material_y= 385;
-	var avaliacao_y= 585;
-	var interface_y= 715;
-	var conclusao_y= 760;
+	var bio_y= 35;
+	var skills_y= 250;
+	var title_y= 370;
+	var motivation_y= 450;
+	var hypothesis_y= 690;
+	var linkedin_y= 830;
 
 	/* y Colunas da direita */
-	var tema_y= 60;
-	var obj_y= 150;
-	var resumo_y= 335;
-	var cnpq_y= 635;
+	var objectives_y= 35;
+	var abstract_y= 220;
+	var cnpq_y= 610;
+
+	/* Espaçamento entre linhas */
+	var dy= 20
 
 
-	/* TITULO DA PESQUISA */
+	/* BIOGRAFIA */
 	var titulo= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", titulo_y)
+		.attr("y", bio_y)
 		.attr("class", "label-bold")
-		.text("Título da Pesquisa");
+		.text("Short Bio");
 
 	var titulo1= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", titulo_y+ 20)
+		.attr("y", bio_y+ 25	)
 		.attr("class", "label-text")
-		.text("Visualização de Dados Multidimensionais Agregados Hierarquicamente e Variáveis no Tempo.");
-	
-	/* TEMA */
-	var tema= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", tema_y)
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", 0)
+			.text("Bachelor in Computer Science (2015) from the Institute of Mathematics and Computer Science at the University ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("of São Paulo, São Carlos, Brazil (ICMC-USP). I also hold a Master's degree (2018) from the Program in ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("Computer Science and Computational Mathematics at ICMC-USP, where I acquired experience in analyzing and ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("visualizing multidimensional time series. Currently, I am a Ph.D. candidate in Computer Science and Computational ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("Mathematics at ICMC-USP, where I am a member of the Visual and Geometry Processing Group (VGPG), researching ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("explainable artificial intelligence (XAI) and information visualization (InfoVis). I also have experience in data science, ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("machine learning, digital image processing, unstructured data mining; and C, C++, Java, JavaScript, D3.js, and")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("Python programming.");
+
+
+	/* SKILLS */
+	var skills= canvas.append("text")
+		.attr("x", x_pos1)
+		.attr("y", skills_y)
 		.attr("class", "label-bold")
-		.text("Tema");
+		.text("Skills and Expertise");
 
-	var tema1= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", tema_y+ 20)
-		.attr("class", "label-text")
-		.text("Estudo e desenvolvimento de metodologias compreensivas de visualização sobre grandes bases de dados");
-
-	var tema2= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", tema_y+ 20 + 18)
-		.attr("class", "label-text")
-		.text("multidimensionais agregados hierarquicamente e variáveis no tempo.");
-
-	/* LACUNA/PROBLEMA */
-	var lacuna= canvas.append("text")
+	var skills1= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", lacuna_y)
+		.attr("y", skills_y+ 25	)
+		.attr("class", "label-text")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", 0)
+			.text("Explainable Artificial Intelligence (XAI), Machine Learning, Data Science, Artificial Intelligence (AI), Python, ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("Information Visualization, Data Mining, Time Series Analysis, D3.js, JavaScript, C++, Algorithms, Programming, ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("Computer Science, Digital Image Processing, Interpretability, Human-Computer Interaction.");
+
+
+	/* RESEARCH THEME */
+	var title= canvas.append("text")
+		.attr("x", x_pos1)
+		.attr("y", title_y)
 		.attr("class", "label-bold")
-		.text("Lacuna/problema");
+		.text("PhD Research Title");
 
-	var lacuna1= canvas.append("text")
+	var title1= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", lacuna_y+ 20)
+		.attr("y", title_y+ 25	)
 		.attr("class", "label-text")
-		.text("Em muitos cenários, dados temporais carregam uma estrutura agregada hierarquicamente. Um ");
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", 0)
+			.text("Feature importance using ranking: a new approach for explainability");
 
-	var lacuna2= canvas.append("text")
+
+	/* MOTIVATION */
+	var motivation= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", lacuna_y+ 20+ 1* 18)
-		.attr("class", "label-text")
-		.text("problema neste contexto é que os níveis inferiores da hierarquia podem conter centenas de");
-
-	var lacuna3= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", lacuna_y+ 20+ 2* 18)
-		.attr("class", "label-text")
-		.text("milhares, ou mesmo milhões de instâncias temporais, sendo sua análise uma tarefa exaustiva.");
-
-	/* HIPOTESES E OBJETIVOS */
-	var objetivos= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y)
+		.attr("y", motivation_y)
 		.attr("class", "label-bold")
-		.text("Hipóteses e Objetivos");
+		.text("Motivation");
 
-	var objetivos1= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y+ 20)
-		.attr("class", "label-text")
-		.text("Visualização de dados é a representação de informações no formato gráfico, simplificando sua interpretação");
-
-	var objetivos2= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y+ 20+ 1* 18)
-		.attr("class", "label-text")
-		.text("e ajudando a encontrar padrões. Sendo assim, este trabalho tem por objetivo desenvolver e validar uma");
-
-	var objetivos3= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y+ 20+ 2* 18)
-		.attr("class", "label-text")
-		.text("metodologia de visualização para analisar de séries temporais multidimensionais hierarquicamente agregadas, ");
-
-	var objetivos4= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y+ 20+ 3* 18)
-		.attr("class", "label-text")
-		.text("revelando tendências e discrepâncias dos dados. Para isto, serão aplicadas métricas nos dados, detectando ");
-
-	var objetivos5= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y+ 20+ 4* 18)
-		.attr("class", "label-text")
-		.text("dados, detectando padrões ao longo do tempo, em cada intervalo definido. A partir destes resultados, os ");
-
-	var objetivos6= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y+ 20+ 5* 18)
-		.attr("class", "label-text")
-		.text("dados serão exibidos graficamente, evidenciando os padrões de interesse encontrados, de forma a facilitar ");
-
-	var objetivos7= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", obj_y+ 20+ 6* 18)
-		.attr("class", "label-text")
-		.text("sua exploração, mantendo seu contexto hierárquico.");
-
-	/* JUSTIFICATIVA/MOTIVACAO */
-	var justificativa= canvas.append("text")
+	var motivation1= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", justificativa_y)
+		.attr("y", motivation_y+ 25	)
+		.attr("class", "label-text")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", 0)
+			.text("Machine learning algorithms do not analyze data the same way humans do. Learning models use complex ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("mathematical mechanisms to find patterns that a human analyst may not know or not entirely understand. Thus, the")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("right to explanation arises, i.e., the need to make the learning models applied in decisions that can significantly affect ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("their users' lives more transparent and interpretable, providing reasonable explanations about the logical processes ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("behind models' results and predictions. Modern learning systems have high discriminating power (at the cost of high ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("complexity and consequent low interpretability; this high precision does not guarantee that the decisions produced by ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("such models are, in fact, fair and not permeated by some spurious bias. The lack of explanatory power increases ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("trustworthiness issues and transforms learning algorithms into unreliable decision support systems, making it ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("challenging to implement learning-based systems in critical real-world domains.");
+
+
+	/* HYPOTHESIS */
+	var hypothesis= canvas.append("text")
+		.attr("x", x_pos1)
+		.attr("y", hypothesis_y)
 		.attr("class", "label-bold")
-		.text("Justificativa/motivação");
+		.text("Hypothesis");
 
-	var justificativa1= canvas.append("text")
+	var hypothesis1= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", justificativa_y+ 20)
+		.attr("y", hypothesis_y+ 25	)
 		.attr("class", "label-text")
-		.text("Dados variáveis no tempo agregados hierarquicamente apresentam uma estrutura, na qual cada");
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", 0)
+			.text("The empirical success of Machine Learning derives from its computationally efficient algorithms and its high-")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("parametric space, with hundreds or even thousands of parameters. If the reasoning involved in the decision")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("processes of an intelligent system could be explained by humans, then it would be possible to extract knowledge ")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("about the working methods of these algorithms, making them more transparent, verifiable, and applicable.")
+		.append("tspan")
+			.attr("x", x_pos1)
+			.attr("dy", dy)
+			.text("")
 
-	var justificativa2= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", justificativa_y+ 20+ 1* 18)
-		.attr("class", "label-text")
-		.text("ramo da hierarquia representa uma série temporal contendo a informação temporal agregada dos");
 
-	var justificativa3= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", justificativa_y+ 20+ 2* 18)
-		.attr("class", "label-text")
-		.text("seus níveis inferiores. Por exemplo: o consumo de energia em um país é dado, num certo momento, ");
-
-	var justificativa4= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", justificativa_y+ 20+ 3* 18)
-		.attr("class", "label-text")
-		.text("pela soma da energia consumida em seus estados que, por sua vez, compreende a soma da energia");
-
-	var justificativa5= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", justificativa_y+ 20+ 4* 18)
-		.attr("class", "label-text")
-		.text("gasta em cada cidade e assim por diante. Até o momento, poucas ferramentas foram desenvoldas");
-
-	var justificativa6= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", justificativa_y+ 20+ 5* 18)
-		.attr("class", "label-text")
-		.text("especificamente para trabalhar com este tipo de dados e, este trabalho visa preencher esta lacuna.");
-
-	/* RESUMO ESTRUTURADO */
-	var resumo= canvas.append("text")
+	/* OBJECTIVES */
+	var objectives= canvas.append("text")
 		.attr("x", x_pos2)
-		.attr("y", resumo_y)
+		.attr("y", objectives_y)
 		.attr("class", "label-bold")
-		.text("Resumo");
+		.text("Research Objectives");
 
-	var resumo1= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20)
-		.attr("class", "label-text")
-		.text("Em muitos cenários, dados temporais carregam uma estrutura agregada e hierárquica intrínseca. Por exemplo, ");
-
-	var resumo2= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 1* 18)
-		.attr("class", "label-text")
-		.text("em muitos países, a quantidade diária de recursos que são gastos pelo governo federal é a soma das despesas");
-
-	var resumo3= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 2* 18)
-		.attr("class", "label-text")
-		.text("de seus ministérios nos dias correspondentes, que por sua vez, compreende as despesas das suas respectivas ");
-
-	var resumo4= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 3* 18)
-		.attr("class", "label-text")
-		.text("secretarias subordinadas, e assim por diante. Quando analisando este tipo de dado temporal estruturado");
-
-	var resumo5= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 4* 18)
-		.attr("class", "label-text")
-		.text(" hierarquicamente, o analista usualmente começa procurando por padrões e discrepâncias nos níveis superiores ");
-
-	var resumo6= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 5* 18)
-		.attr("class", "label-text")
-		.text("da hierarquia, descendo até os níveis inferiores para encontrar a origem do comportamento observado. Uma ");
-
-	var resumo7= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 6* 18)
-		.attr("class", "label-text")
-		.text("questão principal neste contexto é que os níveis inferiores podem conter milhares de instâncias de séries ");
-
-	var resumo8= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 7* 18)
-		.attr("class", "label-text")
-		.text("temporais, fazendo da análise uma tarefa massante. Este trabalho apresenta uma metodologia de visualização ");
-
-	var resumo9= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 8* 18)
-		.attr("class", "label-text")
-		.text("para guiar a análise das séries temporais agregadas. O método utiliza o Earth Mover's Distance (EMD) para");
-
-	var resumo10= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 9* 18)
-		.attr("class", "label-text")
-		.text("detectar discrepâncias e padrões nas séries temporais nos níveis inferiores da hierarquia. As informações a");
-
-	var resumo11= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 10* 18)
-		.attr("class", "label-text")
-		.text("cerca das discrepâncias e padrões são propagadas aos patamares superiores em que as séries temporais ");
-
-	var resumo12= canvas.append("text")
-		.attr("x", x_pos2)
-		.attr("y", resumo_y+ 20+ 11* 18)
-		.attr("class", "label-text")
-		.text("são representadas, permitindo ao usuário visualizar e rastrear a origem do fenômeno observado.");
-
-	/* MATERIAIS E METODOS */
-	var material= canvas.append("text")
+	var objectives1= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", material_y)
+		.attr("y", objectives_y+ 25	)
+		.attr("class", "label-text")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", 0)
+			.text("Promote advances in the sense of elucidating Machine Learning models' predictions in such a way that it is ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("possible to understand why those decisions were reached. XAI explanations can make interpretable the black ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("box problems from a global to a local view, demystifying the logic behind outputs or learning models' internal ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("mechanisms. Therefore, an XAI approach should be designed to verify different aspects of non-linear learning ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("functions, decomposing the opaque elements to generate information in a human interpretable way, aiming to ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("make decisions or learning processes more transparent and verifiable.");
+
+
+	/* ABSTRACT */
+	var abstract= canvas.append("text")
+		.attr("x", x_pos2)
+		.attr("y", abstract_y)
 		.attr("class", "label-bold")
-		.text("Materiais e Métodos");
+		.text("Research Abstract");
 
-	var material1= canvas.append("text")
+	var abstract1= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", material_y+ 20)
+		.attr("y", abstract_y+ 25	)
 		.attr("class", "label-text")
-		.text("O Earth Mover's Distance está no core da análise das séries temporais hierárquicas, gerando");
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", 0)
+			.text("In recent years, intelligent systems based on Machine Learning have achieved excellent performance rates in a ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("wide range of tasks from many domains. However, when applied in areas that may cause an impact on the life and ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("welfare of its users, the learning-based models raise some issues. The complex nature of these methods' decision ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("mechanisms makes them true black boxes, from which it is impossible to understand the internal logic of the ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("decision-making process. Understanding the reasons why a model makes a prediction is quite essential, in some ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("contexts even more than the accuracy, revealing the need for a tradeoff between interpretability and model accuracy. ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("Although it is not possible to naturally interpret complex models, it is possible to explain them. Providing explanations ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("to computer-aided systems decisions can be seen as a way to justify their reliability, besides providing an effective ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("tool for checking and correcting errors previously hidden within learning models, opening up a large avenue  of ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("possibilities for responsible applications. In this scenario, my work aims to contribute to Machine Learning and ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("EXplainable Artificial Intelligence (XAI) research by deeply discussing the theoretical foundations of algorithmic ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("explainability, supporting data scientists to identify XAI's objectives, challenges, and future opportunities. In addition, ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("my Ph.D. research proposes a new XAI methodology to open the learning-based black boxes. The framework ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("under development seeks to generate explanations regardless of model, identifying and measuring feature ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("importance, both locally and globally. Finally, preliminary results show that the proposed approach is promising ")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("compared to state-of-the-art explainability techniques.");
 
-	var material2= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", material_y+ 20+ 1* 18)
-		.attr("class", "label-text")
-		.text(" resultados que serão utilizados para clusterização, classificação, identificação de padrões e");
 
-	var material3= canvas.append("text")
+	/* LINKEDIN */
+	var linkedin= canvas.append("text")
 		.attr("x", x_pos1)
-		.attr("y", material_y+ 20+ 2* 18)
-		.attr("class", "label-text")
-		.text("discrepâncias. Para guiar o usuário na exploração dos dados, será desenvolvida um protótio de");
-
-	var material4= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", material_y+ 20+ 3* 18)
-		.attr("class", "label-text")
-		.text(" interface baseado em web, utilizando principalmente JavaScript, CSS, HTML5 e a biblioteca de");
-
-	var material5= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", material_y+ 20+ 4* 18)
-		.attr("class", "label-text")
-		.text("desenvolvimento gráfico D3.js. Os dados utilizados neste trabalho serão os dos gastos diretos do");
-
-	var material6= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", material_y+ 20+ 5* 18)
-		.attr("class", "label-text")
-		.text("governo federal do Brasil (www.portaldatransparencia.gov.br), contendo pagamentos realizados");
-
-	var material7= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", material_y+ 20+ 6* 18)
-		.attr("class", "label-text")
-		.text("por todas as agências do governo federal de janeiro de 2011 até outubro de 2015, com mais de");
-
-	var material8= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", material_y+ 20+ 7* 18)
-		.attr("class", "label-text")
-		.text("60 milhões de transações registradas.");
-
-	/* METODOLOGIA DE AVALIACAO */
-	var avaliacao= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", avaliacao_y)
-		.attr("class", "label-bold")
-		.text("Metodologia de Avaliação");
-
-	var avaliacao1= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", avaliacao_y+ 20)
-		.attr("class", "label-text")
-		.text("A eficácia da metodologia proposta, em revelar fenômenos de interesse e suas origens em largas");
-
-	var avaliacao2= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", avaliacao_y+ 20+ 1* 18)
-		.attr("class", "label-text")
-		.text("bases de dados temporais hierárquicas, será mostrada através de um conjunto de experimentos e");
-
-	var avaliacao3= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", avaliacao_y+ 20+ 2* 18)
-		.attr("class", "label-text")
-		.text("também medidas qualitativas propostas na literatura.");
-
-	/* LINK */
-	var interface= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", interface_y)
+		.attr("y", linkedin_y)
 		.attr("class", "label-bold")
 		.attr("cursor", "pointer")
-		.on("click", function() { window.open("http://daedalus.zapto.org:5080/~evortigosa/frontend/"); })
-		.text("Clique aqui para acessar o protótipo em desenvolvimento.");
+		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); })
+		.text("Access my LinkedIn account.");
 
-	var conclusao= canvas.append("text")
-		.attr("x", x_pos1)
-		.attr("y", conclusao_y)
-		.attr("class", "label-bold")
-		.text("O período de conclusão é estimado para março de 2018.");
 
-	/* LOGO CNPQ */
+	/* LOGO CAPES */
 	var cnpq= canvas.append("text")
-		.attr("x", x_pos2+ 10)
+		.attr("x", x_pos2)
 		.attr("y", cnpq_y)
 		.attr("class", "label-bold")
-		.text("Esta pesquisa é financiada pelo:");
+		.text("This study is partially financed by:");
 
 	var g= canvas.append("g")
 		.attr("transform", "translate(0,0)");
 
 	var img= g.append("svg:image")
-		.attr("xlink:href", path_i + "CNPq.png")
+		.attr("xlink:href", path_i + "CAPES.png")
 		.attr("width", 270)
 		.attr("height", 270)
 		.attr("x", x_pos2+ 10)
-		.attr("y", cnpq_y- 65)
+		.attr("y", cnpq_y- 0)
 		.attr("cursor", "pointer")
-		.on("click", function() { window.open("http://cnpq.br/"); });
+		.on("click", function() { window.open("https://www.gov.br/capes/pt-br"); });
 };
 
 function load_publications() {
@@ -549,13 +522,13 @@ function load_publications() {
 			.attr("transform", "translate(0,0)");
 
 	var pos_x= 40;
-	var pos_y= 50;
+	var pos_y= 35;
 
 	var public= canvas.append("text")
 		.attr("x", pos_x)
 		.attr("y", pos_y)
 		.attr("class", "label-text")
-		.text("Publicações:");
+		.text("Publications:");
 
 	var scholar= canvas.append("text")
 		.attr("x", pos_x)
@@ -572,6 +545,14 @@ function load_publications() {
 		.attr("cursor", "pointer")
 		.on("click", function() { window.open("https://www.researchgate.net/profile/Evandro_Ortigossa"); })
 		.text("ResearchGate");
+
+	var rg= canvas.append("text")
+		.attr("x", pos_x)
+		.attr("y", pos_y+ 80)
+		.attr("class", "label-text")
+		.attr("cursor", "pointer")
+		.on("click", function() { window.open("https://orcid.org/my-orcid?orcid=0000-0003-1459-9643"); })
+		.text("ORCID");
 };
 
 function load_b_info() {
@@ -590,40 +571,40 @@ function load_b_info() {
 
 	var contato= canvas.append("text")
 		.attr("x", size/ 2)
-		.attr("y", 32)
+		.attr("y", 28)
 		.attr("text-anchor", "middle")
 		.attr("class", "label-text")
-		.text("Informações para contato:");
+		.text("Professional address:");
 
-	var endereco_y= 60;
+	var endereco_y= 55;
 
 	var endereco= canvas.append("text")
 		.attr("x", size/ 2)
 		.attr("y", endereco_y)
 		.attr("text-anchor", "middle")
 		.attr("class", "label-text")
-		.text("Universidade de São Paulo, Instituto de Ciências Matemáticas e de Computação");
+		.text("Institute of Mathematics and Computer Science, University of São Paulo (ICMC-USP)");
 
 	var endereco2= canvas.append("text")
 		.attr("x", size/ 2)
 		.attr("y", endereco_y+ 20)
 		.attr("text-anchor", "middle")
 		.attr("class", "label-text")
-		.text("Av. Trabalhador São-carlense, 400, 13560-970, São Carlos-SP, Brasil");
+		.text("Trabalhador São-carlense Avenue, 400, São Carlos, 13566-590, Brazil");
 
 	var email= canvas.append("text")
 		.attr("x", size/ 2)
-		.attr("y", 110)
+		.attr("y", 102)
 		.attr("text-anchor", "middle")
 		.attr("class", "label-text")
-		.text("email: evortigosa@usp.br");
+		.text("e-mail: evortigosa@usp.br");
 
 	var site= canvas.append("text")
 		.attr("x", size/ 2)
-		.attr("y", 130)
+		.attr("y", 125)
 		.attr("text-anchor", "middle")
 		.attr("font-size", "12px")
-		.text("Este site é melhor visualizado em 1920 x 1080.");
+		.text("This page is better visualized using 1920 x 1080.");
 };
 
 function load_vgpg() {
