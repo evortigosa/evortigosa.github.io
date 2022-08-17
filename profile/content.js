@@ -128,7 +128,7 @@ function load_my_id() {
 				.duration(500)
 				.style("opacity", 0);
 		})
-		.text("PhD Candidate in Computer Science and Computational Mathematics - ICMC-USP");
+		.text("Ph.D. Candidate in Computer Science and Computational Mathematics - ICMC-USP");
 
 	var area= canvas.append("text")
 		.attr("x", size/ 2)
