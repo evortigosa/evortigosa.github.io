@@ -187,9 +187,9 @@ function load_research() {
 	/* y Colunas da direita */
 	var objectives_y= 35;
 	var abstract_y= 210;
-	var cnpq_y= 595;
+	var cnpq_y= 600;
 	var linkedin_y= 660;
-	var awards_y= 765;
+	var awards_y= 770;
 
 	/* Espaçamento entre linhas */
 	var dy= 20
