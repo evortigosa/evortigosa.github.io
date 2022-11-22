@@ -187,8 +187,9 @@ function load_research() {
 	/* y Colunas da direita */
 	var objectives_y= 35;
 	var abstract_y= 210;
-	var cnpq_y= 610;
-	var linkedin_y= 710;
+	var cnpq_y= 595;
+	var linkedin_y= 660;
+	var awards_y= 765;
 
 	/* Espaçamento entre linhas */
 	var dy= 20
@@ -371,7 +372,7 @@ function load_research() {
 		.text("Research Objectives");
 
 	var objectives1= canvas.append("text")
-		.attr("x", x_pos1)
+		.attr("x", x_pos2)
 		.attr("y", objectives_y+ 25	)
 		.attr("class", "label-text")
 		.append("tspan")
@@ -408,7 +409,7 @@ function load_research() {
 		.text("Research Abstract");
 
 	var abstract1= canvas.append("text")
-		.attr("x", x_pos1)
+		.attr("x", x_pos2)
 		.attr("y", abstract_y+ 25	)
 		.attr("class", "label-text")
 		.append("tspan")
@@ -489,10 +490,10 @@ function load_research() {
 
 	var img= g.append("svg:image")
 		.attr("xlink:href", path_i + "CAPES.png")
-		.attr("width", 230)
-		.attr("height", 230)
+		.attr("width", 110)
+		.attr("height", 110)
 		.attr("x", x_pos2+ 10)
-		.attr("y", cnpq_y- 0)
+		.attr("y", cnpq_y+ 5)
 		.attr("cursor", "pointer")
 		.on("click", function() { window.open("https://www.gov.br/capes/pt-br"); });
 
@@ -505,6 +506,46 @@ function load_research() {
 		.attr("cursor", "pointer")
 		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); })
 		.text("Access my LinkedIn account.");
+
+
+	/* AWARDS */
+	var awards= canvas.append("text")
+		.attr("x", x_pos2)
+		.attr("y", awards_y)
+		.attr("class", "label-bold")
+		.text("Prizes and Honors:");
+
+	var awards1= canvas.append("text")
+		.attr("x", x_pos2)
+		.attr("y", awards_y+25)
+		.attr("class", "label-text")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", 0)
+			.text("Best Paper Award for the paper ''")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dx", 233)
+			.attr("dy", 0)
+			.attr("cursor", "pointer")
+			.on("click", function() { window.open("http://dx.doi.org/10.13140/RG.2.1.4331.4408"); })
+			.style("font-style", "italic")
+			.text("Using Digital Image Processing to Estimate the Depth of Urban Streams");
+
+	var awards2= canvas.append("text")
+		.attr("x", x_pos2)
+		.attr("y", awards_y+25)
+		.attr("class", "label-text")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dx", 744)
+			.attr("dy", 0)
+			.text("'', XXVIII")
+		.append("tspan")
+			.attr("x", x_pos2)
+			.attr("dy", dy)
+			.text("Conference on Graphics, Patterns and Images - SIBGRAPI, August 2015.");
+
 };
 
 function load_publications() {
