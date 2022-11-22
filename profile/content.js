@@ -188,7 +188,7 @@ function load_research() {
 	var objectives_y= 35;
 	var abstract_y= 210;
 	var cnpq_y= 600;
-	var linkedin_y= 660;
+	var linkedin_y= 601;
 	var awards_y= 770;
 
 	/* Espaçamento entre linhas */
@@ -500,12 +500,12 @@ function load_research() {
 
 	/* LINKEDIN */
 	var linkedin= canvas.append("text")
-		.attr("x", x_pos2+ 440)
+		.attr("x", x_pos2+ 560)
 		.attr("y", linkedin_y)
 		.attr("class", "label-bold")
 		.attr("cursor", "pointer")
 		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); })
-		.text("Access my LinkedIn account.");
+		.text("Access my LinkedIn account");
 
 
 	/* AWARDS */
