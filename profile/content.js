@@ -85,13 +85,13 @@ function load_my_id() {
 		.attr("font-size", "40px")
 		.attr("font-weight", "bold")
 		.attr("cursor", "pointer")
-		.on("click", function() { window.open("http://lattes.cnpq.br/5545082740387699"); })
+		.on("click", function() { window.open("https://www.researchgate.net/profile/Evandro_Ortigossa"); })
 		.on("mouseover", function(d) {
 			tip.transition()
 				.duration(200)
 				.style("opacity", 1);
 
-			tip.html("Lattes")
+			tip.html("ResearchGate")
 				.style("left", (d3.event.pageX- 30) + "px")
 				.style("top", (d3.event.pageY+ 8) + "px");
 		})
@@ -128,35 +128,20 @@ function load_my_id() {
 				.duration(500)
 				.style("opacity", 0);
 		})
-		.text("Ph.D. Candidate in Computer Science and Computational Mathematics - ICMC-USP");
+		.text("PhD in Computer Science and Computational Mathematics - ICMC-USP");
 
 	var area= canvas.append("text")
 		.attr("x", size/ 2)
 		.attr("y", 122)
 		.attr("class", "label-center-up")
-		.text("Research area: Explainable Artificial Intelligence (XAI)");
+		.text("Research areas: Explainable Artificial Intelligence (XAI), Machine Learning, and");
 
-	var orientador= canvas.append("text")
+	var area= canvas.append("text")
 		.attr("x", size/ 2)
 		.attr("y", 145)
 		.attr("class", "label-center-up")
-		.attr("cursor", "pointer")
-		.on("click", function() { window.open("http://lattes.cnpq.br/3794241680729178"); })
-		.on("mouseover", function(d) {
-			tip.transition()
-				.duration(200)
-				.style("opacity", 1);
+		.text("Information Visualization (InfoVis)");
 
-			tip.html("Lattes")
-				.style("left", (d3.event.pageX- 30) + "px")
-				.style("top", (d3.event.pageY+ 8) + "px");
-		})
-		.on("mouseout", function(d) {
-			tip.transition()
-				.duration(500)
-				.style("opacity", 0);
-		})
-		.text("Advisor: Prof. Dr. Luis Gustavo Nonato");
 };
 
 function load_research() {
@@ -188,7 +173,8 @@ function load_research() {
 	var objectives_y= 35;
 	var abstract_y= 210;
 	var cnpq_y= 600;
-	var linkedin_y= 601;
+	var orientador_y= 650;
+	var linkedin_y= 700;
 	var awards_y= 770;
 
 	/* Espaçamento entre linhas */
@@ -209,35 +195,35 @@ function load_research() {
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", 0)
-			.text("Bachelor in Computer Science (2015) from the Institute of Mathematics and Computer Science at the University ")
+			.text("Bachelor in Computer Science (2015) from the Institute of Mathematics and Computer Science at the University")
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("of São Paulo, São Carlos, Brazil (ICMC-USP). I also hold a Master's degree (2018) from the Program in ")
+			.text("of São Paulo, São Carlos, Brazil (ICMC-USP). I also received an MSc degree degree (2018) in Computer Science")
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("Computer Science and Computational Mathematics at ICMC-USP, where I acquired experience in analyzing and ")
+			.text("and Computational Mathematics from ICMC-USP, where I developed research on multidimensional time-series")
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("visualizing multidimensional time series. Currently, I am a Ph.D. candidate in Computer Science and Computational ")
+			.text("visualization.") 
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("Mathematics at ICMC-USP, where I am a member of the Visual and Geometry Processing Group (VGPG), researching ")
+			.text("Currently, I am a PhD in Computer Science and Computational Mathematics from ICMC-USP, where I am a ")
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("explainable artificial intelligence (XAI) and information visualization (InfoVis). I also have experience in data science, ")
+			.text("member of the Graphics, Imaging, Visualization, and, Analytics group (GIVA), developing research on machine ")
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("machine learning, digital image processing, unstructured data mining; and C, C++, Java, JavaScript, D3.js, and")
+			.text("learning and explainable artificial intelligence (XAI). I also have experience in data science, digital image ")
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("Python programming.");
+			.text("processing, data mining; and C, C++, Java, JavaScript, D3.js, and Python programming.")
 
 
 	/* SKILLS */
@@ -270,7 +256,7 @@ function load_research() {
 		.attr("x", x_pos1)
 		.attr("y", title_y)
 		.attr("class", "label-bold")
-		.text("Ph.D. Research Title");
+		.text("PhD Research Title");
 
 	var title1= canvas.append("text")
 		.attr("x", x_pos1)
@@ -279,7 +265,7 @@ function load_research() {
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", 0)
-			.text("Feature importance using ranking: a new approach for explainability");
+			.text("T-Explainer: An explainability framework for Machine Learning based on gradients");
 
 
 	/* MOTIVATION */
@@ -415,67 +401,67 @@ function load_research() {
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", 0)
-			.text("In recent years, intelligent systems based on Machine Learning have achieved excellent performance rates in a ")
+			.text("Intelligent applications supported by Machine Learning have achieved remarkable performance rates for a wide ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("wide range of tasks from many domains. However, when applied in areas that may cause an impact on the life and ")
+			.text("range of tasks in many domains. However, understanding why a trained algorithm makes a particular decision ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("welfare of its users, the learning-based models raise some issues. The complex nature of these methods' decision ")
+			.text("remains problematic. Given the growing interest in the application of learning-based models, some concerns arise ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("mechanisms makes them true black boxes, from which it is impossible to understand the internal logic of the ")
+			.text("in the dealing with sensible environments, which may impact users' lives. The complex nature of those models'")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("decision-making process. Understanding the reasons why a model makes a prediction is quite essential, in some ")
+			.text("decision mechanisms makes them the so-called ''black boxes,'' in which the understanding of the logic behind ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("contexts even more than the accuracy, revealing the need for a tradeoff between interpretability and model accuracy. ")
+			.text("automated decision-making processes by humans is not trivial. Furthermore, the reasoning that leads a model to")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("Although it is not possible to naturally interpret complex models, it is possible to explain them. Providing explanations ")
+			.text("provide a specific prediction can be more important than performance metrics, which introduces a trade-off")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("to computer-aided systems decisions can be seen as a way to justify their reliability, besides providing an effective ")
+			.text("between interpretability and model accuracy. Explaining intelligent computer decisions can be regarded as a way ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("tool for checking and correcting errors previously hidden within learning models, opening up a large avenue  of ")
+			.text("to justify their reliability and establish trust. In this sense, explanations are critical tools that verify predictions to ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("possibilities for responsible applications. In this scenario, my work aims to contribute to Machine Learning and ")
+			.text("discover errors and biases previously hidden within the models’ complex structures, opening up vast possibilities ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("EXplainable Artificial Intelligence (XAI) research by deeply discussing the theoretical foundations of algorithmic ")
+			.text("for more responsible applications. In this Ph.D. research we contribute to Machine Learning explainability by ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("explainability, supporting data scientists to identify XAI's objectives, challenges, and future opportunities. In addition, ")
+			.text("proposing a new XAI method called T-Explainer, a Taylor expansion-based technique that holds a set of desirable ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("my Ph.D. research proposes a new XAI methodology to open the learning-based black boxes. The framework ")
+			.text("properties, such as local accuracy and consistency, while still being stable in its explanations. Our results ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("under development seeks to generate explanations regardless of model, identifying and measuring feature ")
+			.text("demonstrate T-Explainer's effectiveness through benchmarking experiments and comparisons against state-of-the-")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("importance, both locally and globally. Finally, preliminary results show that the proposed approach is promising ")
+			.text("art references in feature attribution. In addition, T-Explainer is developed as a comprehensive XAI framework ")
 		.append("tspan")
 			.attr("x", x_pos2)
 			.attr("dy", dy)
-			.text("compared to state-of-the-art explainability techniques.");
+			.text("comprising quantitative metrics to assess and visualize attribution explanations.");
 
 
 	/* LOGO CAPES */
@@ -498,14 +484,28 @@ function load_research() {
 		.on("click", function() { window.open("https://www.gov.br/capes/pt-br"); });
 
 
-	/* LINKEDIN */
-	var linkedin= canvas.append("text")
-		.attr("x", x_pos2+ 560)
-		.attr("y", linkedin_y)
-		.attr("class", "label-bold")
+	/* ORIENTADOR */
+	var orientador= canvas.append("text")
+		.attr("x", x_pos2+ 420)
+		.attr("y", orientador_y)
+		.attr("class", "label-text")
 		.attr("cursor", "pointer")
-		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); })
-		.text("Access my LinkedIn account");
+		.on("click", function() { window.open("http://lattes.cnpq.br/3794241680729178"); })
+		.on("mouseover", function(d) {
+			tip.transition()
+				.duration(200)
+				.style("opacity", 1);
+
+			tip.html("Lattes")
+				.style("left", (d3.event.pageX- 30) + "px")
+				.style("top", (d3.event.pageY+ 8) + "px");
+		})
+		.on("mouseout", function(d) {
+			tip.transition()
+				.duration(500)
+				.style("opacity", 0);
+		})
+		.text("Advisor: Prof. Dr. Luis Gustavo Nonato");
 
 
 	/* AWARDS */
@@ -642,7 +642,7 @@ function load_b_info() {
 
 	var site= canvas.append("text")
 		.attr("x", size/ 2)
-		.attr("y", 125)
+		.attr("y", 123)
 		.attr("text-anchor", "middle")
 		.attr("font-size", "12px")
 		.text("This page is better visualized using 1920 x 1080.");
@@ -663,10 +663,12 @@ function load_vgpg() {
 	var g= canvas.append("g")
 		.attr("transform", "translate(0,0)");
 
-	var img= g.append("svg:image")
-		.attr("xlink:href", path_i + "vgpg.jpg")
-		.attr("width", 200)
-		.attr("height", 200)
-		.attr("x", 75)
-		.attr("y", -25);
+	/* LINKEDIN */
+	var linkedin= canvas.append("text")
+		.attr("x", 60)
+		.attr("y", 60)
+		.attr("class", "label-bold")
+		.attr("cursor", "pointer")
+		.on("click", function() { window.open("https://www.linkedin.com/in/evandro-ortigossa-58062221/?locale=en_US"); })
+		.text("Access my LinkedIn account");
 };
