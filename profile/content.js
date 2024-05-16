@@ -302,7 +302,7 @@ function load_research() {
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
-			.text("complexity and consequent low interpretability; this high precision does not guarantee that the decisions produced by ")
+			.text("complexity and consequent low interpretability; high precision does not guarantee that the decisions produced by ")
 		.append("tspan")
 			.attr("x", x_pos1)
 			.attr("dy", dy)
