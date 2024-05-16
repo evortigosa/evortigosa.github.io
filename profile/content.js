@@ -469,7 +469,7 @@ function load_research() {
 		.attr("x", x_pos2)
 		.attr("y", cnpq_y)
 		.attr("class", "label-bold")
-		.text("This study is partially financed by:");
+		.text("This study was partially financed by:");
 
 	var g= canvas.append("g")
 		.attr("transform", "translate(0,0)");
