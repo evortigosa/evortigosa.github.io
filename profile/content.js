@@ -102,15 +102,9 @@ function load_my_id() {
 		})
 		.text("Evandro S. Ortigossa");
 
-	var u_grad= canvas.append("text")
-		.attr("x", size/ 2)
-		.attr("y", 65)
-		.attr("class", "label-center-up")
-		.text("Computer Scientist (MSc, BSc) - ICMC-USP");
-
 	var grad= canvas.append("text")
 		.attr("x", size/ 2)
-		.attr("y", 88)
+		.attr("y", 65)
 		.attr("class", "label-center-up")
 		.attr("cursor", "pointer")
 		.on("click", function() { window.open("http://www.icmc.usp.br/Portal/conteudo/243/13/ciencias-de-computacao-e-matematica-computacional"); })
@@ -129,6 +123,12 @@ function load_my_id() {
 				.style("opacity", 0);
 		})
 		.text("PhD in Computer Science and Computational Mathematics - ICMC-USP");
+
+	var u_grad= canvas.append("text")
+		.attr("x", size/ 2)
+		.attr("y", 88)
+		.attr("class", "label-center-up")
+		.text("Computer Scientist (MSc, BSc) - ICMC-USP");
 
 	var area= canvas.append("text")
 		.attr("x", size/ 2)
